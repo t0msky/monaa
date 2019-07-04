@@ -264,7 +264,16 @@ class OperationController extends Controller {
 
 		$job_id = $request->job_id;
 
+		//get voucher detail
+		$voucher = DB::table('vouchers')->where('vou_job_id', $job_id)->get();
+
 		DB::table('jobs')->where('job_id', $job_id)->delete();
+		DB::table('vouchers')->where('vou_job_id', $job_id)->delete();
+
+		foreach ($voucher as $v) :
+			DB::table('voucher_job_items')->where('vjob_vou_id', $v->vou_id)->delete();
+		endforeach;
+
 		return redirect('jobrecords')->with('success', "Successfully delete job.");
 
 	}
