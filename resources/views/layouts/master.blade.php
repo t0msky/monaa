@@ -53,7 +53,7 @@
 
     <!-- Monaa CSS -->
     <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/monaa.css">
-    
+
   </head>
 
   <body>
@@ -78,7 +78,9 @@
             <span class="menu-item-label">Data Assets</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>#" class="sub-link">Assets</a></li>
+            <?php if ($user->usr_role == "AD") { ?>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>assets" class="sub-link">Assets</a></li>
+            <?php } ?>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>ratecard" class="sub-link <?php if($uri=='ratecard'){echo 'active';}?>">Rate Card</a></li>
             <?php if ($user->usr_role == "AD") { ?>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>jobitems" class="sub-link <?php if($uri=='jobitems'){echo 'active';}?>">Job Items</a></li>
@@ -103,7 +105,7 @@
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>vouchersrecord" class="sub-link <?php if($uri=='vouchersrecord'){echo 'active';}?>">STS Record</a></li>
-            
+
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>submit-voucher" class="sub-link <?php if($uri=='submit-voucher'){echo 'active';}?>">Submit Vouchers</a></li>
 
           </ul>

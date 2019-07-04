@@ -60,4 +60,13 @@ class AssetController extends Controller {
 		// echo '<pre>'; print_r($jobItem); print_r($jobItemName); die();
 	}
 
+	public function assets() {
+
+		//dapatkan variable daripada middleware
+		$userInfo = resolve('userInfo');
+
+		return view('assets')
+				 ->with('user',$userInfo);
+	}
+
 }

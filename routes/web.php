@@ -26,6 +26,7 @@ Route::group(['middleware' => 'loggedin'], function() {
   Route::post('do-add-notice', 'HomeController@doAddNotice');
 
   #Assets
+  Route::get('assets', 'AssetController@assets');
   Route::get('ratecard', 'AssetController@rateCard');
   Route::get('jobitems', 'AssetController@jobItems');
   Route::post('do-add-job-items', 'AssetController@doAddJobItems');
