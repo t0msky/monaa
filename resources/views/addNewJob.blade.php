@@ -205,12 +205,16 @@
                                     <i class="far fa-clock tx-16 lh-0 op-6"></i>
                                   </div>
                                 </div>
-                                <input id="time-01" name="job_commence_time" type="text" class="form-control" placeholder="Set time" required>
+                                <input id="time-01" name="job_commence_time" type="text" class="form-control" placeholder="00:00" required>
+                                <select name="job_commence_time_ampm" class="form-control select2" required>
+                                  <option value="am">am</option>
+                                  <option value="pm">pm</option>
+                                </select>
                               </div>
                             </div>
                           </div><!-- col-8 -->
                         </div><!-- row -->
-                        <div class="row mg-b-10">
+                        <!-- <div class="row mg-b-10">
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
                               <label class="form-control-label">Completion Date : <span class="tx-danger">*</span></label>
@@ -223,7 +227,7 @@
                                 <input id="date-02" type="text" class="form-control" placeholder="MM/DD/YYYY" disabled>
                               </div>
                             </div>
-                          </div><!-- col-6 -->
+                          </div>
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
                               <label class="form-control-label">Completion Time : <span class="tx-danger">*</label>
@@ -236,9 +240,9 @@
                                 <input id="time-02" type="text" class="form-control" placeholder="Set time" disabled>
                               </div>
                             </div>
-                          </div><!-- col-8 -->
-                        </div><!-- row -->
-                        <div class="row mg-b-10">
+                          </div>
+                        </div> -->
+                        <!-- <div class="row mg-b-10">
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
                               <label class="form-control-label">Total Exposure Hours <span class="tx-danger">*</label>
@@ -249,13 +253,13 @@
                                     </div>
                                   </div>
                                   <input id="time-05" type="text" class="form-control" placeholder="00:00" disabled>
-                                </div><!-- input-group -->
+                                </div>
                             </div>
-                          </div><!-- col-6 -->
-                        </div><!-- row -->
+                          </div>
+                        </div> -->
                       </div><!-- col-6 -->
                       <div class="col-lg-6">
-                        <div class="row mg-b-10">
+                        <!-- <div class="row mg-b-10">
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
                               <div class="d-flex justify-content-between align-items-center">
@@ -271,9 +275,9 @@
                                   </div>
                                 </div>
                                 <input id="time-03" type="text" class="form-control" placeholder="00:00" disabled>
-                              </div><!-- input-group -->
+                              </div>
                             </div>
-                          </div><!-- col-6 -->
+                          </div>
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
                               <div class="d-flex justify-content-between align-items-center">
@@ -289,11 +293,11 @@
                                   </div>
                                 </div>
                                 <input id="time-04" type="text" class="form-control" placeholder="00:00" disabled>
-                              </div><!-- input-group -->
+                              </div>
                             </div>
-                          </div><!-- col-6 -->
-                        </div><!-- row -->
-                        <div class="row mg-b-10">
+                          </div>
+                        </div> -->
+                        <!-- <div class="row mg-b-10">
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
                               <div class="d-flex justify-content-between align-items-center">
@@ -302,7 +306,7 @@
                               </div>
                               <input class="form-control" type="text" value="-" placeholder=""disabled>
                             </div>
-                          </div><!-- col-6 -->
+                          </div>
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
                               <div class="d-flex justify-content-between align-items-center">
@@ -311,8 +315,8 @@
                               </div>
                               <input class="form-control" type="text" value="-" placeholder="" disabled>
                             </div>
-                          </div><!-- col-6 -->
-                        </div><!-- row -->
+                          </div>
+                        </div> -->
                         <div class="row mg-b-10">
                           <div class="col-lg-12">
                             <div class="form-group mg-b-10-force">
@@ -756,7 +760,8 @@
   });
 
   // Time Picker
-  $('#time-01').timepicker({'scrollDefault': 'now'});
+  // $('#time-01').timepicker({'scrollDefault': 'now'});
+  $('#time-01').mask('99:99');
   $('#time-02').timepicker({'scrollDefault': 'now'});
 
   // Input Masks

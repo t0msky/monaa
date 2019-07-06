@@ -145,7 +145,7 @@ class OperationController extends Controller {
 				'job_mothership' => $request->job_mothership,
 				'job_maneuveringship' => $request->job_maneuveringship,
 				'job_commence_date' => $date,
-				'job_commence_time' => $request->job_commence_time,
+				'job_commence_time' => $request->job_commence_time.' '.$request->job_commence_time_ampm,
 				'job_location' => $request->job_location,
 				'job_mooring_master' => $request->job_mooring_master,
 				'job_poac1' => $request->job_poac1,
@@ -230,6 +230,15 @@ class OperationController extends Controller {
 			$date_complete = NULL;
 		}
 
+		//check job exceeding
+		if ($request->job_exceeding_select == "24") {
+			$job_exceeding24 = $request->job_exceeding_number;
+			$job_exceeding48 = '';
+		} else if ($request->job_exceeding_select == "48") {
+			$job_exceeding24 = '';
+			$job_exceeding48 = $request->job_exceeding_number;
+		}
+
 		$dataUpdate = array(
 				'job_operator' 				=> $request->job_operator,
 				'job_provider' 				=> $request->job_provider,
@@ -237,9 +246,9 @@ class OperationController extends Controller {
 				'job_mothership' 			=> $request->job_mothership,
 				'job_maneuveringship' => $request->job_maneuveringship,
 				'job_commence_date' 	=> $date_commence,
-				'job_commence_time' 	=> $request->job_commence_time,
+				'job_commence_time' 	=> $request->job_commence_time.' '.$request->job_commence_time_ampm,
 				'job_complete_date' 	=> $date_complete,
-				'job_complete_time' 	=> $request->job_complete_time,
+				'job_complete_time' 	=> $request->job_complete_time.' '.$request->job_complete_time_ampm,
 				'job_location' 				=> $request->job_location,
 				'job_mooring_master' 	=> $request->job_mooring_master,
 				'job_poac1' 					=> $request->job_poac1,
@@ -247,8 +256,8 @@ class OperationController extends Controller {
 				'job_remark' 					=> $request->job_remark,
 				'job_status' 					=> $request->job_status,
 				'job_hour' 						=> $request->job_hour,
-				'job_exceeding24' 		=> $request->job_exceeding24,
-				'job_exceeding48' 		=> $request->job_exceeding48,
+				'job_exceeding24' 		=> $job_exceeding24,
+				'job_exceeding48' 		=> $job_exceeding48,
 				'job_updated' 				=> Carbon::now()
 		);
 		// echo '<pre>'; print_r($dataUpdate); die();

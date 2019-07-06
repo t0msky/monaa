@@ -167,7 +167,15 @@
                                   <i class="far fa-clock tx-16 lh-0 op-6"></i>
                                 </div>
                               </div>
+                              <?php
+                              $job_commence_time = explode(' ', $job->job_commence_time);
+                              $job_commence_time_ampm = $job_commence_time[1];
+                              ?>
                               <input id="time-01" type="text" class="form-control" name="job_commence_time" value="<?php echo $job->job_commence_time;?>" <?php echo $disabled_completed;?>>
+                              <select name="job_commence_time_ampm" class="form-control select2" required>
+                                <option value="am" <?php if($job_commence_time_ampm=="am"){echo ' selected';}?>>am</option>
+                                <option value="pm" <?php if($job_commence_time_ampm=="pm"){echo ' selected';}?>>pm</option>
+                              </select>
                             </div></td>
                           </tr>
                           <tr>
@@ -251,7 +259,7 @@
                           <input id="date-02" name="job_complete_date" type="text" class="form-control" value="<?php echo $complete_date;?>" placeholder="MM/DD/YYYY" <?php echo $disabled_completed;?>>
                         </div>
                       </div>
-                    </div><!-- col-6 -->
+                    </div>
                     <div class="col-lg-6">
                       <div class="form-group mg-b-10-force">
                         <label class="form-control-label">Completion Time : <span class="tx-danger">*</label>
@@ -261,7 +269,20 @@
                               <i class="far fa-clock tx-16 lh-0 op-6"></i>
                             </div>
                           </div>
+                          <?php
+                          if ($job->job_complete_time != '') {
+                            $job_complete_time = explode(' ', $job->job_complete_time);
+                            $job_complete_time_ampm = $job_complete_time[1];
+                          } else {
+                            $job_complete_time_ampm = "am";
+                          }
+
+                          ?>
                           <input id="time-02"  name="job_complete_time"  type="text" class="form-control" placeholder="Set time" value="<?php echo $job->job_complete_time;?>" <?php echo $disabled_completed;?>>
+                          <select name="job_complete_time_ampm" class="form-control select2" required>
+                            <option value="am" <?php if($job_complete_time_ampm=="am"){echo ' selected';}?>>am</option>
+                            <option value="pm" <?php if($job_complete_time_ampm=="pm"){echo ' selected';}?>>pm</option>
+                          </select>
                         </div>
                       </div>
                     </div><!-- col-8 -->
@@ -270,25 +291,32 @@
                     <div class="col-lg-6">
                       <div class="form-group mg-b-10-force">
                         <div class="d-flex justify-content-between align-items-center">
-                          <label class="form-control-label">Exceeding Hours > 24 <span class="tx-danger">*</label>
-                          <label class="tx-gray-400 form-control-label">hh : mm</label>
+                          <label class="form-control-label">Exceeding Hours<span class="tx-danger">*</label>
+                          <!-- <label class="tx-gray-400 form-control-label">hh : mm</label> -->
                         </div>
                         <div class="input-group">
-                          <div class="input-group-prepend">
+                          <select name="job_exceeding_select" class="form-control select2" required>
+                            <option>Choose One</option>
+                            <option value="24" <?php if($job->job_exceeding24!=""){echo ' selected';}?>>Exceeding Hours > 24</option>
+                            <option value="48" <?php if($job->job_exceeding48!=""){echo ' selected';}?>>Exceeding Hours > 48</option>
+                          </select>
+                          <!-- <div class="input-group-prepend">
                             <div class="input-group-text">
                               <label class="rdiobox wd-16 mg-b-0">
                                 <input name="rdio" type="radio" disabled><span></span>
                               </label>
                             </div>
                           </div>
-                          <input id="time-03" type="text" class="form-control" placeholder="00:00" name="job_exceeding24"  value="<?php echo $job->job_exceeding24;?>" <?php echo $disabled_completed;?>>
-                        </div><!-- input-group -->
+                          <input id="time-03" type="text" class="form-control" placeholder="00:00" name="job_exceeding24"  value="<?php #echo $job->job_exceeding24;?>" <?php #echo $disabled_completed;?>> -->
+                        </div>
                       </div>
-                    </div><!-- col-6 -->
+
+
+                    </div>
                     <div class="col-lg-6">
                       <div class="form-group mg-b-10-force">
                         <div class="d-flex justify-content-between align-items-center">
-                          <label class="form-control-label">Exceeding Hours > 48 <span class="tx-danger">*</label>
+                          <label class="form-control-label">Exceeding Hours<span class="tx-danger">*</label>
                           <label class="tx-gray-400 form-control-label">hh : mm</label>
                         </div>
                         <div class="input-group">
@@ -299,7 +327,15 @@
                               </label>
                             </div>
                           </div>
-                          <input id="time-04" type="text" class="form-control" placeholder="00:00" name="job_exceeding48" value="<?php echo $job->job_exceeding48;?>" <?php echo $disabled_completed;?>>
+                          <?php
+                          $job_exceeding_number = '';
+                          if ($job->job_exceeding24 != "") {
+                            $job_exceeding_number = $job->job_exceeding24;
+                          } else if ($job->job_exceeding48 != "") {
+                            $job_exceeding_number = $job->job_exceeding48;
+                          }
+                          ?>
+                          <input id="time-04" type="text" class="form-control" placeholder="00:00" name="job_exceeding_number" value="<?php echo $job_exceeding_number;?>" <?php echo $disabled_completed;?>>
                         </div><!-- input-group -->
                       </div>
                     </div><!-- col-6 -->
@@ -533,8 +569,10 @@
   });
 
   // Time Picker
-  $('#time-01').timepicker({'scrollDefault': 'now'});
-  $('#time-02').timepicker({'scrollDefault': 'now'});
+  // $('#time-01').timepicker({'scrollDefault': 'now'});
+  $('#time-01').mask('99:99');
+  $('#time-02').mask('99:99');
+  // $('#time-02').timepicker({'scrollDefault': 'now'});
 
   // Input Masks
   $('#phoneMask').mask('(999) 999-9999');
