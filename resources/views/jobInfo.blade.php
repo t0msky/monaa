@@ -168,8 +168,12 @@
                                 </div>
                               </div>
                               <?php
-                              $job_commence_time = explode(' ', $job->job_commence_time);
-                              $job_commence_time_ampm = $job_commence_time[1];
+                              if ($job->job_commence_time != '') {
+                                $job_commence_time = explode(' ', $job->job_commence_time);
+                                $job_commence_time_ampm = $job_commence_time[1];
+                              } else {
+                                $job_commence_time_ampm = "am";
+                              }
                               ?>
                               <input id="time-01" type="text" class="form-control" name="job_commence_time" value="<?php echo $job->job_commence_time;?>" <?php echo $disabled_completed;?>>
                               <select name="job_commence_time_ampm" class="form-control select2" required>

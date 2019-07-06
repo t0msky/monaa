@@ -231,11 +231,11 @@ class OperationController extends Controller {
 		}
 
 		//check job exceeding
+		$job_exceeding24 = '';
+		$job_exceeding48 = '';
 		if ($request->job_exceeding_select == "24") {
 			$job_exceeding24 = $request->job_exceeding_number;
-			$job_exceeding48 = '';
 		} else if ($request->job_exceeding_select == "48") {
-			$job_exceeding24 = '';
 			$job_exceeding48 = $request->job_exceeding_number;
 		}
 
