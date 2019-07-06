@@ -89,8 +89,8 @@ class HomeController extends Controller {
 
 			endforeach;
 
-			$jobs = Operation::getAllJobByCat('FSU');
-			$jobsSpot = Operation::getAllJobByCat('SPOT');
+			$jobs = Operation::getAllJobByCat('FSU',$currentMonth,$currentYear);
+			$jobsSpot = Operation::getAllJobByCat('SPOT',$currentMonth,$currentYear);
 
 		} else {
 			$totalStsCurrentMonth = DB::table('jobs as j')

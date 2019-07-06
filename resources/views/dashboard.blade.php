@@ -224,7 +224,7 @@
   <div class="br-pagebody pd-x-20 pd-sm-x-30">
     <div class="card shadow-base bd-0 mg-t-20 mg-b-10">
       <div class="card-header-02 bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
-        <div class="card-title mg-b-0">Ship-To-Ship Operations Records</div>
+        <div class="card-title mg-b-0">Ship-To-Ship Operations Records (<?php echo date('F', mktime(0, 0, 0, $month, 10)).' '.$year;?>)</div>
       </div><!-- card-header -->
 
       <div class="card">
