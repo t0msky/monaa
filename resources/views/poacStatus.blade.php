@@ -75,19 +75,19 @@
                 <?php
                 //tukar status job
                 $status = array(
-                   'In-coming' => '<div class="card bg-warning tx-white tx-center bd-0 tx-14"><div class="pd-x-10 pd-y-10">Stand-By</div></div>',
-                   'On-Board' => '<div class="card bg-success tx-white tx-center bd-0 tx-14"><div class="pd-x-10 pd-y-10">On-Duty</div></div>'
+                   'In-coming' => '<span class="badge bg-warning tx-white tx-center bd-0 tx-14">Stand-By</span>',
+                   'On-Board' => '<span class="badge bg-success tx-white tx-center bd-0 tx-14">On-Duty</span>'
                 );
                 $a = 0;
                 foreach ($p['poac_job'] as $j) :
                   if ($j->job_status != "Completed"){
 
-                    if ($a == 0) {
+                    // if ($a == 0) {
                       echo $status[$j->job_status];
                       $a = $a+1;
-                    }
+                    // }
 
-                    // echo '<br>';
+                    echo '<br>';
                   }
 
                 endforeach;
@@ -106,10 +106,11 @@
                 $b = 0;
                 foreach ($p['poac_job'] as $j) :
                   if ($j->job_status != "Completed"){
-                    if ($b == 0) {
+                    // if ($b == 0) {
                       echo $j->loc_name;
                       $b = $b+1;
-                    }
+                    // }
+                    echo '<br>';
                   }
 
                 endforeach;
@@ -120,10 +121,11 @@
                 $c = 0;
                 foreach ($p['poac_job'] as $j) :
                   if ($j->job_status != "Completed"){
-                    if($c == 0){
+                    // if($c == 0){
                       echo $j->job_code;
                       $c = $c + 1;
-                    }
+                    // }
+                    echo '<br>';
                   }
 
                 endforeach;
