@@ -93,7 +93,7 @@
                 endforeach;
 
                 if ($a == 0) {
-                  echo '<div class="card bg-secondary tx-white tx-center bd-0 tx-14"><div class="pd-x-10 pd-y-10">Off-Duty</div></div>';
+                  echo '<span class="badge bg-secondary tx-white tx-center bd-0 tx-14">Off-Duty</span>';
                 }
                 ?>
                 <!-- <div class="card bg-success tx-white tx-center bd-0 tx-14">

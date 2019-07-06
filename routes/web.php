@@ -64,7 +64,6 @@ Route::group(['middleware' => 'loggedin'], function() {
   Route::any('profile','PersonnelController@profile');
   Route::get('view-profile/{id}','PersonnelController@viewProfile');
   Route::post('do-upload-picture','PersonnelController@doUploadPic');
-
-
+  Route::post('delete-user','PersonnelController@doDeleteUser');
 
 });

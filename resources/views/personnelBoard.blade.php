@@ -99,7 +99,8 @@
                     <div class="dropdown-menu dropdown-menu-right pd-10">
                       <nav class="nav nav-style-2 flex-column">
                         <a href="<?php echo env('BASE_URL');?>view-profile/<?php echo $p->usr_id;?>" class="nav-link">Personnel Profile</a>
-                        <!-- <a href="" class="nav-link">Deactivate</a> -->
+                        <a href="" class="nav-link deleteUser" modal_user_id="<?php echo $p->usr_id;?>" data-toggle="modal" data-target="#deletealert">Delete</a>
+                        <!-- <a href="<?php #echo env('BASE_URL');?>delete-user/<?php echo $p->usr_id;?>" class="nav-link">Delete</a> -->
                       </nav>
                     </div><!-- dropdown-menu -->
                   </td>
@@ -177,6 +178,29 @@
   </div><!-- br-pagebody -->
 </div><!-- br-contentpanel -->
 
+<!-- MODAL ALERT MESSAGE -->
+<div id="deletealert" class="modal fade">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content tx-size-sm">
+      <div class="modal-body tx-center pd-y-20 pd-x-20">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="tx-center pd-l-20">
+          <i class="icon typcn typcn-trash tx-120 tx-success"></i>
+        </div>
+        <form method="post" action="<?php echo env('BASE_URL');?>delete-user" data-parsley-validate data-parsley-errors-messages-disabled id="selectForm-sts">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="user_id" id="user_id">
+          <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Delete User. Are you sure?</div>
+          <p class="mg-b-30 mg-x-20">You will not be able to recover this data!</p>
+          <button type="submit" class="btn btn-info" >Yes, Confirm</button>
+          <!-- <a href="" class="btn btn-info"  data-dismiss="modal" aria-label="Close">Yes, Confirm</a> -->
+        </form>
+      </div><!-- modal-body -->
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal -->
 @stop
 
 @section('docready')
@@ -189,6 +213,24 @@
       <?php if(session()->has('error')){?>
         toastr.error('<?php echo session()->get('error'); ?>')
       <?php } ?>
+
+      $('.deleteUser').on('click', function(){
+
+        var user_id = $(this).attr('modal_user_id');
+        $('#user_id').val(user_id);
+        // var voucherCode = $(this).attr('voucherCode');
+        //
+        // $('.voucherList').removeClass("selected")
+        // $('#voucherListId'+voucherId).addClass("selected")
+        //
+        // $("#voucherBody").hide();
+        // $("#voucherBody").fadeIn();
+        //
+        // // alert(voucherId);
+        // $('#DisplayVoucherCode').html('('+voucherCode+')');
+        // $('#voucherBody').load('<?php echo env('BASE_URL');?>get-voucher-body/'+voucherId);
+
+      })
     });
 </script>
 @stop

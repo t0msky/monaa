@@ -180,4 +180,31 @@ class PersonnelController extends Controller {
 
 		return redirect('personnelboard')->with('success', "Successfully added new user.");
 	}
+
+	public function doDeleteUser (request $request) {
+
+		//dapatkan variable daripada middleware
+		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role != "AD") {
+			return redirect('error');
+		}
+
+		//check user first
+		$check = DB::table('jobs')
+							 ->where('job_owner', $request->user_id)
+							 ->orWhere('job_mooring_master', $request->user_id)
+							 ->orWhere('job_poac1', $request->user_id)
+							 ->orWhere('job_poac2', $request->user_id)
+							 ->count();
+
+		if ($check == 0) {
+			DB::table('users')->where('usr_id', $request->user_id)->delete();
+			return redirect('personnelboard')->with('success', "Successfully delete user.");
+		} else {
+			DB::table('users')->where('usr_id', $request->user_id)->update(array('usr_delete'=>'Yes'));
+			return redirect('personnelboard')->with('success', "Successfully delete user.");
+		}
+
+	}
 }

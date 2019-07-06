@@ -51,6 +51,7 @@ class User extends Authenticatable
 
       $user = DB::table('users as u')
   							->where('u.usr_role',$role)
+  							->where('u.usr_delete', 'No')
   							->get();
 
   		return $user;
