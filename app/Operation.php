@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Operation extends Model
 {
-    public static function getAllJobByCat($cat){
+    public static function getAllJobByCat($cat, $currentMonth = NULL, $currentYear = NULL){
 
   		$jobs = DB::table('jobs as j')
                 ->join('ratecards as r','j.job_sts','=','r.card_id')
@@ -17,6 +17,8 @@ class Operation extends Model
                 ->join('users as u2','j.job_poac1','=','u2.usr_id')
                 ->join('users as u3','j.job_poac2','=','u3.usr_id')
                 ->where('r.card_type', $cat)
+                ->whereMonth('j.job_commence_date', '=', $currentMonth)
+                ->whereYear('j.job_commence_date', '=', $currentYear)
                 ->select('j.*','r.card_type','r.card_rate',
                          's1.ship_name as mot_ship_name','s1.ship_type as mot_ship_type',
                          's1.ship_LOA as mot_ship_LOA','s1.ship_DWT as mot_ship_DWT',
@@ -32,7 +34,7 @@ class Operation extends Model
   		return $jobs;
   	}
 
-    public static function getAllJobByCatAndByUser($cat, $uid){
+    public static function getAllJobByCatAndByUser($cat, $uid, $currentMonth = NULL, $currentYear = NULL){
 
   		$jobs = DB::table('jobs as j')
                 ->join('ratecards as r','j.job_sts','=','r.card_id')
@@ -43,6 +45,8 @@ class Operation extends Model
                 ->join('users as u3','j.job_poac2','=','u3.usr_id')
                 ->where('r.card_type', $cat)
                 ->where('j.job_owner', $uid)
+                ->whereMonth('j.job_commence_date', '=', $currentMonth)
+                ->whereYear('j.job_commence_date', '=', $currentYear)
                 ->select('j.*','r.card_type','r.card_rate',
                          's1.ship_name as mot_ship_name','s1.ship_type as mot_ship_type',
                          's1.ship_LOA as mot_ship_LOA','s1.ship_DWT as mot_ship_DWT',

@@ -42,20 +42,17 @@
             <div class="tab-pane active" id="t01">
               <div class="card-header-03 bg-transparent d-flex justify-content-between align-items-center pd-b-20">
                 <div class="form-group mg-b-0">
-                  <!-- <select class="form-control select2" style="width:300px" data-placeholder="Choose Month">
-                    <option value="1">January 2019</option>
-                    <option value="2">February 2019</option>
-                    <option value="3">March 2019</option>
-                    <option value="4">April 2019</option>
-                    <option value="5">May 2019</option>
-                    <option value="6" selected>June 2019</option>
-                    <option value="7">July 2019</option>
-                    <option value="8">August 2019</option>
-                    <option value="9">September 2019</option>
-                    <option value="10">October 2019</option>
-                    <option value="11">November 2019</option>
-                    <option value="12">December 2019</option>
-                  </select> -->
+                  <form method="post" action"<?php echo $_SERVER['PHP_SELF'];?>">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <select class="form-control select2" style="width:150px" name="dropdownMonthYear" data-placeholder="Choose Month" onchange='this.form.submit()'>
+                      <option value="<?php echo $currentMonth.' '.$currentYear;?>" <?php if($currentMonth.' '.$currentYear == $selectMonthYear){echo ' selected';}?>>
+                        <?php echo $currentMonth.' '.$currentYear;?>
+                      </option>
+                    <?php foreach ($months as $m) : ?>
+                        <option value="<?php echo $m;?>" <?php if($m == $selectMonthYear){echo ' selected';}?>><?php echo $m;?></option>
+                    <?php endforeach; ?>
+                    </select>
+                  </form>
                 </div><!-- form-group -->
                 <div class="btn-group" role="group" aria-label="Basic example">
                   <button type="button" class="btn btn-third"><i class="icon typcn typcn-document-text tx-24"></i></button>
@@ -509,6 +506,7 @@
 @stop
 
 @section('docready')
+
 <script type="text/javascript">
     jQuery(document).ready(function () {
 
@@ -528,7 +526,13 @@
          // $('#addBookDialog').modal('show');
     });
 
+    function DoSubmit(sel){
+       if(sel.val()!='0') this.form.submit();
+    }
+
   });
+
+
 
 </script>
 @stop

@@ -23,16 +23,80 @@ class VoucherController extends Controller {
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
 
-		if ($userInfo->usr_role == "AD") {
-
-			$vouchers = Voucher::getAllVoucher();
-
-		} else if ($userInfo->usr_role == "CP") {
-			$vouchers = Voucher::getAllVoucherByUserId($userInfo->usr_id);
+		for ($i = 1; $i <= 12; $i++) {
+    	$months[] = date("M Y", strtotime( date( '01-m-Y' )." -$i months"));
 		}
 
+		$currentMonth = date('M');
+		$currentYear = date('Y');
+
+		if ($request->isMethod('post') ) {
+			$explodeDate = explode (' ', $request->dropdownMonthYear);
+			$selectMonth = $explodeDate[0];
+			$selectYear = $explodeDate[1];
+			$selectMonthInNumber = date('m', strtotime($selectMonth));
+
+			if ($userInfo->usr_role == "AD") {
+
+				$vouchers = Voucher::getAllVoucher($selectMonthInNumber, $selectYear);
+				$firstVouchers = Voucher::getFirstVoucher($selectMonthInNumber, $selectYear);
+
+			} else if ($userInfo->usr_role == "CP") {
+				// $vouchers = Voucher::getAllVoucherByUserId($userInfo->usr_id);
+				// $firstVouchers = Voucher::getFirstVoucherByUserId($userInfo->usr_id);
+			}
+
+		} else {
+
+			$selectMonth = $currentMonth;
+			$selectYear = $currentYear;
+			$selectMonthInNumber = date('m', strtotime($selectMonth));
+
+			if ($userInfo->usr_role == "AD") {
+
+				$vouchers = Voucher::getAllVoucher($selectMonthInNumber, $selectYear);
+				$firstVouchers = Voucher::getFirstVoucher($selectMonthInNumber, $selectYear);
+
+			} else if ($userInfo->usr_role == "CP") {
+				$vouchers = Voucher::getAllVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
+				$firstVouchers = Voucher::getFirstVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
+			}
+		}
+		$selectMonthYear = $selectMonth.' '.$selectYear;
+
+		//dapatkan operator dan service provider
+		if (!empty($firstVouchers)) {
+		$operator = DB::table('sts_operator_service')->where('sts_id', $firstVouchers->job_operator)->first();
+		$provider = DB::table('sts_operator_service')->where('sts_id', $firstVouchers->job_provider)->first();
+		//dapatkan ship data
+		$ship = DB::table('ships')->where('ship_id', $firstVouchers->vou_ship)->first();
+		//get all job items
+		$items = DB::table('voucher_job_items')->where('vjob_vou_id', $firstVouchers->vou_id)->get();
+		//get master mooring
+		$master = User::getUserById($firstVouchers->vou_master);
+		$agent = User::getUserById($firstVouchers->vou_agent);
+
+		} else {
+			$operator = "";
+			$provider = "";
+			$ship = "";
+			$items = "";
+			$master = "";
+			$agent = "";
+		}
     return view('vouchersRecord')
 				 ->with('vouchers',$vouchers)
+				 ->with('firstVouchers',$firstVouchers)
+				 ->with('operator',$operator)
+				 ->with('provider',$provider)
+				 ->with('ship',$ship)
+				 ->with('items',$items)
+				 ->with('master',$master)
+				 ->with('agent',$agent)
+				 ->with('months',$months)
+				 ->with('currentMonth',$currentMonth)
+				 ->with('currentYear',$currentYear)
+				 ->with('selectMonthYear',$selectMonthYear)
 				 ->with('user',$userInfo);
   }
 

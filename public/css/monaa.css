@@ -489,7 +489,7 @@ mark,
     content: "\2014 \00A0"; }
 
 .img-fluid {
-  max-width: 100%;
+  max-width: 99%;
   height: auto; }
 
 .img-thumbnail {
@@ -1380,6 +1380,13 @@ select.form-control:focus::-ms-value {
   color: #495057;
   background-color: #fff; }
 
+.main-password {
+  position: relative; }
+
+.icon-view {
+  position: absolute;
+  right: 12px;
+  top: 10px; }
 
   .submit-button {
     cursor: pointer;
@@ -1940,9 +1947,9 @@ textarea.custom-file-input.parsley-error:focus ~ .custom-file-label {
       transition: none; } }
   .btn:hover, .sp-container button:hover, .btn:focus, .sp-container button:focus {
     text-decoration: none; }
-  .btn:focus, .sp-container button:focus, .btn.focus, .sp-container button.focus {
+  /* .btn:focus, .sp-container button:focus, .btn.focus, .sp-container button.focus {
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(8, 102, 198, 0.25); }
+    box-shadow: 0 0 0 0.2rem rgba(8, 102, 198, 0.25); } */
   .btn.disabled, .sp-container button.disabled, .btn:disabled, .sp-container button:disabled {
     opacity: 0.65; }
   .btn:not(:disabled):not(.disabled), .sp-container button:not(:disabled):not(.disabled) {
@@ -2070,6 +2077,16 @@ fieldset:disabled a.btn {
     .btn-info:not(:disabled):not(.disabled):active:focus, .btn-info:not(:disabled):not(.disabled).active:focus,
     .show > .btn-info.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5); }
+
+.btn-info-2 {
+  color: #fff;
+  background-color: #138496;
+  border-color: #138496;
+  }
+  .btn-info-2:hover {
+    color: #fff;
+    background-color: #4bbec1;
+    border-color: #4bbec1; }
 
 .btn-warning {
   color: #212529;
@@ -2437,7 +2454,7 @@ input[type="button"].btn-block {
   float: left;
   min-width: 13rem;
   padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
+  margin: 0.525rem 0 0;
   font-size: 0.875rem;
   color: #868ba1;
   text-align: left;
@@ -3155,7 +3172,7 @@ input[type="button"].btn-block {
 
 .nav-link {
   display: block;
-  padding: 0.5rem 1.6rem; }
+  padding: 0.5rem 1.0rem; }
   .nav-link:hover, .nav-link:focus {
     text-decoration: none; }
   .nav-link.disabled {
@@ -4352,7 +4369,7 @@ button.close {
     .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
       top: 0;
       border-width: 0.4rem 0.4rem 0;
-      border-top-color: #000; }
+      border-top-color: #4BBEC5; }
 
 .bs-tooltip-right, .bs-tooltip-auto[x-placement^="right"] {
   padding: 0 0.4rem; }
@@ -4363,7 +4380,7 @@ button.close {
     .bs-tooltip-right .arrow::before, .bs-tooltip-auto[x-placement^="right"] .arrow::before {
       right: 0;
       border-width: 0.4rem 0.4rem 0.4rem 0;
-      border-right-color: #000; }
+      border-right-color: #4BBEC5; }
 
 .bs-tooltip-bottom, .bs-tooltip-auto[x-placement^="bottom"] {
   padding: 0.4rem 0; }
@@ -4372,7 +4389,7 @@ button.close {
     .bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
       bottom: 0;
       border-width: 0 0.4rem 0.4rem;
-      border-bottom-color: #000; }
+      border-bottom-color: #4BBEC5; }
 
 .bs-tooltip-left, .bs-tooltip-auto[x-placement^="left"] {
   padding: 0 0.4rem; }
@@ -4383,14 +4400,15 @@ button.close {
     .bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
       left: 0;
       border-width: 0.4rem 0 0.4rem 0.4rem;
-      border-left-color: #000; }
+      border-left-color: #4BBEC5; }
 
 .tooltip-inner {
   max-width: 200px;
   padding: 0.25rem 0.5rem;
   color: #fff;
   text-align: center;
-  background-color: #000;
+  /* background-color: #000; */
+  background-color: #4BBEC5;
   border-radius: 3px; }
 
 .popover {
@@ -7513,7 +7531,7 @@ a:active {
     opacity: .5; }
 
 .dropdown-menu {
-  box-shadow: 0 1px 4px 0px rgba(0, 0, 0, 0.16); }
+  box-shadow: 0 1px 4px 0px rgba(0, 0, 0, 0); }
 
 .form-control-inverse {
   border: 0;
@@ -9821,6 +9839,7 @@ textarea.parsley-error:active {
 /* -------------------------------------------- */
 /* ############### 3.15 Toltips ############### */
 /* -------------------------------------------- */
+
 .tooltip-inner {
   padding: 8px 15px;
   font-size: 13px;
@@ -15193,7 +15212,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::
         padding-left: 15px;
         padding-right: 15px; } }
     .headpanel .container .nav {
-      background-color: #fff;
+      /* background-color: #fff; */
       position: absolute;
       top: 70px;
       left: 0;
@@ -15226,21 +15245,22 @@ table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::
           border-top: 0; }
           .headpanel .container .nav::before, .headpanel .container .nav::after {
             display: none; } }
-  .headpanel .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #757575;
-    position: relative;
+  .headpanel .logo img {
+    /* position: absolute; */
+
+    top: 0;
+    max-width: 200px;
+    height: auto;
     top: -2px; }
     .headpanel .logo span {
       color: #17A2B8;
       font-weight: normal; }
   .headpanel .nav-link {
-    color: #495057; }
+    color: #5f676f; }
     .headpanel .nav-link:hover, .headpanel .nav-link:focus {
-      color: #17A2B8; }
+      color: #4bbec1; }
     .headpanel .nav-link.active, .headpanel .nav-link.active:hover, .headpanel .nav-link.active:focus {
-      color: #17A2B8; }
+      color: #4bbec1; }
 
 .br-home-header {
   display: flex;
@@ -15248,10 +15268,10 @@ table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::
   background-color: #fff; }
   .br-home-header .container {
     padding-top: 100px;
-    padding-bottom: 30px; }
+    padding-bottom: 0px; }
   @media (min-width: 992px) {
     .br-home-header {
-      height: 100vh; }
+      height: 60vh; }
       .br-home-header .container {
         padding-top: 0;
         padding-bottom: 0; } }
@@ -19071,6 +19091,9 @@ a.hover-white-8:hover, a.hover-white-8:focus {
   margin-left: 30px !important;
   margin-right: 30px !important; }
 
+.mg-tn-20 {
+  margin-top: -20px; }
+
 .mg-t-30 {
   margin-top: 30px; }
 
@@ -19901,6 +19924,9 @@ a.hover-white-8:hover, a.hover-white-8:focus {
 
 .mg-t-120 {
   margin-top: 120px; }
+
+.mg-t-150 {
+  margin-top: 150px; }
 
 .mg-r-120 {
   margin-right: 120px; }

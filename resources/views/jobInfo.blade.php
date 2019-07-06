@@ -29,9 +29,9 @@
       <div class="col-lg mg-t-20 mg-lg-t-0">
         <div class="card shadow-base bd-0">
           <div class="card-header-02 bg-transparent pd-x-25 pd-t-25 pd-b-0 d-flex justify-content-between align-items-center">
-            <!-- <div class="btn-group" role="group" aria-label="Basic example">
-              <button id="buttonprint" type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert"><i class="icon typcn typcn-times tx-24"></i></button>
-            </div> -->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button id="buttonprint" type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert"><i class="icon typcn typcn-trash tx-24"></i></button>
+            </div>
           </div>
 
           <div class="card-body color-gray-lighter pd-t-0">
@@ -477,9 +477,14 @@
         <div class="tx-center pd-l-20">
           <i class="icon typcn typcn-trash tx-120 tx-success"></i>
         </div>
-        <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Are you sure?</div>
-        <p class="mg-b-30 mg-x-20">You will not be able to recover this message!</p>
-        <a href="" class="btn btn-info"  data-dismiss="modal" aria-label="Close">Yes, Confirm</a>
+        <form method="post" action="<?php echo env('BASE_URL');?>doDeleteJob" data-parsley-validate data-parsley-errors-messages-disabled id="selectForm-sts">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="job_id" id="job_id" value="<?php echo $job->job_id;?>">
+          <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Are you sure?</div>
+          <p class="mg-b-30 mg-x-20">You will not be able to recover this data!</p>
+          <button type="submit" class="btn btn-info" >Yes, Confirm</button>
+          <!-- <a href="" class="btn btn-info"  data-dismiss="modal" aria-label="Close">Yes, Confirm</a> -->
+        </form>
       </div><!-- modal-body -->
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->

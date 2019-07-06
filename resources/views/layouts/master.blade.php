@@ -38,7 +38,8 @@
 
     <!-- vendor css -->
     <link href="<?php echo env('BASE_URL');?>lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-		<link href="<?php echo env('BASE_URL');?>lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="<?php echo env('BASE_URL');?>lib/ionicons/css/ionicons.min.css" rel="stylesheet">
     <link href="<?php echo env('BASE_URL');?>lib/typicons.font/typicons.css" rel="stylesheet">
     <link href="<?php echo env('BASE_URL');?>lib/select2/css/select2.min.css" rel="stylesheet">
     <link href="<?php echo env('BASE_URL');?>lib/morris.js/morris.css" rel="stylesheet">
@@ -73,13 +74,13 @@
           </ul>
         </li><!-- br-menu-item -->
         <li class="br-menu-item">
-          <a href="#" class="br-menu-link with-sub <?php if($uri=='ratecard' || $uri=='jobitems'){echo 'active';}?>">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='ratecard' || $uri=='jobitems' || $uri=='assets' || $uri=='edit-company' || $uri=='edit-ship'){echo 'active';}?>">
             <i class="tx-icon typcn typcn-shopping-bag tx-24 pd-r-4"></i>
             <span class="menu-item-label">Data Assets</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
             <?php if ($user->usr_role == "AD") { ?>
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>assets" class="sub-link">Assets</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>assets" class="sub-link <?php if($uri=='assets' || $uri=='edit-company' || $uri=='edit-ship'){echo 'active';}?>">Assets</a></li>
             <?php } ?>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>ratecard" class="sub-link <?php if($uri=='ratecard'){echo 'active';}?>">Rate Card</a></li>
             <?php if ($user->usr_role == "AD") { ?>
@@ -104,7 +105,16 @@
             <span class="menu-item-label">Vouchers</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>vouchersrecord" class="sub-link <?php if($uri=='vouchersrecord'){echo 'active';}?>">STS Record</a></li>
+            <li class="sub-item">
+              <a href="<?php echo env('BASE_URL');?>vouchersrecord" class="sub-link <?php if($uri=='vouchersrecord'){echo 'active';}?>">
+                STS Record
+                <?php
+                if ($user->usr_role == "AD") {
+                  echo ' <span class="badge badge-warning" data-toggle="tooltip" data-placement="right" title="'.$countVoucherUnverified.' unverified vouchers">'.$countVoucherUnverified.'</span>';
+                }
+                ?>
+              </a>
+            </li>
 
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>submit-voucher" class="sub-link <?php if($uri=='submit-voucher'){echo 'active';}?>">Submit Vouchers</a></li>
 
@@ -320,6 +330,8 @@
     <script>
       $(function(){
         'use strict';
+
+        $('[data-toggle="tooltip"]').tooltip()
 
         $('#datatable-1').DataTable({
           bLengthChange: false,

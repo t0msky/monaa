@@ -25,6 +25,11 @@ class LoggedIn{
       View::share('uri', $newUri);
       // die();
 
+      if ($user->usr_role == "AD") {
+        $countVoucherUnverified = DB::table('vouchers')->where('vou_status','Unverified')->count();
+        // echo $countVoucherUnverified; die();
+        View::share('countVoucherUnverified', $countVoucherUnverified);
+      }
       return $next($request);
     } else {
       return redirect('logout');

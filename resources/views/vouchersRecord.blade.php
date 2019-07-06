@@ -7,21 +7,17 @@
       <div class="row">
         <div class="col-lg">
           <div class="form-group mg-b-0">
-            <select id="select1" class="form-control select2" style="width:100%" data-placeholder="Choose Month">
-                  <option label="Choose"></option>
-                  <option value="1">January 2019</option>
-                  <option value="2">February 2019</option>
-                  <option value="3">March 2019</option>
-                  <option value="4">April 2019</option>
-                  <option value="5">May 2019</option>
-                  <option value="6">June 2019</option>
-                  <option value="7">July 2019</option>
-                  <option value="8">August 2019</option>
-                  <option value="9">September 2019</option>
-                  <option value="10">October 2019</option>
-                  <option value="11">November 2019</option>
-                  <option value="12">December 2019</option>
-                </select>
+            <form method="post" action"<?php echo $_SERVER['PHP_SELF'];?>">
+              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+              <select class="form-control select2" style="width:100%" name="dropdownMonthYear" data-placeholder="Choose Month" onchange='this.form.submit()'>
+                <option value="<?php echo $currentMonth.' '.$currentYear;?>" <?php if($currentMonth.' '.$currentYear == $selectMonthYear){echo ' selected';}?>>
+                  <?php echo $currentMonth.' '.$currentYear;?>
+                </option>
+              <?php foreach ($months as $m) : ?>
+                  <option value="<?php echo $m;?>" <?php if($m == $selectMonthYear){echo ' selected';}?>><?php echo $m;?></option>
+              <?php endforeach; ?>
+              </select>
+            </form>
            </div><!-- form-group -->
         </div><!-- col-lg -->
       </div><!-- row -->
@@ -29,14 +25,20 @@
 
     <div class="br-chatlist">
           <?php
+          $no = 1;
           foreach ($vouchers as $v) :
-
+          //set select untuk 1st voucher je
+          if ($no==1) {
+            $firstSelected = " selected";
+          } else {
+            $firstSelected = "";
+          }
           $statusArray = array(
             'Unverified' => 'ion-close tx-danger',
             'Verified' => 'ion-checkmark tx-success'
           );
           ?>
-          <div class="media voucherList" id="voucherListId<?php echo $v->vou_id;?>" style="cursor: pointer;" voucherId="<?php echo $v->vou_id;?>" voucherCode="<?php echo $v->vou_code;?>">
+          <div class="media voucherList <?php echo $firstSelected;?>" id="voucherListId<?php echo $v->vou_id;?>" style="cursor: pointer;" voucherId="<?php echo $v->vou_id;?>" voucherCode="<?php echo $v->vou_code;?>">
             <div class="media-body">
               <div class="media-contact-name">
                 <span><i class="icon <?php echo $statusArray[$v->vou_status];?> pd-r-10"></i><?php echo $v->vou_code;?></span>
@@ -45,6 +47,7 @@
             </div><!-- media-body -->
           </div><!-- media -->
           <?php
+          $no = $no + 1;
           endforeach;
           ?>
         </div><!-- br-chatlist -->
@@ -69,6 +72,168 @@
 
     <div class="br-pagebody pd-x-20 pd-sm-x-30 pd-b-20" id="voucherBody">
 
+      <?php if (!empty($firstVouchers)) { ?>
+      <!-- /////////////////////////////// -->
+      <div class="card bd-0 shadow-base">
+        <div class="card-header bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
+          <div class="form-layout-footer hidden-xs-down">
+            <?php
+            if ($user->usr_role == "AD"){
+
+              if ($firstVouchers->vou_status == "Unverified") {
+                echo '<a href="#" class="btn btn-info" data-toggle="modal" data-target="#verifyalert" id="modalVerify" data-id="'.$firstVouchers->vou_id.'">Verify</a>';
+              } else if ($firstVouchers->vou_status == "Verified") {
+                echo '<div class="card-title tx-success mg-b-0"><i class="icon ion-checkmark tx-success tx-24 pd-r-10"></i>Verified</div>';
+              }
+            } else if($user->usr_role == "CP") {
+
+              if ($firstVouchers->vou_status == "Verified") {
+                echo '<h3 class="tx-success">Verified</h3>';
+              } else if ($firstVouchers->vou_status == "Unverified") {
+                echo '<h3 class="tx-danger">Unverified</h3>';
+              }
+            }
+            ?>
+
+          </div>
+          <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $firstVouchers->vou_id;?>"><i class="icon typcn typcn-trash tx-24"></i></button>
+            <button type="button" class="btn btn-third"><i class="icon typcn typcn-edit tx-24"></i></button>
+            <button type="button" class="btn btn-third"><i class="icon typcn typcn-document-text tx-24"></i></button>
+            <button id="buttonprint" type="button" class="btn btn-third"><i class="icon typcn typcn-printer tx-24"></i></button>
+          </div>
+        </div><!-- card-header -->
+        <div class="card-body pd-30 pd-md-30">
+          <div class="d-md-flex justify-content-between flex-row-reverse">
+            <h2 class="mg-b-0 tx-capitalize tx-gray-400 tx-medium">Service Voucher</h2>
+          </div><!-- d-flex -->
+
+          <div class="row mg-t-40">
+            <div class="col-md-3">
+              <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Operator</label>
+              <h6 class="tx-inverse"><?php echo $operator->sts_name;?></h6>
+              <p class="lh-7"><?php echo $operator->sts_address;?></p>
+            </div><!-- col -->
+            <div class="col-md-3">
+              <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Service Provider</label>
+              <h6 class="tx-inverse"><?php echo $provider->sts_name;?></h6>
+              <p class="lh-7"><?php echo $provider->sts_address;?></p>
+            </div>
+            <div class="col-md-6">
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td class="tx-left">Service Voucher No.</td>
+                      <td class="tx-right"><?php echo $firstVouchers->vou_code;?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">Job Assigned</td>
+                      <td class="tx-right"><?php echo $firstVouchers->job_code;?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">Issued Date</td>
+                      <td class="tx-right"><?php echo date('d M Y', strtotime($firstVouchers->vou_date));?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">Job Scope</td>
+                      <td class="tx-right"><?php echo $firstVouchers->vou_type;?></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+            </div><!-- row -->
+          </div><!-- row -->
+
+          <div class="row mg-t-20">
+            <div class="col-md-6">
+              <div class="bd bd-gray-300 rounded table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="tx-left">Specifications</th>
+                      <th class="tx-right">Vessel Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="tx-left">Vessel Name</td>
+                      <td class="tx-right"><?php echo $ship->ship_name;?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">Length Overall (m)</td>
+                      <td class="tx-right"><?php echo $ship->ship_LOA;?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">Draught (m)</td>
+                      <td class="tx-right"><?php echo $ship->ship_DWT;?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">IMO No.</td>
+                      <td class="tx-right"><?php echo $ship->ship_imo_no;?></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+            </div><!-- row -->
+
+            <div class="col-md-6">
+              <div class="bd bd-gray-300 rounded table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="tx-left">Time (LT) HH:MM</th>
+                      <th class="tx-right">Event Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($items as $i): ?>
+                    <tr>
+                      <td class="tx-left"><?php echo $i->vjob_job_item_hour;?></td>
+                      <td class="tx-right tx-uppercase"><?php echo $i->vjob_job_item_name;?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+            </div><!-- row -->
+          </div><!-- row -->
+
+          <div class="row mg-t-40 mg-b-40">
+            <div class="col-md-3">
+              <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Service Provider</label>
+              <h6 class="tx-inverse"><?php echo $provider->sts_name;?></h6>
+              <p class="lh-7">
+                <?php echo $provider->sts_address;?>
+              </p>
+            </div><!-- col -->
+            <div class="col-md-9">
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td class="tx-left">Advisor / Pilot / Mooring Master</td>
+                      <td class="wd-30p tx-right"><?php echo $master->usr_firstname.' '.$master->usr_lastname;?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">Vessel's Master Agent</td>
+                      <td class="wd-30p tx-right"><?php echo $agent->usr_firstname.' '.$agent->usr_lastname;?></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+              <div class="mg-t-20 mg-md-t-0">
+                <div class="card card-body bg-gray-200 bd-0">
+                  <p class="card-text">Note : Vessel are at all time Master's command and responsibility. The presence of Advisor/Pilot/Mooring Master are deemed on as servant of the master for his local knowledge, expertise, experience and shall not be liable for any losses, damages and claims cause by any act omission or default during engagement.</p>
+                </div><!-- card -->
+              </div><!-- col -->
+            </div><!-- col -->
+          </div><!-- row -->
+        </div><!-- card-body -->
+      </div><!-- card -->
+
+      <!-- /////////////////////////////// -->
+      <?php } ?>
     </div><!-- br-pagebody -->
   </div><!-- br-chatpanel-body -->
 </div><!-- br-chatpanel -->
@@ -125,7 +290,7 @@
 <script type="text/javascript">
     jQuery(document).ready(function () {
 
-      $("#voucherBody").hide();
+      // $("#voucherBody").hide();
 
       $('.voucherList').on('click', function(){
 

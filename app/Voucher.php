@@ -17,18 +17,49 @@ class Voucher extends Model
   		return $voucher;
   	}
 
-    public static function getAllVoucher() {
+    public static function getAllVoucher($currentMonth, $currentYear) {
 
-      $voucher = DB::table('vouchers')->orderBy('vou_date', 'desc')->get();
+      $voucher = DB::table('vouchers')
+                   ->whereMonth('vou_date', '=', $currentMonth)
+                   ->whereYear('vou_date', '=', $currentYear)
+                   ->orderBy('vou_date', 'desc')
+                   ->get();
 
       return $voucher;
     }
 
-    public static function getAllVoucherByUserId($uid) {
+    public static function getFirstVoucher($currentMonth, $currentYear) {
+
+      $voucher = DB::table('vouchers as v')
+                   ->join('jobs as j','v.vou_job_id','=','j.job_id')
+                   ->whereMonth('v.vou_date', '=', $currentMonth)
+                   ->whereYear('v.vou_date', '=', $currentYear)
+                   ->orderBy('v.vou_date', 'desc')
+                   ->first();
+
+      return $voucher;
+    }
+
+    public static function getAllVoucherByUserId($uid,$currentMonth, $currentYear) {
 
       $voucher = DB::table('vouchers as v')
                    ->join('jobs as j','v.vou_job_id','=','j.job_id')
                    ->where('j.job_owner', $uid)
+                   ->whereMonth('v.vou_date', '=', $currentMonth)
+                   ->whereYear('v.vou_date', '=', $currentYear)
+                   ->orderBy('v.vou_date', 'desc')
+                   ->get();
+
+      return $voucher;
+    }
+
+    public static function getFirstVoucherByUserId($uid,$currentMonth, $currentYear) {
+
+      $voucher = DB::table('vouchers as v')
+                   ->join('jobs as j','v.vou_job_id','=','j.job_id')
+                   ->where('j.job_owner', $uid)
+                   ->whereMonth('v.vou_date', '=', $currentMonth)
+                   ->whereYear('v.vou_date', '=', $currentYear)
                    ->orderBy('v.vou_date', 'desc')
                    ->get();
 

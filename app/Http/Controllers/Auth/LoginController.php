@@ -53,7 +53,8 @@ class LoginController extends Controller
 
           if ($count != 0) {
 
-            $pass = hash('sha256', $request->pword);
+            $requestPass = urldecode($request->pword);
+            $pass = hash('sha256', $requestPass);
             // check user db
             $user = DB::table('users')->where('usr_email', $request->email)->where('usr_pword', $pass)->first();
 

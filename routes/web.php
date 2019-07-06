@@ -30,9 +30,15 @@ Route::group(['middleware' => 'loggedin'], function() {
   Route::get('ratecard', 'AssetController@rateCard');
   Route::get('jobitems', 'AssetController@jobItems');
   Route::post('do-add-job-items', 'AssetController@doAddJobItems');
+  Route::get('edit-company/{type}/{id}', 'AssetController@editCompany');
+  Route::post('do-save-company', 'AssetController@doSaveCompany');
+  Route::post('do-add-company', 'AssetController@doAddCompany');
+  Route::post('add-ship', 'AssetController@doAddShip');
+  Route::get('edit-ship/{id}', 'AssetController@editShip');
+  Route::post('save-ship', 'AssetController@doSaveShip');
 
   #Operations
-  Route::get('jobrecords','OperationController@jobRecords');
+  Route::any('jobrecords','OperationController@jobRecords');
   Route::get('addnewjob','OperationController@addNewJob');
   Route::get('jobinfo/{job_id}','OperationController@jobInfo');
   Route::get('poacstatus','OperationController@poacStatus');
@@ -41,7 +47,7 @@ Route::group(['middleware' => 'loggedin'], function() {
   Route::post('doEditJob','OperationController@doEditJob');
 
   #Vouchers
-  Route::get('vouchersrecord','VoucherController@vouchersRecord');
+  Route::any('vouchersrecord','VoucherController@vouchersRecord');
   Route::get('add-voucher/{job_id}/{type}','VoucherController@addVoucher');
   Route::post('do-add-voucher','VoucherController@doAddVoucher');
   Route::post('do-submit-voucher','VoucherController@doSubmitVoucher');

@@ -28,19 +28,44 @@ class OperationController extends Controller {
 		//check date, auto set status to onboard
 		$checking = Self::doCheckAndUpdateJobStatus();
 
-		if ($userInfo->usr_role == "AD") {
-			$jobs = Operation::getAllJobByCat('FSU');
-			$jobsSpot = Operation::getAllJobByCat('SPOT');
-		} else {
-			$jobs = Operation::getAllJobByCatAndByUser('FSU', $userInfo->usr_id );
-			$jobsSpot = Operation::getAllJobByCatAndByUser('SPOT', $userInfo->usr_id );
+		for ($i = 1; $i <= 12; $i++) {
+    	$months[] = date("M Y", strtotime( date( '01-m-Y' )." -$i months"));
 		}
 
-		// echo '<pre>'; print_r($check); die();
+		$currentMonth = date('M');
+		$currentYear = date('Y');
+
+		if ($request->isMethod('post') ) {
+			$explodeDate = explode (' ', $request->dropdownMonthYear);
+			$selectMonth = $explodeDate[0];
+			$selectYear = $explodeDate[1];
+			$selectMonthInNumber = date('m', strtotime($selectMonth));
+		} else {
+			$selectMonth = $currentMonth;
+			$selectYear = $currentYear;
+			$selectMonthInNumber = date('m', strtotime($selectMonth));
+		}
+		$selectMonthYear = $selectMonth.' '.$selectYear;
+		// echo '<pre>'; print_r($currentMonth); die();
+
+		if ($userInfo->usr_role == "AD") {
+			$jobs = Operation::getAllJobByCat('FSU', $selectMonthInNumber, $selectYear);
+			$jobsSpot = Operation::getAllJobByCat('SPOT', $selectMonthInNumber, $selectYear);
+		} else {
+			$jobs = Operation::getAllJobByCatAndByUser('FSU', $userInfo->usr_id, $selectMonthInNumber, $selectYear);
+			$jobsSpot = Operation::getAllJobByCatAndByUser('SPOT', $userInfo->usr_id, $selectMonthInNumber, $selectYear );
+		}
+
 
     return view('jobRecords')
 					->with('jobs',$jobs)
 					->with('jobsSpot',$jobsSpot)
+					->with('currentMonth',$currentMonth)
+					->with('currentYear',$currentYear)
+					->with('selectMonth',$selectMonth)
+					->with('selectYear',$selectYear)
+					->with('selectMonthYear',$selectMonthYear)
+					->with('months',$months)
 					->with('user',$userInfo);
   }
 
@@ -99,8 +124,15 @@ class OperationController extends Controller {
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
 
-		//status
-		$status = 'In-coming';
+		//check status berdasarkan tarikh
+		$today = strtotime(date('Y-m-d'));
+		$jobCommenceDate = strtotime($request->job_commence_date);
+		if ($jobCommenceDate < $today) {
+			$status = 'Completed';
+		} else {
+			$status = 'In-coming';
+		}
+		// echo '<pre>'; print_r($b); die();
 
 		$explode_date = explode('/',$request->job_commence_date);
 		$date = $explode_date[2].'-'.$explode_date[0].'-'.$explode_date[1];
@@ -123,12 +155,16 @@ class OperationController extends Controller {
 				'job_status' => $status,
 				'job_created' => Carbon::now()
 		);
-		// echo '<pre>'; print_r($data); die();
 
 		$insert = DB::table('jobs')->insertGetId($data);
 
 		if ($insert) {
-			return redirect('jobrecords')->with('success', "Successfully added new job.");
+			if ($status == "Completed") {
+				return redirect('jobinfo/'.$insert)->with('success', "Successfully added new job. Please complete the form to continue.");
+			} else {
+				return redirect('jobrecords')->with('success', "Successfully added new job.");
+			}
+
 		} else {
 			return redirect('addNewJob')->with('error',"Unable to add new job. Check your form and please try again.");
 		}
