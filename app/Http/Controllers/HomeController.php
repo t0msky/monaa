@@ -2,6 +2,8 @@
 
 
 use DB;
+use Mail;
+use PDF;
 use Carbon\Carbon;
 use App\User;
 use App\Operation;
@@ -225,4 +227,49 @@ class HomeController extends Controller {
 		return view('errors.error')->with('user',$user);
 	}
 
+
+		public function testemel () {
+
+			$user = User::getUser(session('user'));
+
+			$message = '';
+			$subject = 'Test Registration Verification';
+			$email = "syahrunsulaiman@gmail.com";
+			$name = "Husin Lempoyang";
+
+			$mail = Mail::send('emails.mail', ['name' => $user->usr_firstname, 'userid' => $user->usr_id], function($message) use ($subject, $email, $name) {
+					$message->to($email, $name)
+									->subject($subject);
+			});
+
+			if ($mail) {
+				echo 'sent!';
+			} else {
+				echo 'tak sent!';
+			}
+		}
+
+		public function downloadPDF(){
+
+      $user = User::getUser(session('user'));
+			// $user = "Syahrun";
+			// $pdf = PDF::loadView('pdf.test_pdf')->setPaper('a4', 'landscape');
+
+      $pdf = PDF::loadView('pdfs.pdf', compact('user'))->setPaper('a4', 'landscape');
+      // $pdf = PDF::loadView('pdfs.pdf', compact($user));
+      return $pdf->download('invoice.pdf');
+
+    }
+
+		public function doRunTerminal () {
+
+			$user = User::getUser(session('user'));
+			if ($user->usr_role == "AD") {
+				// shell_exec('php artisan vendor:publish');
+				shell_exec('php artisan config:clear');
+			} else {
+				echo 'Die'; die();
+			}
+
+		}
 }

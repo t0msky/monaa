@@ -9,8 +9,12 @@ Route::get('/logout','Auth\LoginController@doLogout');
 #Registration
 Route::get('register', 'Auth\RegisterController@getRegister');
 Route::post('postRegister', 'Auth\RegisterController@postRegister');
+Route::get('verify/{code}', 'Auth\RegisterController@doVerifyAccount');
 Route::get('registerSuccess', function () {
     return view('registerSuccess');
+});
+Route::get('register-verified', function () {
+    return view('verifySuccess');
 });
 
 #error
@@ -24,6 +28,11 @@ Route::group(['middleware' => 'loggedin'], function() {
   Route::get('get-notice-body/{nid}', 'HomeController@getNoticeBody');
   Route::post('do-delete-notice', 'HomeController@doDeleteNotice');
   Route::post('do-add-notice', 'HomeController@doAddNotice');
+
+  #Test
+  Route::get('test', 'HomeController@testemel');
+  Route::get('downloadPDF','HomeController@downloadPDF');
+  Route::get('doRunTerminal','HomeController@doRunTerminal');
 
   #Assets
   Route::get('assets', 'AssetController@assets');
@@ -65,5 +74,8 @@ Route::group(['middleware' => 'loggedin'], function() {
   Route::get('view-profile/{id}','PersonnelController@viewProfile');
   Route::post('do-upload-picture','PersonnelController@doUploadPic');
   Route::post('delete-user','PersonnelController@doDeleteUser');
+
+  #pdf
+  Route::get('pdf-job-records/{type}/{month}/{year}','OperationController@getPdfJobRecords');
 
 });

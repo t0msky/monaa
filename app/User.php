@@ -52,6 +52,18 @@ class User extends Authenticatable
       $user = DB::table('users as u')
   							->where('u.usr_role',$role)
   							->where('u.usr_delete', 'No')
+                ->where('u.usr_active', 'Yes')
+  							->get();
+
+  		return $user;
+    }
+
+
+    public static function getAllUserByRole2($role) {
+
+      $user = DB::table('users as u')
+  							->where('u.usr_role',$role)
+  							->where('u.usr_delete', 'No')
   							->get();
 
   		return $user;

@@ -20,8 +20,8 @@ class PersonnelController extends Controller {
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
 		//dapatkan semua poac
-		$poac = User::getAllUserByRole('CP');
-		$admins = User::getAllUserByRole('AD');
+		$poac = User::getAllUserByRole2('CP');
+		$admins = User::getAllUserByRole2('AD');
 
     return view('personnelBoard')
 				 ->with('poac',$poac)

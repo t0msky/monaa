@@ -53,24 +53,30 @@ class LoginController extends Controller
 
           if ($count != 0) {
 
-            $requestPass = urldecode($request->pword);
-            $pass = hash('sha256', $requestPass);
-            // check user db
-            $user = DB::table('users')->where('usr_email', $request->email)->where('usr_pword', $pass)->first();
+            $countVerified = DB::table('users')->where('usr_email', $request->email)->where('usr_active', 'Yes')->count();
+            if ($countVerified != 0) {
+              $requestPass = urldecode($request->pword);
+              $pass = hash('sha256', $requestPass);
+              // check user db
+              $user = DB::table('users')->where('usr_email', $request->email)->where('usr_pword', $pass)->first();
 
-            if ($user) {
+              if ($user) {
 
-              session(['user' => $user->usr_id]);
-              session(['role' => $user->usr_role]);
+                session(['user' => $user->usr_id]);
+                session(['role' => $user->usr_role]);
 
-              return Redirect::to('dashboard/');
+                return Redirect::to('dashboard/');
+              } else {
+
+                $errorMsg[] = 'The password you have entered is incorrect.';
+              }
             } else {
-
-              $errorMsg[] = 'The password you have entered is incorrect.';
+              $errorMsg[] = 'Account not verified. Please check your email.';
             }
           } else {
             $errorMsg[] = 'Email does not exist.';
           }
+
         } else {
             $errorMsg[] = 'Email is required.';
         }

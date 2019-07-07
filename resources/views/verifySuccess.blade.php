@@ -10,7 +10,7 @@
 
       <div class="tx-center mg-b-60"><h3>Congratulations!</h3></div>
 
-      <div class="tx-center mg-b-60">Registration has been successful. Please check your email to verify your account.</div>
+      <div class="tx-center mg-b-60">Your account has been verified.</div>
 
       <div class="mg-t-30 tx-center"><a href="login" class="tx-info">Sign In</a></div>
 

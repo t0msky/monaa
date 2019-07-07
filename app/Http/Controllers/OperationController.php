@@ -2,6 +2,7 @@
 
 
 use DB;
+use PDF;
 use Carbon\Carbon;
 use App\User;
 use App\Client;
@@ -321,6 +322,24 @@ class OperationController extends Controller {
 
 		return redirect('jobrecords')->with('success', "Successfully delete job.");
 
+	}
+
+	public function getPdfJobRecords ($type, $month, $year) {
+
+		$monthNumber = date('m', strtotime($month));
+		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role == "AD") {
+			$jobs = Operation::getAllJobByCat($type, $monthNumber, $year);
+		}
+
+		$pdf = PDF::loadView('pdfs.pdf_job_records', compact('jobs'))->setPaper('a3', 'landscape');
+		// $pdf = PDF::loadView('pdfs.pdf', compact($user));
+		return $pdf->download('job-record.pdf');
+
+		// return view('pdfs.pdf_job_records')
+		// 		 ->with('user',$userInfo)
+		// 		 ->with('jobs',$jobs);
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use DB;
+use Mail;
 use Carbon\Carbon;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -103,6 +104,15 @@ class RegisterController extends Controller
 
         $pass = hash('sha256', $request->password);
 
+        // Generate code
+        $length = 20;
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+
         DB::table('users')->insert(
           array(
             'usr_firstname'=> $request->firstname,
@@ -111,9 +121,23 @@ class RegisterController extends Controller
             'usr_email'=> $request->email,
             'usr_pword'=> $pass,
             'usr_role'=> 'CP',
+            'usr_active'=> 'No',
+            'usr_verify_code'=> $randomString,
             'usr_created' => Carbon::now()
           )
         );
+
+        // Email
+
+        $message = '';
+  			$subject = 'Monaa Registration Verification';
+  			$email = $request->email;
+  			$name = $request->firstname.' '.$request->lastname;
+
+  			$mail = Mail::send('emails.mail', ['name' => $name, 'verifyCode' => $randomString], function($message) use ($subject, $email, $name) {
+  					$message->to($email, $name)
+  									->subject($subject);
+  			});
 
         // Redirect to Register SUccess page
         return Redirect::to('registerSuccess/');
@@ -128,5 +152,15 @@ class RegisterController extends Controller
         $count = DB::table('users')->where('usr_email', $email)->count();
 
         return $count;
+    }
+
+    public function doVerifyAccount ($code) {
+
+
+      $verifyData = array('usr_active' => 'YES');
+      DB::table('users')->where('usr_verify_code','=',$code)->update($verifyData);
+
+      return Redirect::to('register-verified');
+
     }
 }

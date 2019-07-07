@@ -86,11 +86,20 @@
                       <?php } ?>
 
                       <div class="mg-l-15">
-                        <div><?php echo $p->usr_firstname.' '.$p->usr_lastname;?></div>
+                        <div><a href="<?php echo env('BASE_URL');?>view-profile/<?php echo $p->usr_id;?>" class="nav-link"><?php echo $p->usr_firstname.' '.$p->usr_lastname;?></a></div>
                       </div>
                     </div>
                   </td>
-                  <td><?php echo $p->usr_email;?></td>
+                  <td>
+                    <?php
+                      if ($p->usr_active == "Yes") {
+                        echo '<i class="icon ion-checkmark tx-success pd-r-10" data-toggle="tooltip" data-placement="top" title="Email verified"></i> ';
+                      } else {
+                        echo '<i class="icon ion-close tx-danger pd-r-10" data-toggle="tooltip" data-placement="top" title="Email not verified"></i>  ';
+                      }
+                      echo $p->usr_email;
+                    ?>
+                </td>
                   <td><?php echo $p->usr_jobtitle;?>
                   </td>
                   <td><?php echo $p->usr_mobile;?></td>
@@ -99,8 +108,9 @@
                     <div class="dropdown-menu dropdown-menu-right pd-10">
                       <nav class="nav nav-style-2 flex-column">
                         <a href="<?php echo env('BASE_URL');?>view-profile/<?php echo $p->usr_id;?>" class="nav-link">Personnel Profile</a>
+                        <?php if ($user->usr_role == "AD") { ?>
                         <a href="" class="nav-link deleteUser" modal_user_id="<?php echo $p->usr_id;?>" data-toggle="modal" data-target="#deletealert">Delete</a>
-                        <!-- <a href="<?php #echo env('BASE_URL');?>delete-user/<?php echo $p->usr_id;?>" class="nav-link">Delete</a> -->
+                        <?php } ?>
                       </nav>
                     </div><!-- dropdown-menu -->
                   </td>

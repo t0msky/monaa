@@ -54,8 +54,11 @@
                     </select>
                   </form>
                 </div><!-- form-group -->
+                <?php
+                $explode = explode(' ',$selectMonthYear);
+                ?>
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-third"><i class="icon typcn typcn-document-text tx-24"></i></button>
+                  <a href="<?php echo env('BASE_URL');?>pdf-job-records/FSU/{{$explode[0]}}/{{$explode[1]}}" class="btn btn-third"><i class="icon typcn typcn-document-text tx-24"></i></a>
                   <button id="buttonprint" type="button" class="btn btn-third"><i class="icon typcn typcn-printer tx-24"></i></button>
                 </div>
               </div><!-- card-header -->
