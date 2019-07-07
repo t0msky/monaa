@@ -77,5 +77,9 @@ Route::group(['middleware' => 'loggedin'], function() {
 
   #pdf
   Route::get('pdf-job-records/{type}/{month}/{year}','OperationController@getPdfJobRecords');
+  Route::get('pdf-voucher-detail/{vid}','VoucherController@getPdfVoucherDetail');
 
+  #print
+  Route::get('print-job-detail/{type}/{month}/{year}','OperationController@printJobRecords');
+  Route::get('print-voucher-detail/{vid}','VoucherController@printVoucherDetail');
 });

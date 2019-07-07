@@ -1,37 +1,10 @@
+<style>
+
+</style>
+<body onload="myFunction()">
 <div class="card bd-0 shadow-base">
   <div class="card-header bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
-    <div class="form-layout-footer hidden-xs-down">
-      <?php
-      if ($user->usr_role == "AD"){
 
-        if ($voucher->vou_status == "Unverified") {
-          echo '<a href="#" class="btn btn-info" data-toggle="modal" data-target="#verifyalert" id="modalVerify" data-id="'.$voucher->vou_id.'">Verify</a>';
-        } else if ($voucher->vou_status == "Verified") {
-          echo '<div class="card-title tx-success mg-b-0"><i class="icon ion-checkmark tx-success tx-24 pd-r-10"></i>Verified</div>';
-        }
-      } else if($user->usr_role == "CP") {
-
-        if ($voucher->vou_status == "Verified") {
-          echo '<h3 class="tx-success">Verified</h3>';
-        } else if ($voucher->vou_status == "Unverified") {
-          echo '<h3 class="tx-danger">Unverified</h3>';
-        }
-      }
-      ?>
-
-    </div>
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <span data-toggle="tooltip" data-placement="top" title="Delete">
-        <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $voucher->vou_id;?>">
-          <i class="icon typcn typcn-trash tx-24"></i>
-        </button>
-      </span>
-      <!-- <button type="button" class="btn btn-third"><i class="icon typcn typcn-edit tx-24"></i></button> -->
-      <a href="<?php echo env('BASE_URL');?>pdf-voucher-detail/<?php echo $voucher->vou_id;?>"
-        class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF"><i class="icon typcn typcn-document-text tx-24"></i></a>
-        <a target="_blank" href="<?php echo env('BASE_URL');?>print-voucher-detail/<?php echo $voucher->vou_id;?>"
-          class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
-    </div>
   </div><!-- card-header -->
   <div class="card-body pd-30 pd-md-30">
     <div class="d-md-flex justify-content-between flex-row-reverse">
@@ -161,6 +134,9 @@
     </div><!-- row -->
   </div><!-- card-body -->
 </div><!-- card -->
+</body>
 <script>
-$('[data-toggle="tooltip"]').tooltip()
+function myFunction() {
+  window.print();
+}
 </script>

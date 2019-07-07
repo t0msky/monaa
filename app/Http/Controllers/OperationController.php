@@ -331,6 +331,8 @@ class OperationController extends Controller {
 
 		if ($userInfo->usr_role == "AD") {
 			$jobs = Operation::getAllJobByCat($type, $monthNumber, $year);
+		} else {
+			$jobs = Operation::getAllJobByCatAndByUser($type, $monthNumber, $year);
 		}
 
 		$pdf = PDF::loadView('pdfs.pdf_job_records', compact('jobs'))->setPaper('a3', 'landscape');
@@ -340,6 +342,21 @@ class OperationController extends Controller {
 		// return view('pdfs.pdf_job_records')
 		// 		 ->with('user',$userInfo)
 		// 		 ->with('jobs',$jobs);
+	}
+
+	public function printJobRecords ($type, $month, $year) {
+
+		$monthNumber = date('m', strtotime($month));
+		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role == "AD") {
+			$jobs = Operation::getAllJobByCat($type, $monthNumber, $year);
+		} else {
+			$jobs = Operation::getAllJobByCatAndByUser($type, $monthNumber, $year);
+		}
+
+		return view('pdfs.pdf_job_records')
+				 ->with('jobs',$jobs);
 	}
 
 }

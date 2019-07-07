@@ -58,8 +58,10 @@
                 $explode = explode(' ',$selectMonthYear);
                 ?>
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <a href="<?php echo env('BASE_URL');?>pdf-job-records/FSU/{{$explode[0]}}/{{$explode[1]}}" class="btn btn-third"><i class="icon typcn typcn-document-text tx-24"></i></a>
-                  <button id="buttonprint" type="button" class="btn btn-third"><i class="icon typcn typcn-printer tx-24"></i></button>
+                  <a href="<?php echo env('BASE_URL');?>pdf-job-records/FSU/{{$explode[0]}}/{{$explode[1]}}"
+                    class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF"><i class="icon typcn typcn-document-text tx-24"></i></a>
+                    <a target="_blank" href="<?php echo env('BASE_URL');?>print-job-detail/FSU/{{$explode[0]}}/{{$explode[1]}}"
+                      class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
                 </div>
               </div><!-- card-header -->
               <div class="table-wrapper">

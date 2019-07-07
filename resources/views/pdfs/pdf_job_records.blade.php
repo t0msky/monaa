@@ -14,7 +14,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
-
+<body onload="myFunction()">
 <table  cellspacing="0" width="100%" style="font-size:80%">
   <thead>
     <tr>
@@ -134,3 +134,9 @@ tr:nth-child(even) {
     ?>
   </tbody>
 </table>
+</body>
+<script>
+function myFunction() {
+  window.print();
+}
+</script>

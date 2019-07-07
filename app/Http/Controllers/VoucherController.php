@@ -2,6 +2,7 @@
 
 
 use DB;
+use PDF;
 use Carbon\Carbon;
 use App\User;
 use App\Operation;
@@ -373,6 +374,53 @@ class VoucherController extends Controller {
 		DB::table('jobs')->where('job_id', $voucher->vou_job_id)->update(array($field => NULL));
 
 		return redirect('vouchersrecord')->with('success', "Successfully delete voucher.");
+	}
+
+	public function getPdfVoucherDetail ($vid) {
+
+		$userInfo = resolve('userInfo');
+		$voucher = Voucher::getVoucherDetail($vid);
+		$operator = DB::table('sts_operator_service')->where('sts_id', $voucher->job_operator)->first();
+		$provider = DB::table('sts_operator_service')->where('sts_id', $voucher->job_provider)->first();
+		$ship = DB::table('ships')->where('ship_id', $voucher->vou_ship)->first();
+		$items = DB::table('voucher_job_items')->where('vjob_vou_id', $voucher->vou_id)->get();
+		$master = User::getUserById($voucher->vou_master);
+		$agent = User::getUserById($voucher->vou_agent);
+
+		$pdf = PDF::loadView('pdfs.pdf_voucher_detail', compact('voucher','user','operator','provider','ship','items','master','agent'));
+		return $pdf->download('voucher'.$voucher->vou_code.'.pdf');
+
+		// return view('pdfs.pdf_voucher_detail')
+		// 		 ->with('user',$userInfo)
+		// 		 ->with('operator',$operator)
+		// 		 ->with('provider',$provider)
+		// 		 ->with('ship',$ship)
+		// 		 ->with('items',$items)
+		// 		 ->with('master',$master)
+		// 		 ->with('agent',$agent)
+		// 		 ->with('voucher',$voucher);
+	}
+
+	public function printVoucherDetail ($vid) {
+
+		$userInfo = resolve('userInfo');
+		$voucher = Voucher::getVoucherDetail($vid);
+		$operator = DB::table('sts_operator_service')->where('sts_id', $voucher->job_operator)->first();
+		$provider = DB::table('sts_operator_service')->where('sts_id', $voucher->job_provider)->first();
+		$ship = DB::table('ships')->where('ship_id', $voucher->vou_ship)->first();
+		$items = DB::table('voucher_job_items')->where('vjob_vou_id', $voucher->vou_id)->get();
+		$master = User::getUserById($voucher->vou_master);
+		$agent = User::getUserById($voucher->vou_agent);
+
+		return view('pdfs.pdf_voucher_detail')
+				 ->with('user',$userInfo)
+				 ->with('operator',$operator)
+				 ->with('provider',$provider)
+				 ->with('ship',$ship)
+				 ->with('items',$items)
+				 ->with('master',$master)
+				 ->with('agent',$agent)
+				 ->with('voucher',$voucher);
 	}
 
 }

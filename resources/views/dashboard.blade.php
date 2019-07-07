@@ -260,8 +260,10 @@
                   </select> -->
                 </div><!-- form-group -->
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-third"><i class="icon typcn typcn-document-text tx-24"></i></button>
-                  <button id="buttonprint" type="button" class="btn btn-third"><i class="icon typcn typcn-printer tx-24"></i></button>
+                  <a href="<?php echo env('BASE_URL');?>pdf-job-records/FSU/<?php echo date('F', mktime(0, 0, 0, $month, 10));?>/<?php echo $year;?>"
+                    class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF"><i class="icon typcn typcn-document-text tx-24"></i></a>
+                    <a target="_blank" href="<?php echo env('BASE_URL');?>print-job-detail/FSU/<?php echo date('F', mktime(0, 0, 0, $month, 10));?>/<?php echo $year;?>"
+                      class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
                 </div>
               </div><!-- card-header -->
               <div class="table-wrapper">
