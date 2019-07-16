@@ -16,7 +16,7 @@
 </div> -->
 
 <div class="br-mainpanel">
-  <div class="br-pageheader pd-y-15 pd-md-l-20">
+  <div class="br-pageheader tx-xs-center">
     <nav class="breadcrumb pd-0 mg-0 tx-12">
       <span class="breadcrumb-item active">Personnels</span>
       <a class="breadcrumb-item" href="personnel-board.html">Personnel Board</a>
@@ -24,14 +24,14 @@
     </nav>
   </div><!-- br-pageheader -->
 
-  <div class="br-pagetitle pd-t-20">
+  <div class="br-pagetitle hidden-xs-down">
     <i class="icon typcn typcn-user tx-24"></i>
     <div>
       <h4 class="pd-y-15">Personnels</h4>
     </div>
   </div><!-- d-flex -->
 
-  <div class="br-pagebody pd-x-20 pd-sm-x-30 pd-b-40">
+  <div class="br-pagebody pd-x-20 pd-sm-x-30 pd-b-30">
     <div class="card bd-0 shadow-base">
       <div class="card-header bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
         <div class="card-title tx-capitalize mg-b-0">New Registration</div>
@@ -46,23 +46,23 @@
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Employment ID </label>
+                      <label class="form-control-label">Employment ID : <span class="tx-success">*</span></label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <div class="input-group-text">
                             <div class="tx-uppercase tx-gray-500">ON</div>
                           </div>
                         </div><!-- input-group-prepend -->
-                        <input class="form-control" type="text" name="usr_employment_id" placeholder="" required>
+                        <input id="employid" class="form-control" type="text" name="usr_employment_id" placeholder="0-0000" required>
                       </div><!-- input-group -->
                     </div>
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Roles </label>
+                      <label class="form-control-label">Roles : <span class="tx-success">*</span></label>
                       <select class="form-control select2" name="usr_role" style="width: 100%" data-placeholder="Choose one" required>
-                        <option label="Choose Roles"></option>
-                        <option value="CP">Mooring Master</option>
+                        <option>Choose Roles</option>
+                        <option value="CP">Advisor / Pilot / Mooring Master</option>
                         <option value="AD">Administration</option>
                       </select>
                     </div>
@@ -71,19 +71,22 @@
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Firstname <span class="tx-danger">*</span></label>
-                      <input class="form-control" type="text" name="usr_firstname" placeholder="Enter Firstname" required>
+                      <label class="form-control-label">Firstname : <span class="tx-success">*</span></label>
+                      <input class="form-control" type="text" name="usr_firstname" placeholder="Insert Firstname" required>
                     </div>
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Lastname <span class="tx-danger">*</span></label>
-                      <input class="form-control" type="text" name="usr_lastname" placeholder="Enter Lastname" required>
+                      <label class="form-control-label">Lastname : <span class="tx-success">*</span></label>
+                      <input class="form-control" type="text" name="usr_lastname" placeholder="Insert Lastname" required>
                     </div>
                   </div><!-- col-6 -->
+                  </div><!-- row -->
+
+                  <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">NRIC <span class="tx-danger">*</span></label>
+                      <label class="form-control-label">NRIC / Passport : <span class="tx-success">*</span></label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <div class="input-group-text">
@@ -91,36 +94,39 @@
                             <i class="icon ion-android-person tx-16 lh-0 op-6"></i>
                           </div>
                         </div><!-- input-group-prepend -->
-                        <input id="nric" type="text" class="form-control" name="usr_nric" placeholder="999999-99-9999" required>
+                        <input id="nric" type="text" class="form-control" name="usr_nric" placeholder="00000000-00-0000" required>
                       </div><!-- input-group -->
                     </div>
                   </div><!-- col-6 -->
 
-
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Date Of Birth <span class="tx-danger">*</span></label>
+                      <label class="form-control-label">Date Of Birth : <span class="tx-success">*</span></label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <div class="input-group-text">
                             <i class="icon ion-calendar tx-16 lh-0 op-6"></i>
                           </div>
                         </div>
-                        <input id="dob" type="text" class="form-control" name="usr_dob" placeholder="MM/DD/YYYY">
+                        <input id="dob" type="text" class="form-control" name="usr_dob" placeholder="MM/DD/YYYY" required>
                       </div>
                     </div>
                   </div><!-- col-6 -->
+                  </div><!-- row -->
+
+                  <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Citizen </label>
-                      <input class="form-control" type="text" name="usr_citizen" placeholder="Enter Citizenship">
+                      <label class="form-control-label">Citizen : </label>
+                      <input class="form-control" type="text" name="usr_citizen" placeholder="Insert Citizenship">
                     </div>
                   </div><!-- col-6 -->
-                </div><!-- row -->
+                  </div><!-- row -->
+
                 <div class="row mg-b-10">
                   <div class="col-lg-12">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Residential Address <span class="tx-danger">*</span></label>
+                      <label class="form-control-label">Residential Address : <span class="tx-success">*</span></label>
                       <input class="form-control" type="text" name="usr_add1" placeholder="Address Line 1" required>
                     </div>
                     <div class="form-group mg-b-10-force">
@@ -131,22 +137,39 @@
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Postal Code </label>
-                      <input class="form-control" type="number" name="usr_postcode" placeholder="">
+                      <label class="form-control-label">Postal Code : </label>
+                      <input id="postal" class="form-control" type="text" name="usr_postcode" placeholder="000000">
                     </div>
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">State / Region </label>
-                      <input class="form-control" type="text" name="usr_state" placeholder="">
+                     <label class="form-control-label">State / Region : </label>
+                      <select class="form-control bd-transparent select2-show-search" name="usr_state" style="width: 100%" data-placeholder="Choose one">
+                              <option>Choose State / Region</option>
+                              <option value="Johor">Johor</option>
+                              <option value="Kedah">Kedah</option>
+                              <option value="Kelantan">Kelantan</option>
+                              <option value="Kuala Lumpur">Kuala Lumpur</option>
+                              <option value="Labuan">Labuan</option>
+                              <option value="Malacca">Malacca</option>
+                              <option value="Negeri Sembilan">Negeri Sembilan</option>
+                              <option value="Pahang">Pahang</option>
+                              <option value="Perak">Perak</option>
+                              <option value="Perlis">Perlis</option>
+                              <option value="Penang">Penang</option>
+                              <option value="Sabah">Sabah</option>
+                              <option value="Sarawak">Sarawak</option>
+                              <option value="Selangor">Selangor</option>
+                              <option value="Terengganu">Terengganu</option>
+                            </select>
                     </div>
                   </div><!-- col-6 -->
                 </div><!-- row -->
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Country </label>
-                      <input class="form-control" type="text" name="usr_country" placeholder="">
+                      <label class="form-control-label">Country : </label>
+                      <input class="form-control" type="text" name="usr_country" placeholder="Insert Country">
 
                     </div>
                   </div><!-- col-6 -->
@@ -159,9 +182,9 @@
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Education </label>
+                      <label class="form-control-label">Education : </label>
                       <select class="form-control select2" name="usr_education" style="width: 100%" data-placeholder="Choose one">
-                        <option label="Choose Education"></option>
+                        <option>Choose Education Level</option>
                         <option value="Master/PHD">Master/PHD</option>
                         <option value="Bachelor Degree">Bachelor Degree</option>
                         <option value="Diploma">Diploma</option>
@@ -171,23 +194,23 @@
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Qualification </label>
-                      <input class="form-control" type="text" name="usr_qualification" placeholder="Enter Qualification">
+                      <label class="form-control-label">Qualification Field : </label>
+                      <input class="form-control" type="text" name="usr_qualification" placeholder="Eg : Bsc Engineering">
                     </div>
                   </div><!-- col-6 -->
                 </div><!-- row -->
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Appointed Position </label>
-                      <input class="form-control" type="text" name="usr_jobtitle" placeholder="Enter Position">
+                      <label class="form-control-label">Appointed Position : </label>
+                      <input class="form-control" type="text" name="usr_jobtitle" placeholder="Eg : Project Manager">
                     </div>
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Assigned Division </label>
+                      <label class="form-control-label">Assigned Division : </label>
                       <select class="form-control select2" name="usr_division" style="width: 100%" data-placeholder="Choose one">
-                        <option label="Choose Division"></option>
+                        <option>Choose Division</option>
                         <option value="Administration">Administration</option>
                         <option value="Operation">Operation</option>
                         <option value="Finance">Finance</option>
@@ -199,9 +222,9 @@
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Employment </label>
-                      <select class="form-control select2" name="usr_employment" style="width: 100%" data-placeholder="Choose one">
-                        <option label="Choose Employment"></option>
+                      <label class="form-control-label">Employment : </label>
+                      <select class="form-control select2" name="usr_employment" style="width: 100%" data-placeholder="Choose one" required>
+                        <option>Employment Status</option>
                         <option value="Permanent">Permanent</option>
                         <option value="Contract">Contract</option>
                         <option value="Freelancer">Freelancer</option>
@@ -211,14 +234,14 @@
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Contact No <span class="tx-danger">*</span></label>
+                      <label class="form-control-label">Contact No : <span class="tx-success">*</span></label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <div class="input-group-text">
                             <i class="fa fa-phone tx-16 lh-0 op-6"></i>
                           </div>
                         </div><!-- input-group-prepend -->
-                        <input id="phoneMask" type="text" class="form-control" name="usr_mobile" placeholder="(999) 999-9999" required>
+                        <input id="phoneMask" type="text" class="form-control" name="usr_mobile" placeholder="(000) 000-0000" required>
                       </div><!-- input-group -->
                     </div>
                   </div><!-- col-6 -->
@@ -226,8 +249,12 @@
                 <div class="row mg-b-10">
                   <div class="col-lg-12">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Email Address <span class="tx-danger">*</span></label>
-                      <input type="email" name="usr_email" class="form-control" placeholder="Email" required>
+                     <div class="d-flex justify-content-between align-items-center">
+                      <label class="form-control-label">Email Address : <span class="tx-success">*</span></label>
+                      <label class="tx-gray-500 form-control-label hidden-xs-down">Set for your login credentials</label>
+                     </div>
+                      <input type="email" name="usr_email" class="form-control" placeholder="Insert Email Address" required>
+
                     </div>
                   </div><!-- col-12 -->
                 </div><!-- row -->
@@ -235,14 +262,20 @@
                 <div class="row mg-b-10">
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">New Password <span class="tx-danger">*</span></label>
-                      <input class="form-control" type="password" name="password1" placeholder="" required>
+                      <label class="form-control-label">New Password : <span class="tx-success">*</span></label>
+                      <div class="main-password">
+                        <input id="password-1" type="password" data-parsley-equalto="#password-2" name="password-1" class="form-control input-password pd-y-12" aria-label="password" placeholder="Password" required>
+                        <a href="JavaScript:void(0);" class="icon-view"><i class="fa fa-eye tx-18"></i></a>
+                      </div>
                     </div>
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
-                      <label class="form-control-label">Confirm Password <span class="tx-danger">*</span></label>
-                      <input class="form-control" type="password" name="password2" placeholder="" required>
+                      <label class="form-control-label">Confirm Password : <span class="tx-success">*</span></label>
+                      <div class="main-password">
+                        <input id="password-2" type="password" data-parsley-equalto="#password-1" name="password-2" class="form-control input-password pd-y-12" aria-label="password" placeholder="Confirm Password" required>
+                        <a href="JavaScript:void(0);" class="icon-view"><i class="fa fa-eye tx-18"></i></a>
+                      </div>
                     </div>
                   </div><!-- col-6 -->
                 </div><!-- row -->
@@ -286,7 +319,34 @@
   });
   // Input Masks
   $('#phoneMask').mask('(999) 999-9999');
+  $('#employid').mask('9-9999');
+  $('#postal').mask('999999');
   $('#nric').mask('999999-99-9999');
-});
+  });
+  $(document).ready(function () {
+      	 $('.main-password').find('.input-password').each(function(index, input) {
+      		 var $input = $(input);
+      			$input.parent().find('.icon-view').click(function() {
+      			  var change = "";
+      			   if ($(this).find('i').hasClass('fa-eye')) {
+      			    $(this).find('i').removeClass('fa-eye')
+      			    $(this).find('i').addClass('fa-eye-slash')
+      			       change = "text";
+      			    } else {
+      			    $(this).find('i').removeClass('fa-eye-slash')
+      			    $(this).find('i').addClass('fa-eye')
+      			      change = "password";
+      			    }
+      			    var rep = $("<input type='" + change + "' />")
+      			   .attr('id', $input.attr('id'))
+      			   .attr('name', $input.attr('name'))
+      			   .attr('class', $input.attr('class'))
+      			   .val($input.val())
+      			   .insertBefore($input);
+      			   $input.remove();
+      			  $input = rep;
+      			}).insertAfter($input);
+      		});
+      	});
 </script>
 @stop

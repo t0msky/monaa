@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
+use Session;
 use DB;
 use Carbon\Carbon;
 use View;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 
 class LoggedIn{
   public function handle($request, Closure $next){
-
+    
     if (session('user')) {
       $user = User::getUser(session('user'));
       app()->instance('userInfo', $user);
@@ -25,15 +26,12 @@ class LoggedIn{
       View::share('uri', $newUri);
       // die();
 
-      if ($user->usr_role == "AD") {
-        $countVoucherUnverified = DB::table('vouchers')->where('vou_status','Unverified')->count();
-        // echo $countVoucherUnverified; die();
-        View::share('countVoucherUnverified', $countVoucherUnverified);
-      }
-      return $next($request);
     } else {
+
       return redirect('logout');
     }
+
+    return $next($request);
 
   }
 }

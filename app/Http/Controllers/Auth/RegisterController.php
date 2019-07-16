@@ -117,7 +117,7 @@ class RegisterController extends Controller
           array(
             'usr_firstname'=> $request->firstname,
             'usr_lastname'=> $request->lastname,
-            'usr_mobile'=> $request->mobileno,
+            // 'usr_mobile'=> $request->mobileno,
             'usr_email'=> $request->email,
             'usr_pword'=> $pass,
             'usr_role'=> 'CP',
@@ -130,7 +130,7 @@ class RegisterController extends Controller
         // Email
 
         $message = '';
-  			$subject = 'Monaa Registration Verification';
+  			$subject = 'Monaa - Email Verification';
   			$email = $request->email;
   			$name = $request->firstname.' '.$request->lastname;
 
@@ -140,10 +140,10 @@ class RegisterController extends Controller
   			});
 
         // Redirect to Register SUccess page
-        return Redirect::to('registerSuccess/');
+        return redirect('login')->with('success',"<strong>Congratulations!</strong> Registration has been successful. Please check your email to verify your account.");
       }
 
-      return view('register')
+      return view('login')
                       ->with('errorMsg', $errorMsg);
     }
 
@@ -160,7 +160,7 @@ class RegisterController extends Controller
       $verifyData = array('usr_active' => 'YES');
       DB::table('users')->where('usr_verify_code','=',$code)->update($verifyData);
 
-      return Redirect::to('register-verified');
+      return redirect('login')->with('success',"<strong>Congratulations!</strong> Your account has been verified.");
 
     }
 }

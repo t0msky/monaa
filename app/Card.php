@@ -15,4 +15,14 @@ class Card extends Model
 
   		return $cards;
   	}
+
+    public static function getAllCardsByClient($client_id){
+
+  		$cards = DB::table('ratecards')
+                ->where('card_client',$client_id)
+                ->where('card_status','Active')
+  							->get();
+
+  		return $cards;
+  	}
 }

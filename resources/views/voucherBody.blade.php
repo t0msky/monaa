@@ -42,24 +42,36 @@
       <div class="col-md-3">
         <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Operator</label>
         <h6 class="tx-inverse"><?php echo $operator->sts_name;?></h6>
-        <p class="lh-7"><?php echo $operator->sts_address;?></p>
+        <p class="lh-7 tx-dark">
+          <?php echo $operator->sts_address;?><br>
+          <?php echo $operator->sts_address2;?><br>
+          <?php echo $operator->sts_postcode;?>, <?php echo $operator->sts_state;?>, <?php echo $operator->sts_country;?>
+        </p>
       </div><!-- col -->
       <div class="col-md-3">
         <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Service Provider</label>
         <h6 class="tx-inverse"><?php echo $provider->sts_name;?></h6>
-        <p class="lh-7"><?php echo $provider->sts_address;?></p>
+        <p class="lh-7 tx-dark">
+          <?php echo $provider->sts_address;?><br>
+          <?php echo $provider->sts_address2;?><br>
+          <?php echo $provider->sts_postcode;?>, <?php echo $provider->sts_state;?>, <?php echo $provider->sts_country;?>
+        </p>
       </div>
       <div class="col-md-6">
         <div class="table-responsive">
           <table class="table">
             <tbody>
               <tr>
-                <td class="tx-left">Service Voucher No.</td>
+                <td class="tx-left">Voucher No.</td>
                 <td class="tx-right"><?php echo $voucher->vou_code;?></td>
               </tr>
               <tr>
-                <td class="tx-left">Job Assigned</td>
+                <td class="tx-left">Job Code</td>
                 <td class="tx-right"><?php echo $voucher->job_code;?></td>
+              </tr>
+              <tr>
+                <td class="tx-left">Service Option</td>
+                <td class="tx-right"><?php echo $voucher->card_type.' - '.$voucher->card_name;?></td>
               </tr>
               <tr>
                 <td class="tx-left">Issued Date</td>
@@ -133,8 +145,10 @@
       <div class="col-md-3">
         <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Service Provider</label>
         <h6 class="tx-inverse"><?php echo $provider->sts_name;?></h6>
-        <p class="lh-7">
-          <?php echo $provider->sts_address;?>
+        <p class="lh-7 tx-dark">
+          <?php echo $provider->sts_address;?><br>
+          <?php echo $provider->sts_address2;?><br>
+          <?php echo $provider->sts_postcode;?>, <?php echo $provider->sts_state;?>, <?php echo $provider->sts_country;?>
         </p>
       </div><!-- col -->
       <div class="col-md-9">
@@ -143,11 +157,11 @@
             <tbody>
               <tr>
                 <td class="tx-left">Advisor / Pilot / Mooring Master</td>
-                <td class="wd-30p tx-right"><?php echo $master->usr_firstname.' '.$master->usr_lastname;?></td>
+                <td class="wd-60p tx-right"><?php echo $master->usr_firstname.' '.$master->usr_lastname;?></td>
               </tr>
               <tr>
                 <td class="tx-left">Vessel's Master Agent</td>
-                <td class="wd-30p tx-right"><?php echo $agent->usr_firstname.' '.$agent->usr_lastname;?></td>
+                <td class="wd-60p tx-right"><?php echo $voucher->vou_agent;?></td>
               </tr>
             </tbody>
           </table>

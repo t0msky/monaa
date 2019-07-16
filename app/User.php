@@ -53,6 +53,7 @@ class User extends Authenticatable
   							->where('u.usr_role',$role)
   							->where('u.usr_delete', 'No')
                 ->where('u.usr_active', 'Yes')
+                ->where('u.usr_approval', 'Yes')
   							->get();
 
   		return $user;
@@ -64,6 +65,7 @@ class User extends Authenticatable
       $user = DB::table('users as u')
   							->where('u.usr_role',$role)
   							->where('u.usr_delete', 'No')
+  							->where('u.usr_approval', 'Yes')
   							->get();
 
   		return $user;
@@ -76,5 +78,17 @@ class User extends Authenticatable
   							->first();
 
   		return $user;
+    }
+
+    public static function getAllApprovalUser () {
+
+      $user = DB::table('users as u')
+  							->where('u.usr_delete', 'No')
+  							->where('u.usr_approval', 'No')
+                ->orderBy('u.usr_created','desc')
+  							->get();
+
+  		return $user;
+
     }
 }

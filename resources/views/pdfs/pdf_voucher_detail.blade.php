@@ -1,6 +1,4 @@
-<style>
 
-</style>
 <body onload="myFunction()">
 <div class="card bd-0 shadow-base">
   <div class="card-header bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
@@ -125,11 +123,11 @@
             </tbody>
           </table>
         </div><!-- table-responsive -->
-        <div class="mg-t-20 mg-md-t-0">
+        <!-- <div class="mg-t-20 mg-md-t-0">
           <div class="card card-body bg-gray-200 bd-0">
             <p class="card-text">Note : Vessel are at all time Master's command and responsibility. The presence of Advisor/Pilot/Mooring Master are deemed on as servant of the master for his local knowledge, expertise, experience and shall not be liable for any losses, damages and claims cause by any act omission or default during engagement.</p>
-          </div><!-- card -->
-        </div><!-- col -->
+          </div>
+        </div> -->
       </div><!-- col -->
     </div><!-- row -->
   </div><!-- card-body -->

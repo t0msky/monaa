@@ -53,7 +53,7 @@
                           <tbody>
                             <tr>
                               <td>Voucher Code : <span class="tx-danger">*</span></td>
-                              <td><input class="form-control" type="number" name="vou_code" value="" style="width: 100%" placeholder="Insert Voucher Code" required></td>
+                              <td><input class="form-control" type="number" name="vou_code" id="vou_code" value="" style="width: 100%" placeholder="Insert Voucher Code" required></td>
                             </tr>
                             <tr>
                               <td>Job Code</td>
@@ -159,12 +159,8 @@
                             <td>Vessel's Master Agent : <span class="tx-danger">*</span></td>
                             <td>
                               <div id="slWrapper05" class="parsley-select">
-                                <select class="form-control select2-show-search" placeholder="Choose one" name="vou_agent" data-parsley-class-handler="#slWrapper05" data-parsley-errors-container="#slErrorContainer" required>
-                                  <option label="Choose one"></option>
-                                  <?php foreach ($users as $u) : ?>
-                                    <option value="<?php echo $u->usr_id;?>"><?php echo $u->usr_firstname.' '.$u->usr_lastname;?></option>
-                                  <?php endforeach;?>
-                                </select>
+                                <input class="form-control" type="text" name="vou_agent" id="vou_agent" value="" style="width: 100%" placeholder="Insert Vessel's Master Agent" required>
+
                               </div>
                             </td>
                           </tr>
@@ -181,7 +177,7 @@
             </div><!-- card-body -->
             <div class="modal-footer">
               <button type="submit" class="btn btn-info">Submit Voucher</button>
-              <button onclick="window.location.href='job-info.html'" class="btn btn-secondary">Back</button>
+              <button onclick="window.location.href='<?php echo env('BASE_URL');?>jobinfo/<?php echo $job->job_id;?>'" class="btn btn-secondary">Back</button>
             </div><!-- form-layout-footer -->
           </form>
         </div><!-- card -->
@@ -292,6 +288,34 @@
 @stop
 
 @section('docready')
+<script type="text/javascript">
+    $(document).ready(function () {
+
+      $(document).on("change", "#vou_code", function () {
+           var vou_code = $('#vou_code').val();
+
+           $.ajax({
+               type: "GET",
+               url: "<?php echo env('BASE_URL');?>do-check-code/stsvoucher?code=" + vou_code,
+               beforeSend: function (xhr) {
+                   var token = $('meta[name="csrf_token"]').attr('content');
+                   if (token) {
+                       return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                   }
+               },
+               success: function (msg) {
+                 if (msg == "available") {
+                   toastr.success('Voucher Code <strong>'+vou_code+'</strong> is available.')
+                 } else if (msg == "notavailable") {
+                   toastr.error('Voucher Code <strong>'+vou_code+'</strong> already existed. Please use another.')
+                   $('#vou_code').val('');
+                 }
+               }
+           });
+      });
+
+    });
+  </script>
 <script>
   $(function(){
     'use strict';

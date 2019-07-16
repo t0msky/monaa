@@ -11,35 +11,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Twitter -->
-    <meta name="twitter:site" content="@monaa">
-    <meta name="twitter:creator" content="@monaa">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MONAA">
-    <meta name="twitter:description" content="Monitoring And Navitrack Assets Application">
-    <meta name="twitter:image" content="https://monaa.io/apps/img/monaa-social.png">
-
-    <!-- Facebook -->
-    <meta property="og:url" content="https://monaa.io/monaa/">
-    <meta property="og:title" content="MONAA">
-    <meta property="og:description" content="Monitoring And Navitrack Assets Application">
-
-    <meta property="og:image" content="https://monaa.io/apps/img/monaa-social.png">
-    <meta property="og:image:secure_url" content="https://monaa.io/monaa/apps/img/monaa-social.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
-
     <!-- Meta -->
-    <meta name="description" content="MONAA - Monitoring And Navitrack Assets Application">
-    <meta name="author" content="MONAA">
+    <meta property="og:description" content="MONAA - Monitoring And Navitrack Assets Application" />
+    <meta property="og:image" content="https://monaa.io/apps/cdn/Monaa_brand01.jpg" />
+    <meta name="author" content="Artifex DNA">
 
     <title>MONAA - Monitoring And Navitrack Assets Application</title>
 
     <!-- vendor css -->
     <link href="<?php echo env('BASE_URL');?>lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="<?php echo env('BASE_URL');?>lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="<?php echo env('BASE_URL');?>lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+	  <link href="<?php echo env('BASE_URL');?>lib/ionicons/css/ionicons.min.css" rel="stylesheet">
     <link href="<?php echo env('BASE_URL');?>lib/typicons.font/typicons.css" rel="stylesheet">
     <link href="<?php echo env('BASE_URL');?>lib/select2/css/select2.min.css" rel="stylesheet">
     <link href="<?php echo env('BASE_URL');?>lib/morris.js/morris.css" rel="stylesheet">
@@ -54,7 +36,6 @@
 
     <!-- Monaa CSS -->
     <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/monaa.css">
-
   </head>
 
   <body>
@@ -63,14 +44,17 @@
     <div class="br-logo"><img src="<?php echo env('BASE_URL');?>img/Monaa_light-02.png" class="br-logo"></div>
     <div class="br-sideleft sideleft-scrollbar">
       <ul class="br-sideleft-menu mg-t-20">
+
+        <?php if ($user->usr_role == "AD") { ?>
         <li class="br-menu-item">
-          <a href="#" class="br-menu-link with-sub <?php if($uri=='dashboard' || $uri=='noticeboard'){echo 'active';}?>">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='dashboard' || $uri=='noticeboard' || $uri=='activity-log'){echo 'active';}?>">
             <i class="tx-icon typcn typcn-th-large-outline tx-20 pd-r-2"></i>
             <span class="menu-item-label">Dashboard</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>dashboard" class="sub-link <?php if($uri=='dashboard'){echo 'active';}?>">Dashboard Cards</a></li>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>noticeboard" class="sub-link <?php if($uri=='noticeboard'){echo 'active';}?>">Notice Board</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>activity-log" class="sub-link <?php if($uri=='activity-log'){echo 'active';}?>">Activity Log</a></li>
           </ul>
         </li><!-- br-menu-item -->
         <li class="br-menu-item">
@@ -79,45 +63,55 @@
             <span class="menu-item-label">Data Assets</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <?php if ($user->usr_role == "AD") { ?>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>assets" class="sub-link <?php if($uri=='assets' || $uri=='edit-company' || $uri=='edit-ship'){echo 'active';}?>">Assets</a></li>
-            <?php } ?>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>ratecard" class="sub-link <?php if($uri=='ratecard'){echo 'active';}?>">Rate Card</a></li>
-            <?php if ($user->usr_role == "AD") { ?>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>jobitems" class="sub-link <?php if($uri=='jobitems'){echo 'active';}?>">Job Items</a></li>
-            <?php } ?>
           </ul>
         </li>
         <li class="br-menu-item">
-          <a href="#" class="br-menu-link with-sub <?php if($uri=='jobrecords' || $uri=='addnewjob' || $uri=='poacstatus' || $uri=='jobinfo'){echo 'active';}?>">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='jobrecords' || $uri=='addnewjob' || $uri=='poacstatus' || $uri=='jobinfo' || $uri=='jobinfo-pilotage'){echo 'active';}?>">
             <i class="tx-icon typcn typcn-briefcase tx-24 pd-r-4"></i>
             <span class="menu-item-label">Operations</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>jobrecords" class="sub-link <?php if($uri=='jobrecords' || $uri=='jobinfo'){echo 'active';}?>">Job Records</a></li>
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>addnewjob" class="sub-link <?php if($uri=='addnewjob'){echo 'active';}?>">Add New Job</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>jobrecords" class="sub-link <?php if($uri=='jobrecords' || $uri=='jobinfo' || $uri=='jobinfo-pilotage'){echo 'active';}?>">Job Records</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>addnewjob" class="sub-link <?php if($uri=='addnewjob'){echo 'active';}?>">Job Registration</a></li>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>poacstatus" class="sub-link <?php if($uri=='poacstatus'){echo 'active';}?>">POAC Status</a></li>
           </ul>
         </li>
         <li class="br-menu-item">
-          <a href="#" class="br-menu-link with-sub <?php if($uri=='vouchersrecord' || $uri=='submit-voucher'){echo 'active';}?>">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='vouchersrecord' || $uri== "add-voucher" || $uri=='vouchersrecord-pilotage' || $uri=='submit-voucher' || $uri=='submit-voucher-pilotage'){echo 'active';}?>">
             <i class="tx-icon typcn typcn-document-text tx-24 pd-r-4"></i>
             <span class="menu-item-label">Vouchers</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <li class="sub-item">
-              <a href="<?php echo env('BASE_URL');?>vouchersrecord" class="sub-link <?php if($uri=='vouchersrecord'){echo 'active';}?>">
-                STS Record
-                <?php
-                if ($user->usr_role == "AD") {
-                  echo ' <span class="badge badge-warning" data-toggle="tooltip" data-placement="right" title="'.$countVoucherUnverified.' unverified vouchers">'.$countVoucherUnverified.'</span>';
-                }
-                ?>
-              </a>
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>vouchersrecord" class="sub-link <?php if($uri=='vouchersrecord'){echo 'active';}?>">STS Records</a>
+                <?php if ($countVoucherUnverified > 0) { ?>
+                <span class="badge badge-success" data-toggle="tooltip-success" data-placement="right" title="{{$countVoucherUnverified}} Unverified Voucher">{{$countVoucherUnverified}}</span>
+                <?php } ?>
             </li>
 
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>submit-voucher" class="sub-link <?php if($uri=='submit-voucher'){echo 'active';}?>">Submit Vouchers</a></li>
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>submit-voucher" class="sub-link <?php if($uri=='submit-voucher'  || $uri== "add-voucher"){echo 'active';}?>">STS Submission</a>
+                <?php if ($countStsNoVoucher > 0) { ?>
+                <span class="badge badge-success" data-toggle="tooltip-success" data-placement="right" title="{{$countStsNoVoucher}} STS Job Voucher">{{$countStsNoVoucher}}</span>
+                <?php } ?>
+            </li>
 
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>vouchersrecord-pilotage" class="sub-link <?php if($uri=='vouchersrecord-pilotage'){echo 'active';}?>">PLT Records</a>
+                <?php if ($countVoucherPilotageUnverified > 0) { ?>
+                <span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="{{$countVoucherPilotageUnverified}} Unverified Voucher">{{$countVoucherPilotageUnverified}}</span>
+                <?php } ?>
+            </li>
+
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>submit-voucher-pilotage" class="sub-link <?php if($uri=='submit-voucher-pilotage'){echo 'active';}?>">PLT Submission</a>
+                <?php if ($countPilotageNoVoucher > 0) { ?>
+                <span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="{{$countPilotageNoVoucher}} PLT Job Voucher">{{$countPilotageNoVoucher}}</span>
+                <?php } ?>
+            </li>
           </ul>
         </li>
         <li class="br-menu-item">
@@ -126,7 +120,7 @@
             <span class="menu-item-label">Naveetrac ™</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>#" class="sub-link">Coming Soon</a></li>
+            <li class="sub-item"><a href="" class="sub-link" data-toggle="modal" data-target="#comingsoon">Coming Soon</a></li>
           </ul>
         </li><!-- br-menu-item -->
         <li class="br-menu-item">
@@ -137,7 +131,7 @@
           <ul class="br-menu-sub">
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>personnelboard" class="sub-link <?php if($uri=='personnelboard'){echo 'active';}?>">Personnel Board</a></li>
             <?php if ($user->usr_role == "AD") { ?>
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>adduser" class="sub-link <?php if($uri=='adduser'){echo 'active';}?>">New Registration</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>adduser" class="sub-link <?php if($uri=='adduser'){echo 'active';}?>">Registration</a></li>
             <?php } ?>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>profile" class="sub-link <?php if($uri=='profile'){echo 'active';}?>">My Profile</a></li>
           </ul>
@@ -148,27 +142,47 @@
             <span class="menu-item-label">Payrolls</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>#" class="sub-link">Coming Soon</a></li>
+            <li class="sub-item"><a href="" class="sub-link" data-toggle="modal" data-target="#comingsoon">Coming Soon</a></li>
           </ul>
         </li><!-- br-menu-item -->
         <hr>
         <li class="br-menu-item">
-          <a href="#" class="br-menu-link">
+          <a href="#" class="br-menu-link" data-toggle="modal" data-target="#comingsoon">
             <i class="tx-icon typcn typcn-message tx-24 pd-r-5"></i>
             <span class="menu-item-label">Mailbox</span>
           </a><!-- br-menu-link -->
         </li><!-- br-menu-item -->
         <li class="br-menu-item">
-          <a href="#" class="br-menu-link with-sub">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='notifications'){echo 'active';}?>">
             <i class="tx-icon typcn typcn-cog-outline tx-24 pd-r-2"></i>
             <span class="menu-item-label">Settings</span>
           </a><!-- br-menu-link -->
           <ul class="br-menu-sub">
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>#" class="sub-link">Notifications</a></li>
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>#" class="sub-link">Billing</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>notifications" class="sub-link <?php if($uri=='notifications'){echo 'active';}?>">Notifications</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>#" class="sub-link" data-toggle="modal" data-target="#comingsoon">Billing</a></li>
           </ul>
         </li><!-- br-menu-item -->
+
+
+      <?php } ?>
+
+      <?php if ($user->usr_role == "CP") { ?>
+
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='dashboard-poac' || $uri=='noticeboard' || $uri=='activity-log'){echo 'active';}?>">
+            <i class="tx-icon typcn typcn-th-large-outline tx-20 pd-r-2"></i>
+            <span class="menu-item-label">Dashboard</span>
+          </a><!-- br-menu-link -->
+          <ul class="br-menu-sub">
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>dashboard-poac" class="sub-link <?php if($uri=='dashboard-poac'){echo 'active';}?>">Dashboard Cards</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>noticeboard" class="sub-link <?php if($uri=='noticeboard'){echo 'active';}?>">Notice Board</a></li>
+            <!-- <li class="sub-item"><a href="<?php echo env('BASE_URL');?>activity-log" class="sub-link <?php if($uri=='activity-log'){echo 'active';}?>">Activity Log</a></li> -->
+          </ul>
+        </li><!-- br-menu-item -->
+
+      <?php } ?>
       </ul><!-- br-sideleft-menu -->
+
     </div><!-- br-sideleft -->
     <!-- ########## END: LEFT PANEL ########## -->
 
@@ -184,17 +198,44 @@
             <a href="" class="nav-link pd-x-7 pos-relative" data-toggle="dropdown">
               <i class="icon typcn typcn-bell tx-24"></i>
               <!-- start: if statement -->
-              <span class="square-8 bg-info pos-absolute t-15 r-5 rounded-circle"></span>
+              <span class="square-8 bg-success pos-absolute t-15 r-5 rounded-circle"></span>
               <!-- end: if statement -->
             </a>
             <div class="dropdown-menu dropdown-menu-header">
               <div class="dropdown-menu-label">
                 <label>Notifications</label>
-                <a href="">Mark All as Read</a>
+                <a href="">Mark All As Read</a>
               </div><!-- d-flex -->
 
               <div class="media-list">
                 <!-- loop starts here -->
+                <?php
+                // echo '<pre>'; print_r($notification); die();
+                // $msg = '';
+                // foreach ($notification as $n) :
+                //   if ($n->not_type == "newjob") {
+                //     $msg .= "You have 1 job on ";
+                //
+                //     $note_explode = explode(' ', $n->not_foreign_note);
+                //     $date1 = $note_explode[0];
+                //     $time = $note_explode[1];
+                //     $ampm = $note_explode[2];
+                //     $date2 = date('M d Y', strtotime($date1));
+                //     $msg .= '<strong>'.$date2.' '.$time.$ampm.'</strong>';
+                //     $href = env('BASE_URL').'jobinfo/'.$n->not_foreign_id;
+                //   }
+                ?>
+                <!-- <a href="<?php #echo $href;?>" class="media-list-link read">
+                  <div class="media">
+                    <div class="media-body">
+                      <p class="noti-text"><?php #echo $msg;?> </p>
+                      <span><?php #echo date('M d Y H:i:s', strtotime($n->not_created));?></span>
+                    </div>
+                  </div>
+                </a> -->
+                <?php
+                // endforeach;
+                ?>
                 <a href="" class="media-list-link read">
                   <div class="media">
                     <div class="media-body">
@@ -236,7 +277,7 @@
           </div><!-- dropdown -->
           <div class="dropdown">
             <a href="" class="nav-link nav-link-profile" data-toggle="dropdown">
-              <span class="logged-name hidden-md-down"><?php echo $user->usr_firstname.' '.$user->usr_lastname;?></span>
+              <span class="logged-name hidden-md-down">Hello, <?php echo $user->usr_firstname.' '.$user->usr_lastname;?>!</span>
 
 
               <?php if ($user->usr_pic != '') { ?>
@@ -269,17 +310,34 @@
             </div><!-- dropdown-menu -->
           </div><!-- dropdown -->
         </nav>
-        <div class="navicon-right">
-          <a target="_blank" class="pd-x-8" href="https://www.facebook.com/monaa.io/"><i class="fab fa-facebook tx-20"></i></a>
-          <a target="_blank" class="pd-x-8" href="https://twitter.com/monaa.io"><i class="fab fa-twitter tx-20"></i></a>
-        </div><!-- navicon-right -->
+
       </div><!-- br-header-right -->
     </div><!-- br-header -->
     <!-- ########## END: HEAD PANEL ########## -->
 
+    <!-- MODAL ALERT MESSAGE -->
+    <div id="comingsoon" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content tx-size-sm">
+          <div class="modal-body tx-center pd-y-20 pd-x-20">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="tx-center pd-l-20">
+              <i class="icon typcn typcn-warning-outline tx-120 tx-success"></i>
+            </div>
+            <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Coming Soon</div>
+            <p class="mg-b-30 mg-x-20">This section is currently under development. </p>
+          </div><!-- modal-body -->
+        </div><!-- modal-content -->
+      </div><!-- modal-dialog -->
+    </div><!-- modal -->
+
     <!-- ########## START: MAIN PANEL ########## -->
     @yield('content')
+
     <script src="<?php echo env('BASE_URL');?>lib/jquery/jquery.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/jquery/jquery.mockjax.min.js"></script>
     <script src="<?php echo env('BASE_URL');?>lib/jquery-ui/ui/widgets/datepicker.js"></script>
     <script src="<?php echo env('BASE_URL');?>lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo env('BASE_URL');?>lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -297,12 +355,12 @@
     <script src="<?php echo env('BASE_URL');?>lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js"></script>
     <script src="<?php echo env('BASE_URL');?>lib/raphael/raphael.min.js"></script>
     <script src="<?php echo env('BASE_URL');?>lib/morris.js/morris.min.js"></script>
-
     <script src="<?php echo env('BASE_URL');?>js/sweet-alert2.min.js"></script>
     <script src="<?php echo env('BASE_URL');?>js/toastr.js"></script>
     <script src="<?php echo env('BASE_URL');?>js/bracket.js"></script>
     <script src="<?php echo env('BASE_URL');?>js/ResizeSensor.js"></script>
     <script src="<?php echo env('BASE_URL');?>js/chart.morris.js"></script>
+    <script src="<?php echo env('BASE_URL');?>js/tooltip-colored.js"></script>
 
     <script type="text/javascript">
         jQuery(document).ready(function () {
@@ -330,36 +388,52 @@
     <script>
       $(function(){
         'use strict';
-
         $('[data-toggle="tooltip"]').tooltip()
 
-        $('#datatable-1').DataTable({
-          bLengthChange: false,
-          pageLength: 5,
-          searching: false,
-          sorting: false,
-          responsive: true
+        var dataTable = $('#datatable-1').DataTable( {
+         "bLengthChange": false,
+         "paging": true,
+         "ordering": false,
+         "info": true,
+         "sDom": 'ltipr'
         });
-        $('#datatable-2').DataTable({
-          bLengthChange: false,
-          pageLength: 5,
-          searching: false,
-          sorting: false,
-          responsive: true
+
+        var dataTable2 = $('#datatable-2').DataTable( {
+        "bLengthChange": false,
+        "paging": true,
+        "ordering": false,
+        "info": true,
+        "sDom": 'ltipr'
         });
-        $('#datatable-3').DataTable({
-          bLengthChange: false,
-          pageLength: 5,
-          searching: false,
-          sorting: false,
-          responsive: true
+
+        var dataTable3 = $('#datatable-3').DataTable( {
+        "bLengthChange": false,
+        "paging": true,
+        "ordering": false,
+        "info": true,
+        "sDom": 'ltipr'
         });
+
+        $('#filterbox-fsu').keyup(function() {
+          dataTable.search(this.value).draw();
+         });
+
+        $('#filterbox-spot').keyup(function() {
+          dataTable2.search(this.value).draw();
+         });
+
+        $('#filterbox-pilotage').keyup(function() {
+          dataTable3.search(this.value).draw();
+         });
+
         $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
           $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust()
           .responsive.recalc();
         });
       });
+
+
     </script>
   </body>
   </html>

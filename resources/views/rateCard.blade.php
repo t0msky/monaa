@@ -8,7 +8,7 @@
       <span class="breadcrumb-item active">Rate Card</span>
     </nav>
   </div><!-- br-pageheader -->
-  <div class="br-pagetitle">
+  <div class="br-pagetitle hidden-xs-down">
     <i class="icon typcn typcn-shopping-bag tx-24"></i>
     <div>
       <h4 class="pd-y-15">Rate Card</h4>
@@ -16,152 +16,141 @@
     </div>
   </div><!-- d-flex -->
 
-  <div class="br-pagebody pd-x-20 pd-sm-x-30">
+  <div class="br-pagebody pd-x-20 pd-sm-x-30 pd-b-25">
+
+    <?php
+    foreach ($cardArray as $ca) :
+    ?>
     <div class="row no-gutters widget-1 shadow-base">
-      <div class="col-sm-6 col-lg-6">
+
+      <?php
+        $client_name = '';
+        foreach ($ca as $c) :
+          if ($client_name != $c->client_name) {
+            echo '<div class="card bg-gray-300 col-sm-12">';
+                echo '<div class="card-header">';
+                echo '<div class="tx-uppercase tx-medium">'.$c->client_name.'</div>';
+                echo '</div>';
+            echo '</div>';
+            $client_name = $c->client_name;
+          }
+      ?>
+
+      <div class="col-sm-6 col-lg-6 mg-t-1 mg-sm-t-0 pd-t-20">
         <div class="card">
           <div class="card-header">
-            <h6 class="card-title"><span class="tx-teal">FSU</span> - Service Vessels LOA Greater Than 150m</h6>
-            <!-- <div class="dropdown hidden-xs-down">
-              <a href="#" data-toggle="dropdown" class="tx-gray-500 hover-info"><i class="icon ion-more tx-22"></i></a>
-              <div class="dropdown-menu dropdown-menu-right pd-10">
-                <nav class="nav nav-style-2 flex-column">
-                  <a href="" class="nav-link" data-toggle="modal" data-target="#editrate">Edit</a>
-                </nav>
-              </div>
-            </div> -->
+            <h6 class="card-title lh-3"><span class="tx-teal"><?php echo $c->card_type;?></span> - <?php echo $c->card_name;?></h6>
           </div><!-- card-header -->
           <div class="card-body">
-            <span>$ 6,500.00</span>
+            <div class="tx-24 tx-bold tx-inverse tx-lato tx-spacing-4">SGD</div> <div class="tx-24 tx-bold tx-inverse tx-lato tx-spacing-4"><?php echo number_format($c->card_rate, 2);?>
+            </div>
           </div><!-- card-body -->
           <div class="card-footer">
             <div>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Mooring Master On-Board</span><br>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Pilotage ( In-Bound, Out-Bound, Shifting )</span>
-            </div>
+          <?php if ($c->card_overtime != '') { ?>
+                <div class="tx-14 tx-excerpt-200"><i class="icon typcn typcn-tick tx-14 tx-success pd-r-15"></i>Subsequent Hours & Part Thereof</div>
+              <?php }else{ ?>
+                <span class="tx-14">&nbsp;</span><br>
+              <?php } ?>
+          </div>
             <div>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">1</span><br>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">2</span>
+                <?php if ($c->card_overtime != '') { ?>
+                <span class="tx-14">SGD <?php echo number_format($c->card_overtime, 2);?></span><br>
+              <?php }else{ ?>
+                <span class="tx-14">&nbsp;</span><br>
+              <?php } ?>
+
+
             </div>
           </div><!-- card-footer -->
-        </div><!-- card -->
-      </div><!-- col-3 -->
-      <div class="col-sm-6 col-lg-6 mg-t-1 mg-sm-t-0">
-        <div class="card">
-          <div class="card-header">
-            <h6 class="card-title"><span class="tx-teal">FSU</span> - Service Vessels LOA 150m Or Less</h6>
-            <!-- <div class="dropdown hidden-xs-down">
-              <a href="#" data-toggle="dropdown" class="tx-gray-500 hover-info"><i class="icon ion-more tx-22"></i></a>
-              <div class="dropdown-menu dropdown-menu-right pd-10">
-                <nav class="nav nav-style-2 flex-column">
-                  <a href="" class="nav-link" data-toggle="modal" data-target="#editrate">Edit</a>
-                </nav>
-              </div>
-            </div> -->
-          </div><!-- card-header -->
-          <div class="card-body">
-            <span>$ 4,000.00</span>
-          </div><!-- card-body -->
           <div class="card-footer">
             <div>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Mooring Master On-Board</span><br>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Pilotage ( In-Bound, Out-Bound, Shifting )</span>
+
+              <div class="tx-14 tx-excerpt-250"><i class="icon typcn typcn-tick tx-success tx-14 pd-r-15"></i>
+              <span class="tx-14">Mooring Master On-Board</div>
+              <div class="tx-14 tx-excerpt-250"><i class="icon typcn typcn-tick tx-success tx-14 pd-r-15"></i>
+              <span class="tx-14">Pilotage ( In-Bound, Out-Bound, Shifting )</div>
             </div>
             <div>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">1</span><br>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">0</span>
+
+              <i class="icon typcn typcn-times tx-success tx-13 pd-r-10"></i>
+              <span class="tx-inverse"><?php echo $c->card_mooring;?></span><br>
+              <i class="icon typcn typcn-times tx-success tx-13 pd-r-10"></i>
+              <span class="tx-inverse"><?php echo $c->card_pilotage;?></span>
             </div>
-          </div><!-- card-footer -->
-        </div><!-- card -->
-      </div><!-- col-3 -->
+          </div>
+        </div>
+      </div>
+      <?php endforeach;?>
     </div><!-- row -->
 
-    <div class="row no-gutters widget-1 shadow-base pd-t-20">
-      <div class="col-sm-6 col-lg-6 mg-t-1 mg-lg-t-0">
-        <div class="card">
-          <div class="card-header">
-            <h6 class="card-title"><span class="tx-teal">SPOT</span> - First 24 Hours</h6>
-            <!-- <div class="dropdown hidden-xs-down">
-              <a href="#" data-toggle="dropdown" class="tx-gray-500 hover-info"><i class="icon ion-more tx-22"></i></a>
-              <div class="dropdown-menu dropdown-menu-right pd-10">
-                <nav class="nav nav-style-2 flex-column">
-                  <a href="" class="nav-link" data-toggle="modal" data-target="#editrate">Edit</a>
-                </nav>
-              </div>
-            </div> -->
-          </div><!-- card-header -->
-          <div class="card-body">
-            <span>$ 4,100.00</span>
-          </div><!-- card-body -->
-          <div class="card-footer">
-            <div>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Mooring Master On-Board</span><br>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Pilotage ( In-Bound, Out-Bound, Shifting )</span>
-            </div>
-            <div>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">1</span><br>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">2</span>
-            </div>
-          </div><!-- card-footer -->
-        </div><!-- card -->
-      </div><!-- col-3 -->
-      <div class="col-sm-6 col-lg-6 mg-t-1 mg-lg-t-0">
-        <div class="card">
-          <div class="card-header">
-            <h6 class="card-title"><span class="tx-teal">SPOT</span> - Subsequent Hours & Part Thereof</h6>
-            <!-- <div class="dropdown hidden-xs-down">
-              <a href="#" data-toggle="dropdown" class="tx-gray-500 hover-info"><i class="icon ion-more tx-22"></i></a>
-              <div class="dropdown-menu dropdown-menu-right pd-10">
-                <nav class="nav nav-style-2 flex-column">
-                  <a href="" class="nav-link" data-toggle="modal" data-target="#editrate">Edit</a>
-                </nav>
-              </div>
-            </div> -->
-          </div><!-- card-header -->
-          <div class="card-body">
-            <span>$ 100.00</span>
-          </div><!-- card-body -->
-          <div class="card-footer">
-            <div>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Mooring Master On-Board</span><br>
-              <i class="icon typcn typcn-tick tx-16 pd-r-10"></i>
-              <span class="tx-14">Pilotage ( In-Bound, Out-Bound, Shifting )</span>
-            </div>
-            <div>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">0</span><br>
-              <i class="icon typcn typcn-times tx-16 pd-r-10"></i>
-              <span class="tx-inverse">0</span>
-            </div>
-          </div><!-- card-footer -->
-        </div><!-- card -->
-      </div><!-- col-3 -->
-    </div><!-- row -->
+    <div class="col-sm-12">
+    &nbsp;
+    </div>
+    <?php
+    endforeach;
+    ?>
 
-    <div class="row no-gutters widget-1 shadow-base pd-t-20">
+    <div class="row no-gutters widget-1 shadow-base">
+
+      <div class="card bg-gray-300 col-sm-12">
+          <div class="card-header">
+          <div class="tx-uppercase tx-medium">Pilotage</div>
+          </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-6 mg-t-1 mg-sm-t-0 pd-t-20">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="card-title"><span class="tx-teal">Pilotage</span> - Inbound, outbound or shifting</h6>
+          </div><!-- card-header -->
+          <div class="card-body">
+            <div class="tx-24 tx-bold tx-inverse tx-lato tx-spacing-4">SGD</div>  <div class="tx-24 tx-bold tx-inverse tx-lato tx-spacing-4">1,250.00</div>
+            
+          </div><!-- card-body -->
+          <div class="card-footer">
+            <div>
+                <!-- <i class="icon typcn typcn-tick tx-13 tx-success pd-r-10"></i> -->
+                <span class="tx-14">&nbsp;</span><br>
+            </div>
+            <div>
+                <!-- <i class="icon typcn typcn-tick tx-success tx-13 pd-r-10"></i> -->
+                <span class="tx-14">&nbsp;</span><br>
+            </div>
+          </div><!-- card-footer -->
+          <div class="card-footer">
+            <div>
+
+              <div class="tx-14 tx-excerpt-250"><i class="icon typcn typcn-tick tx-success tx-14 pd-r-15"></i>
+              <span class="tx-14">Price inclusive logistic & transports.</div>
+              <div class="tx-14 tx-excerpt-250"><i class="icon typcn typcn-tick tx-success tx-14 pd-r-15"></i>
+              <span class="tx-14">Discount of 20% on the total amount on all invoices.</div>
+            </div>
+            <div>
+
+              <!-- <i class="icon typcn typcn-times tx-success tx-13 pd-r-10"></i> -->
+              <span class="tx-inverse">&nbsp;</span><br>
+              <!-- <i class="icon typcn typcn-times tx-success tx-13 pd-r-10"></i> -->
+              <span class="tx-inverse">&nbsp;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row no-gutters widget-1 shadow-base pd-t-20 hidden-xs-down">
       <div class="col-sm col-lg mg-t-1 mg-lg-t-0">
         <div class="card">
           <div class="card-footer">
             <div>
-              <i class="icon typcn typcn-star tx-20 pd-r-5 tx-gray-500"></i>
+              <i class="icon typcn typcn-star tx-success tx-20 pd-r-5"></i>
               <span class="tx-14 tx-capitalize tx-gray-500">Last updated on -</span>&nbsp;Monday, 20 June 2019, 08:36 AM - IP address : 115.164.83.226<br>
             </div>
             <div>
-              <i class="icon typcn typcn-user tx-20 pd-r-10 tx-gray-500"></i>
-              <span class="tx-inverse tx-gray-500">Last updated by -</span>&nbsp;Syahrun Sulaiman<br>
+              <i class="icon typcn typcn-user tx-20 pd-r-10 tx-success"></i>
+              <span class="tx-inverse tx-gray-500">Last updated by -</span>&nbsp;Muhammad Hieffny Hamim<br>
             </div>
           </div><!-- card-footer -->
         </div><!-- card -->
@@ -171,25 +160,6 @@
   </div><!-- br-pagebody -->
 </div><!-- br-mainpanel -->
 
-<div id="editrate" class="modal fade">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content tx-size-sm">
-      <div class="modal-header pd-x-20">
-        <h6 class="tx-14 mg-b-0 tx-capitalize tx-inverse tx-medium">Edit Rate Card</h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body pd-20">
-
-      </div><!-- modal-body -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-info">Submit</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div><!-- modal-dialog -->
-</div><!-- modal -->
 
 
 @stop

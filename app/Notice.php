@@ -20,7 +20,7 @@ class Notice extends Model
     public static function getNoticeById($nid){
 
       $notice = DB::table('notice as n')
-                  ->join('users as u','.usr_id','=','n.notice_sender')
+                  ->join('users as u','u.usr_id','=','n.notice_sender')
                   ->where('n.notice_id',$nid)
   							  ->first();
 

@@ -7,57 +7,73 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Twitter -->
-  <meta name="twitter:site" content="@monaa">
-  <meta name="twitter:creator" content="@monaa">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MONAA">
-  <meta name="twitter:description" content="Monitoring And Navitrack Assets Application">
-  <meta name="twitter:image" content="https://apps.monaa.io/img/bracketplus-social.png">
-
-  <!-- Facebook -->
-  <meta property="og:url" content="https://apps.monaa.io/monaa/">
-  <meta property="og:title" content="MONAA">
-  <meta property="og:description" content="Monitoring And Navitrack Assets Application">
-
-  <meta property="og:image" content="https://apps.monaa.io/img/bracketplus-social.png">
-  <meta property="og:image:secure_url" content="https://apps.monaa.io/monaa/img/bracketplus-social.png">
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="600">
-
   <!-- Meta -->
-  <meta name="description" content="Monitoring And Navitrack Assets Application">
-  <meta name="author" content="MONAA">
+  <meta name="description" content="MONAA - Monitoring And Navitrack Assets Application">
+  <meta name="author" content="Artifex DNA">
 
-  <title>Monitoring And Navitrack Assets Application</title>
+  <title>MONAA - Monitoring And Navitrack Assets Application</title>
 
   <!-- vendor css -->
-  <link href="lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-  <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-  <link href="lib/typicons.font/typicons.css" rel="stylesheet">
-  <link href="lib/rickshaw/rickshaw.min.css" rel="stylesheet">
-  <link href="lib/select2/css/select2.min.css" rel="stylesheet">
-  <link href="lib/morris.js/morris.css" rel="stylesheet">
-  <link href="lib/highlightjs/styles/github.css" rel="stylesheet">
-
+  <link href="<?php echo env('BASE_URL');?>lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="<?php echo env('BASE_URL');?>lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+  <link href="<?php echo env('BASE_URL');?>lib/typicons.font/typicons.css" rel="stylesheet">
+  <link href="<?php echo env('BASE_URL');?>lib/rickshaw/rickshaw.min.css" rel="stylesheet">
+  <link href="<?php echo env('BASE_URL');?>lib/select2/css/select2.min.css" rel="stylesheet">
+  <link href="<?php echo env('BASE_URL');?>lib/morris.js/morris.css" rel="stylesheet">
+  <link href="<?php echo env('BASE_URL');?>lib/highlightjs/styles/github.css" rel="stylesheet">
+  <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/toastr.css" />
+  <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/monaa.css">
   <!-- Bracket CSS -->
-  <link rel="stylesheet" href="css/bracket.css">
+  <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/bracket.css">
 </head>
 
   <body>
     @yield('content')
 
 
-    <script src="lib/jquery/jquery.min.js"></script>
-    <script src="lib/jquery-ui/ui/widgets/datepicker.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="lib/moment/min/moment.min.js"></script>
-    <script src="lib/peity/jquery.peity.min.js"></script>
-    <script src="lib/select2/js/select2.min.js"></script>
-    <script src="lib/highlightjs/highlight.pack.min.js"></script>
-    <script src="lib/parsleyjs/parsley.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/jquery/jquery.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/jquery-ui/ui/widgets/datepicker.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/moment/min/moment.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/peity/jquery.peity.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/select2/js/select2.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/highlightjs/highlight.pack.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>lib/parsleyjs/parsley.min.js"></script>
+    <script src="<?php echo env('BASE_URL');?>js/toastr.js"></script>
 
+    <script>
+      $(function(){
+        'use strict';
+
+        toastr.options = {
+          "closeButton": false,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": true,
+          "positionClass": "toast-bottom-left",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "18000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+        <?php if(session()->has('success')){?>
+          toastr.success('<?php echo session()->get('success'); ?>')
+        <?php } ?>
+
+        <?php if(session()->has('error')){?>
+          toastr.error('<?php echo session()->get('error'); ?>')
+        <?php } ?>
+
+      });
+
+
+    </script>
   </body>
 </html>

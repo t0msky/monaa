@@ -1,3 +1,12 @@
+<?php
+// if ( $vouchers->isEmpty() ) {
+//   echo 'kosong';
+// } else {
+// echo 'ada';
+// }
+// die();
+?>
+
 @extends('layouts.master')
 
 @section('content')
@@ -24,47 +33,72 @@
     </div><!-- br-active-contacts -->
 
     <div class="br-chatlist">
-          <?php
-          $no = 1;
-          foreach ($vouchers as $v) :
+      <?php
+      if ( count($vouchers) == 0 ) { ?>
+        <!-- echo '<span class="alert alert-warning">No data available in table</span>'; -->
+        <br>
+        <div class="col-xl-12">
+          <div class="alert alert-dark" role="alert">
+            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+            <!--  <span aria-hidden="true">×</span>-->
+            <!--</button>-->
+            <div class="d-flex align-items-center justify-content-start pd-y-5">
+              <i class="fa fa-exclamation-triangle tx-24 mg-t-5 mg-xs-t-0"></i>
+              <span class="tx-14 pd-l-15">No vouchers submitted</span>
+            </div><!-- d-flex -->
+          </div>
+        </div>
+      <?php } else {
+        $no = 1;
+        foreach ($vouchers as $v) :
+
+        //kalau ada voucher redirect, bypass first voucher
+        if ($vid != '') {
+          $firstSelected = "";
+          $redirectSelected = " selected";
+        } else {
           //set select untuk 1st voucher je
           if ($no==1) {
             $firstSelected = " selected";
+            $redirectSelected = "";
           } else {
             $firstSelected = "";
+            $redirectSelected = "";
           }
-          $statusArray = array(
-            'Unverified' => 'ion-close tx-danger',
-            'Verified' => 'ion-checkmark tx-success'
-          );
-          ?>
-          <div class="media voucherList <?php echo $firstSelected;?>" id="voucherListId<?php echo $v->vou_id;?>" style="cursor: pointer;" voucherId="<?php echo $v->vou_id;?>" voucherCode="<?php echo $v->vou_code;?>">
-            <div class="media-body">
-              <div class="media-contact-name">
-                <span><i class="icon <?php echo $statusArray[$v->vou_status];?> pd-r-10"></i><?php echo $v->vou_code;?></span>
-                <span><?php echo date('d M Y', strtotime($v->vou_date));?></span>
-              </div>
-            </div><!-- media-body -->
-          </div><!-- media -->
-          <?php
-          $no = $no + 1;
-          endforeach;
-          ?>
-        </div><!-- br-chatlist -->
+        }
+
+        $statusArray = array(
+          'Unverified' => 'ion-close tx-danger',
+          'Verified' => 'ion-checkmark tx-success'
+        );
+        ?>
+        <div class="media voucherList <?php echo $firstSelected;?> <?php if($v->vou_id == $vid){ echo $redirectSelected;} ?>" id="voucherListId<?php echo $v->vou_id;?>" style="cursor: pointer;" voucherId="<?php echo $v->vou_id;?>" voucherCode="<?php echo $v->vou_code;?>">
+          <div class="media-body">
+            <div class="media-contact-name">
+              <span>
+                <i class="icon <?php echo $statusArray[$v->vou_status];?> pd-r-10"></i>
+                <span class="tx-spacing-2"><?php echo $v->vou_code;?></span>
+                <div class="tx-13 tx-normal tx-gray-600 tx-excerpt-160">By
+                <?php echo $v->usr_firstname.' '.$v->usr_lastname;?></div>
+              </span>
+              <span><?php echo date('d M Y', strtotime($v->vou_date));?><br>&nbsp;</span>
+            </div>
+          </div><!-- media-body -->
+        </div><!-- media -->
+        <?php
+        $no = $no + 1;
+        endforeach;
+      }?>
+    </div><!-- br-chatlist -->
 
 
   </div><!-- br-chatpanel-left -->
   <div class="br-chatpanel-body">
-    <div class="br-pageheader">
-      <nav class="breadcrumb pd-0 mg-0 tx-12">
-        <a class="breadcrumb-item" href="#">Vouchers</a>
-        <span class="breadcrumb-item active">Vouchers Record</span>
-      </nav>
-    </div><!-- br-pageheader -->
+
     <div class="br-pagetitle">
       <i class="icon typcn typcn-document-text tx-24"></i>
       <div>
-        <h4 class="pd-y-15">Vouchers Record <span id="DisplayVoucherCode"></span></h4>
+        <h4 class="pd-y-15">STS Voucher Records</h4>
         <!-- <p class="mg-b-0">Summary Of Contracted Service Vouchers Record</p> -->
       </div>
     </div><!-- d-flex -->
@@ -72,7 +106,7 @@
 
     <div class="br-pagebody pd-x-20 pd-sm-x-30 pd-b-20" id="voucherBody">
 
-      <?php if (!empty($firstVouchers)) { ?>
+      <?php if ( count($vouchers) != 0 ) { ?>
       <!-- /////////////////////////////// -->
       <div class="card bd-0 shadow-base">
         <div class="card-header bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
@@ -97,17 +131,17 @@
 
           </div>
           <div class="btn-group" role="group" aria-label="Basic example">
-            <span data-toggle="tooltip" data-placement="top" title="Delete">
+            <span data-toggle="tooltip-success" data-placement="top" title="Delete Voucher">
               <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $firstVouchers->vou_id;?>">
                 <i class="icon typcn typcn-trash tx-24"></i>
               </button>
             </span>
             <!-- <button type="button" class="btn btn-third"><i class="icon typcn typcn-edit tx-24"></i></button> -->
             <a href="<?php echo env('BASE_URL');?>pdf-voucher-detail/<?php echo $firstVouchers->vou_id;?>"
-              class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF">
+              class="btn btn-third" data-toggle="tooltip-success" data-placement="top" title="PDF">
               <i class="icon typcn typcn-document-text tx-24"></i></a>
             <a target="_blank" href="<?php echo env('BASE_URL');?>print-voucher-detail/<?php echo $firstVouchers->vou_id;?>"
-              class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
+              class="btn btn-third" data-toggle="tooltip-success" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
           </div>
         </div><!-- card-header -->
         <div class="card-body pd-30 pd-md-30">
@@ -117,26 +151,38 @@
 
           <div class="row mg-t-40">
             <div class="col-md-3">
-              <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Operator</label>
-              <h6 class="tx-inverse"><?php echo $operator->sts_name;?></h6>
-              <p class="lh-7"><?php echo $operator->sts_address;?></p>
+              <label class="tx-uppercase tx-14 tx-gray-500 tx-medium mg-b-20">STS Operator</label>
+              <h6 class="tx-uppercase"><?php echo $operator->sts_name;?></h6>
+              <p class="lh-7">
+                <?php echo $operator->sts_address;?><br>
+                <?php echo $operator->sts_address2;?><br>
+                <?php echo $operator->sts_postcode;?>, <?php echo $operator->sts_state;?>, <?php echo $operator->sts_country;?>
+              </p>
             </div><!-- col -->
             <div class="col-md-3">
-              <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Service Provider</label>
-              <h6 class="tx-inverse"><?php echo $provider->sts_name;?></h6>
-              <p class="lh-7"><?php echo $provider->sts_address;?></p>
+              <label class="tx-uppercase tx-14 tx-gray-500 tx-medium mg-b-20">STS Service Provider</label>
+              <h6 class="tx-uppercase"><?php echo $provider->sts_name;?></h6>
+              <p class="lh-7">
+                <?php echo $provider->sts_address;?><br>
+                <?php echo $provider->sts_address2;?><br>
+                <?php echo $provider->sts_postcode;?>, <?php echo $provider->sts_state;?>, <?php echo $provider->sts_country;?>
+              </p>
             </div>
             <div class="col-md-6">
               <div class="table-responsive">
                 <table class="table">
                   <tbody>
                     <tr>
-                      <td class="tx-left">Service Voucher No.</td>
+                      <td class="tx-left">Voucher No.</td>
                       <td class="tx-right"><?php echo $firstVouchers->vou_code;?></td>
                     </tr>
                     <tr>
-                      <td class="tx-left">Job Assigned</td>
+                      <td class="tx-left">Job Code</td>
                       <td class="tx-right"><?php echo $firstVouchers->job_code;?></td>
+                    </tr>
+                    <tr>
+                      <td class="tx-left">Service Option</td>
+                      <td class="tx-right"><?php echo $firstVouchers->card_type.' - '.$firstVouchers->card_name;?></td>
                     </tr>
                     <tr>
                       <td class="tx-left">Issued Date</td>
@@ -152,7 +198,7 @@
             </div><!-- row -->
           </div><!-- row -->
 
-          <div class="row mg-t-20">
+          <div class="row pd-t-20">
             <div class="col-md-6">
               <div class="bd bd-gray-300 rounded table-responsive">
                 <table class="table">
@@ -208,10 +254,12 @@
 
           <div class="row mg-t-40 mg-b-40">
             <div class="col-md-3">
-              <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Service Provider</label>
-              <h6 class="tx-inverse"><?php echo $provider->sts_name;?></h6>
+              <label class="tx-uppercase tx-14 tx-gray-500 tx-medium mg-b-20">STS Service Provider</label>
+              <h6 class="tx-uppercase"><?php echo $provider->sts_name;?></h6>
               <p class="lh-7">
-                <?php echo $provider->sts_address;?>
+                <?php echo $provider->sts_address;?><br>
+                <?php echo $provider->sts_address2;?><br>
+                <?php echo $provider->sts_postcode;?>, <?php echo $provider->sts_state;?>, <?php echo $provider->sts_country;?>
               </p>
             </div><!-- col -->
             <div class="col-md-9">
@@ -224,12 +272,12 @@
                     </tr>
                     <tr>
                       <td class="tx-left">Vessel's Master Agent</td>
-                      <td class="wd-30p tx-right"><?php echo $agent->usr_firstname.' '.$agent->usr_lastname;?></td>
+                      <td class="wd-30p tx-right"><?php echo $firstVouchers->vou_agent;?></td>
                     </tr>
                   </tbody>
                 </table>
               </div><!-- table-responsive -->
-              <div class="mg-t-20 mg-md-t-0">
+              <div class="pd-t-30 mg-md-t-0">
                 <div class="card card-body bg-gray-200 bd-0">
                   <p class="card-text">Note : Vessel are at all time Master's command and responsibility. The presence of Advisor/Pilot/Mooring Master are deemed on as servant of the master for his local knowledge, expertise, experience and shall not be liable for any losses, damages and claims cause by any act omission or default during engagement.</p>
                 </div><!-- card -->
@@ -282,7 +330,7 @@
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <input type="hidden" name="vou_id" id="deleteDisplayVoucherId">
           <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Are you sure?</div>
-          <p class="mg-b-30 mg-x-20">You will not be able to recover this message!</p>
+          <p class="mg-b-30 mg-x-20">You will not be able to recover this voucher!</p>
           <button class="btn btn-info">Yes, Confirm</button>
         </form>
       </div><!-- modal-body -->
@@ -297,7 +345,8 @@
 <script type="text/javascript">
     jQuery(document).ready(function () {
 
-      // $("#voucherBody").hide();
+      $("#voucherListId<?php echo $vid;?>").focus()
+      // document.getElementById('divVZITab').focus();
 
       $('.voucherList').on('click', function(){
 

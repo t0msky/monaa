@@ -1,58 +1,50 @@
+<?php
+// echo $uri; die();
+?>
+
 <!DOCTYPE html>
-<html lang="en" class="pos-relative">
+<html lang="en">
   <head>
+    <link rel="shortcut icon" type='image/x-icon' href="img/monaa.ico">
+    <link rel="shortcut icon" type='image/x-icon' href="img/monaa-16.png">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Twitter -->
-    <meta name="twitter:site" content="@themepixels">
-    <meta name="twitter:creator" content="@themepixels">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Bracket Plus">
-    <meta name="twitter:description" content="Premium Quality and Responsive UI for Dashboard.">
-    <meta name="twitter:image" content="http://themepixels.me/bracketplus/img/bracketplus-social.png">
-
-    <!-- Facebook -->
-    <meta property="og:url" content="http://themepixels.me/bracketplus">
-    <meta property="og:title" content="Bracket Plus">
-    <meta property="og:description" content="Premium Quality and Responsive UI for Dashboard.">
-
-    <meta property="og:image" content="http://themepixels.me/bracketplus/img/bracketplus-social.png">
-    <meta property="og:image:secure_url" content="http://themepixels.me/bracketplus/img/bracketplus-social.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
-
     <!-- Meta -->
-    <meta name="description" content="Premium Quality and Responsive UI for Dashboard.">
-    <meta name="author" content="ThemePixels">
+    <meta name="description" content="MONAA - Monitoring And Navitrack Assets Application">
+    <meta name="author" content="Artifex DNA">
 
-    <title>Bracket Plus Responsive Bootstrap 4 Admin Template</title>
+    <title>MONAA - Monitoring And Navitrack Assets Application</title>
 
     <!-- vendor css -->
     <link href="<?php echo env('BASE_URL');?>lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="<?php echo env('BASE_URL');?>lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	  <link href="<?php echo env('BASE_URL');?>lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/typicons.font/typicons.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/select2/css/select2.min.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/morris.js/morris.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/timepicker/jquery.timepicker.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/highlightjs/styles/github.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/medium-editor/css/medium-editor.min.css" rel="stylesheet">
+    <link href="<?php echo env('BASE_URL');?>lib/summernote/summernote-bs4.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/sweet-alert2.css" />
+    <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/toastr.css" />
 
-    <!-- Bracket CSS -->
-    <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/bracket.css">
+    <!-- Monaa CSS -->
+    <link rel="stylesheet" href="<?php echo env('BASE_URL');?>css/monaa.css">
   </head>
+
 
   <body class="pos-relative">
 
     <div class="ht-100v d-flex align-items-center justify-content-center">
       <div class="wd-lg-70p wd-xl-50p tx-center pd-x-40">
-        <h1 class="tx-100 tx-xs-140 tx-normal tx-inverse tx-roboto mg-b-0">404!</h1>
-        <h5 class="tx-xs-24 tx-normal tx-info mg-b-30 lh-5">Opps! Looks like something went completely wrong.</h5>
-        <p class="tx-16 mg-b-30">Please contact our Support. Thank You.</p>
-
-        <div class="d-flex justify-content-center">
-
-            <a href="<?php echo env('BASE_URL');?>dashboard"  class="btn btn-success">
-  						Back to Dashboard
-  					</a>
-
-        </div><!-- d-flex -->
+        <h1 class="tx-100 tx-xs-140 tx-normal tx-inverse tx-roboto mg-b-0">404</h1>
+        <div class="tx-xs-24  tx-20 tx-normal tx-success lh-5">Opps! Looks like something went completely wrong.</div>
+        <p class="tx-14 mg-b-30">Please contact Monaa support team. Thank You.</p>
       </div>
     </div><!-- ht-100v -->
 

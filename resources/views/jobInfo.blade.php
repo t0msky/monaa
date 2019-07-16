@@ -6,13 +6,13 @@
     <nav class="breadcrumb pd-0 mg-0 tx-12">
       <a class="breadcrumb-item" href="#">Operations</a>
       <a class="breadcrumb-item" href="jobrecord.html">Job Records</a>
-      <span class="breadcrumb-item active">Job Information</span>
+      <span class="breadcrumb-item active">Job Information ( Ship-To-Ship )</span>
     </nav>
   </div><!-- br-pageheader -->
   <div class="br-pagetitle">
     <i class="icon typcn typcn-briefcase tx-24"></i>
     <div>
-      <h4 class="pd-y-15">Job Information</h4>
+      <h4 class="pd-y-15">Job Information ( Ship-To-Ship )</h4>
       <!-- <p class="mg-b-0">Overview And Summary Of Current Projects</p> -->
     </div>
   </div><!-- d-flex -->
@@ -26,7 +26,7 @@
   ?>
   <div class="br-pagebody pd-x-20 pd-sm-x-30">
     <div class="row row-sm mg-t-20">
-      <div class="col-lg mg-t-20 mg-lg-t-0">
+      <div class="col-lg mg-t-20 mg-lg-t-0 pd-b-30">
         <div class="card shadow-base bd-0">
           <div class="card-header-02 bg-transparent pd-x-25 pd-t-25 pd-b-0 d-flex justify-content-between align-items-center">
             <div class="btn-group" role="group" aria-label="Basic example">
@@ -108,7 +108,7 @@
                               <?php
                               foreach($stsProvider as $p) :
                               ?>
-                              <option value="<?php echo $p->sts_id;?>" <?php if($p->sts_id == $job->job_operator) { echo ' selected';} ?> >
+                              <option value="<?php echo $p->sts_id;?>" <?php if($p->sts_id == $job->job_provider) { echo ' selected';} ?> >
                                 <?php echo $p->sts_name;?>
                               </option>
                               <?php
@@ -117,10 +117,12 @@
                             </select></td>
                           </tr>
                           <tr>
-                            <td>STS</td>
+                            <td>Service Options</td>
                             <td><select class="form-control bd-transparent select2" name="job_sts" <?php echo $disabled_completed;?>>
                               <?php foreach ($cards as $c): ?>
-                                <option value="<?php echo $c->card_id;?>" <?php if($c->card_id == $job->job_sts) { echo ' selected';} ?> ><?php echo $c->card_name;?></option>
+                                <option value="<?php echo $c->card_id;?>" <?php if($c->card_id == $job->job_sts) { echo ' selected';} ?> >
+                                  <?php echo $c->card_type.' - '.$c->card_name;?>
+                                </option>
                               <?php endforeach;?>
                             </select></td>
                           </tr>
@@ -169,22 +171,27 @@
                               </div>
                               <?php
                               if ($job->job_commence_time != '') {
-                                $job_commence_time = explode(' ', $job->job_commence_time);
-                                $job_commence_time_ampm = $job_commence_time[1];
+                                $job_commence_time_explode = explode(' ', $job->job_commence_time);
+                                $job_commence_time = $job_commence_time_explode[0];
+                                $job_commence_time_ampm = $job_commence_time_explode[1];
                               } else {
+                                $job_commence_time = '00:00';
                                 $job_commence_time_ampm = "am";
                               }
+                              // echo $str = strlen($job_commence_time);
                               ?>
-                              <input id="time-01" type="text" class="form-control" name="job_commence_time" value="<?php echo $job->job_commence_time;?>" <?php echo $disabled_completed;?>>
-                              <select name="job_commence_time_ampm" class="form-control select2" required>
-                                <option value="am" <?php if($job_commence_time_ampm=="am"){echo ' selected';}?>>am</option>
-                                <option value="pm" <?php if($job_commence_time_ampm=="pm"){echo ' selected';}?>>pm</option>
+                              <input id="time-01" type="text" class="form-control" name="job_commence_time" value="<?php echo $job_commence_time;?>" <?php echo $disabled_completed;?>>
+                              <div class="mg-l-10">
+                              <select id="job_commence_time_ampm" name="job_commence_time_ampm" class="form-control select2" style="width: 100px" required>
+                                <option value="am" <?php if($job_commence_time_ampm=="am"){echo ' selected';}?>>AM</option>
+                                <option value="pm" <?php if($job_commence_time_ampm=="pm"){echo ' selected';}?>>PM</option>
                               </select>
+                              </div>
                             </div></td>
                           </tr>
                           <tr>
                             <td>Base Location</td>
-                            <td><select class="form-control select2-show-search" name="job_location" data-placeholder="Choose one (with searchbox)" <?php echo $disabled_completed;?>>
+                            <td><select class="form-control select2" name="job_location" data-placeholder="Choose one" <?php echo $disabled_completed;?>>
 
                               <?php foreach($locations as $l): ?>
                                   <option value="<?php echo $l->loc_id;?>"  <?php if($l->loc_id == $job->job_location) { echo ' selected';} ?> ><?php echo $l->loc_name;?></option>';
@@ -200,18 +207,10 @@
                             </select></td>
                           </tr>
                           <tr>
-                            <td>POAC 1</td>
+                            <td>POAC</td>
                             <td><select class="form-control select2-show-search" name="job_poac1" data-placeholder="Choose one (with searchbox)" <?php echo $disabled_completed;?>>
                               <?php foreach ($users as $u): ?>
                                 <option value="<?php echo $u->usr_id;?>" <?php if ($u->usr_id == $job->job_poac1) { echo ' selected';} ?> ><?php echo $u->usr_firstname.' '.$u->usr_lastname;?></option>
-                              <?php endforeach; ?>
-                            </select></td>
-                          </tr>
-                          <tr>
-                            <td>POAC 2</td>
-                            <td><select class="form-control select2-show-search" name="job_poac2" data-placeholder="Choose one (with searchbox)" <?php echo $disabled_completed;?>>
-                              <?php foreach ($users as $u): ?>
-                                <option value="<?php echo $u->usr_id;?>" <?php if ($u->usr_id == $job->job_poac2) { echo ' selected';} ?> ><?php echo $u->usr_firstname.' '.$u->usr_lastname;?></option>
                               <?php endforeach; ?>
                             </select></td>
                           </tr>
@@ -230,22 +229,7 @@
                   <div class="row mg-b-10">
                     <div class="col-lg-6">
                       <div class="form-group mg-b-10-force">
-                        <label class="form-control-label">Total Exposure Hours <span class="tx-danger">*</label>
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text">
-                                <i class="far fa-clock tx-16 lh-0 op-6"></i>
-                              </div>
-                            </div>
-                            <input id="time-05" type="text" class="form-control" placeholder="00:00" name="job_hour" value="<?php echo $job->job_hour;?>" <?php echo $disabled_completed;?>>
-                          </div><!-- input-group -->
-                      </div>
-                    </div><!-- col-6 -->
-                  </div><!-- row -->
-                  <div class="row mg-b-10">
-                    <div class="col-lg-6">
-                      <div class="form-group mg-b-10-force">
-                        <label class="form-control-label">Completion Date : <span class="tx-danger">*</span></label>
+                        <label class="form-control-label">Completion Date : <span class="tx-success">*</span></label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -266,7 +250,7 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group mg-b-10-force">
-                        <label class="form-control-label">Completion Time : <span class="tx-danger">*</label>
+                        <label class="form-control-label">Completion Time : <span class="tx-success">*</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -275,34 +259,58 @@
                           </div>
                           <?php
                           if ($job->job_complete_time != '') {
-                            $job_complete_time = explode(' ', $job->job_complete_time);
-                            $job_complete_time_ampm = $job_complete_time[1];
+                            $job_complete_time_explode = explode(' ', $job->job_complete_time);
+                            $job_complete_time = $job_complete_time_explode[0];
+                            $job_complete_time_ampm = $job_complete_time_explode[1];
                           } else {
+                            $job_complete_time = "";
                             $job_complete_time_ampm = "am";
                           }
 
                           ?>
-                          <input id="time-02"  name="job_complete_time"  type="text" class="form-control" placeholder="Set time" value="<?php echo $job->job_complete_time;?>" <?php echo $disabled_completed;?>>
-                          <select name="job_complete_time_ampm" class="form-control select2" required>
-                            <option value="am" <?php if($job_complete_time_ampm=="am"){echo ' selected';}?>>am</option>
-                            <option value="pm" <?php if($job_complete_time_ampm=="pm"){echo ' selected';}?>>pm</option>
+                          <input id="time-02"  name="job_complete_time"  type="text" class="form-control" placeholder="__:__" value="<?php echo $job_complete_time;?>" <?php echo $disabled_completed;?>>
+                          <div class="mg-l-10">
+                          <select id="job_complete_time_ampm" name="job_complete_time_ampm" class="form-control select2" style="width: 100px" required>
+                            <option value="am" <?php if($job_complete_time_ampm=="am"){echo ' selected';}?>>AM</option>
+                            <option value="pm" <?php if($job_complete_time_ampm=="pm"){echo ' selected';}?>>PM</option>
                           </select>
+                          </div>
                         </div>
                       </div>
                     </div><!-- col-8 -->
                   </div><!-- row -->
+
+                  <div class="row mg-b-10">
+                    <div class="col-lg-6">
+                      <div class="form-group mg-b-10-force">
+                        <label class="form-control-label">Total Exposure Hours :  <span class="tx-success">*</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="far fa-clock tx-16 lh-0 op-6"></i>
+                              </div>
+                            </div>
+                            <span id="job_hour_disabled">
+                              <input type="text" id="job_hour1" class="form-control" value="<?php echo $job->job_hour;?>" readonly>
+                            </span>
+                            <input type="hidden" id="job_hour2" name="job_hour" value="<?php echo $job->job_hour;?>" required>
+                          </div><!-- input-group -->
+                      </div>
+                    </div><!-- col-6 -->
+                  </div><!-- row -->
+
                   <div class="row mg-b-10">
                     <div class="col-lg-6">
                       <div class="form-group mg-b-10-force">
                         <div class="d-flex justify-content-between align-items-center">
-                          <label class="form-control-label">Exceeding Hours<span class="tx-danger">*</label>
+                          <label class="form-control-label">Overtime : <span class="tx-success">*</label>
                           <!-- <label class="tx-gray-400 form-control-label">hh : mm</label> -->
                         </div>
-                        <div class="input-group">
-                          <select name="job_exceeding_select" class="form-control select2" required>
-                            <option>Choose One</option>
-                            <option value="24" <?php if($job->job_exceeding24!=""){echo ' selected';}?>>Exceeding Hours > 24</option>
-                            <option value="48" <?php if($job->job_exceeding48!=""){echo ' selected';}?>>Exceeding Hours > 48</option>
+                        <div class="input-group" id="divSelectExceedingHour">
+                          <select name="job_exceeding_select" id="job_exceeding_select" class="form-control select2">
+                            <option>None</option>
+                            <option value="24" <?php if($job->job_exceeding24!="0"){echo ' selected';}?>>Exceeding Hours > 24</option>
+                            <option value="48" <?php if($job->job_exceeding48!="0"){echo ' selected';}?>>Exceeding Hours > 48</option>
                           </select>
                           <!-- <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -320,32 +328,31 @@
                     <div class="col-lg-6">
                       <div class="form-group mg-b-10-force">
                         <div class="d-flex justify-content-between align-items-center">
-                          <label class="form-control-label">Exceeding Hours<span class="tx-danger">*</label>
+                          <label class="form-control-label">Exceeding Hours : <span class="tx-success">*</label>
                           <label class="tx-gray-400 form-control-label">hh : mm</label>
                         </div>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
-                              <label class="rdiobox wd-16 mg-b-0">
-                                <input name="rdio" type="radio" disabled><span></span>
-                              </label>
+                              <i class="far fa-clock tx-16 lh-0 op-6"></i>
                             </div>
                           </div>
                           <?php
-                          $job_exceeding_number = '';
-                          if ($job->job_exceeding24 != "") {
+                          $job_exceeding_number = 0;
+                          if ($job->job_exceeding24 != "0") {
                             $job_exceeding_number = $job->job_exceeding24;
-                          } else if ($job->job_exceeding48 != "") {
+                          } else if ($job->job_exceeding48 != 0) {
                             $job_exceeding_number = $job->job_exceeding48;
                           }
                           ?>
-                          <input id="time-04" type="text" class="form-control" placeholder="00:00" name="job_exceeding_number" value="<?php echo $job_exceeding_number;?>" <?php echo $disabled_completed;?>>
+                          <input type="text" class="form-control job_exceeding_number" value="<?php echo $job_exceeding_number;?>" disabled>
+                          <input type="hidden" class="form-control job_exceeding_number" name="job_exceeding_number" value="<?php echo $job_exceeding_number;?>" <?php echo $disabled_completed;?>>
                         </div><!-- input-group -->
                       </div>
                     </div><!-- col-6 -->
                   </div><!-- row -->
                   <div class="row mg-b-10">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <div class="form-group mg-b-10-force">
                         <div class="d-flex justify-content-between align-items-center">
                           <label class="form-control-label">Berthing : </label>
@@ -372,22 +379,29 @@
                           </div>
                         </div>
                         <input type="hidden" name="job_berthing" value="<?php echo $vou_code_berthing;?>">
-                        <input class="form-control" type="text" name="job_berthing_disabled" placeholder="" value="<?php echo $vou_code_berthing;?>" disabled>
+                        <?php
+                          if ($vou_code_berthing != '') {
+                            $by = ' - '.$voucher_berthing->usr_firstname.' '.$voucher_berthing->usr_lastname;
+                          } else {
+                            $by = '';
+                          }
+                        ?>
+                        <input class="form-control" type="text" name="job_berthing_disabled" placeholder="" value="<?php echo $vou_code_berthing.$by;?>" disabled>
                       </div>
                     </div><!-- col-6 -->
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <div class="form-group mg-b-10-force">
                         <div class="d-flex justify-content-between align-items-center">
                           <label class="form-control-label">Unberthing : </label>
                           <div class="dropdown hidden-xs-down">
                             <?php
                             if(!empty($voucher_unberthing)) {
-                              $voucher_unberthing = $voucher_unberthing->vou_code;
+                              $vou_code_unberthing = $voucher_unberthing->vou_code;
                             } else {
-                              $voucher_unberthing = '';
+                              $vou_code_unberthing = '';
                             }
 
-                            if ($job->job_status != "In-coming" && $voucher_unberthing == '') {
+                            if ($job->job_status != "In-coming" && $vou_code_unberthing == '') {
                             ?>
                             <a href="#" data-toggle="dropdown" class="tx-success hover-info"><i class="icon ion-plus tx-20"></i></a>
                             <div class="dropdown-menu dropdown-menu-right pd-10">
@@ -398,8 +412,15 @@
                             <?php } ?>
                           </div>
                         </div>
-                        <input class="form-control" type="hidden" name="job_unberthing" value="<?php echo $voucher_unberthing;?>">
-                        <input class="form-control" type="text" name="job_unberthing" value="<?php echo $voucher_unberthing;?>" disabled>
+                        <input class="form-control" type="hidden" name="job_unberthing" value="<?php echo $vou_code_unberthing;?>">
+                        <?php
+                          if ($vou_code_unberthing != '') {
+                            $by = ' - '.$voucher_unberthing->usr_firstname.' '.$voucher_unberthing->usr_lastname;
+                          } else {
+                            $by = '';
+                          }
+                        ?>
+                        <input class="form-control" type="text" name="job_unberthing" value="<?php echo $vou_code_unberthing.$by;?>" disabled>
                       </div>
                     </div><!-- col-6 -->
                   </div><!-- row -->
@@ -540,6 +561,55 @@
       <?php if(session()->has('success')){?>
         toastr.success('<?php echo session()->get('success'); ?>')
       <?php } ?>
+
+      // jQuery("#date-02, #time-02, #job_complete_time_ampm").change(function() {
+      jQuery(document).on("change", "#date-02, #time-02, #job_complete_time_ampm", function () {
+
+        var date = $("#date-02").val();
+        var time = $("#time-02").val();
+        var ampm = $("#job_complete_time_ampm").val();
+
+        var date1 = $("#date-01").val();
+        var time1 = $("#time-01").val();
+        var ampm1 = $("#job_commence_time_ampm").val();
+
+        // $('#job_hour_disabled').html('');
+        $('#job_hour_disabled').load('<?php echo env('BASE_URL');?>do-calculate-hour?endDate='+date+time+ampm+'&startDate='+date1+time1+ampm1, function(){
+
+          var job_hour1 = $("#job_hour1").val();
+          $("#job_hour2").val(job_hour1);
+
+          var select_exceeding = $("#job_exceeding_select").val();
+          minus=job_hour1-select_exceeding;
+          if (minus < 0) {
+            minus = 0;
+          }
+          $(".job_exceeding_number").val(minus.toFixed(2));
+        });
+
+      });
+
+      jQuery(document).on("change", "#job_exceeding_select", function () {
+        var job_hour1 = $("#job_hour1").val();
+        var select_exceeding = $("#job_exceeding_select").val();
+        minus=job_hour1-select_exceeding;
+        if (minus < 0) {
+          minus = 0;
+        }
+        $(".job_exceeding_number").val(minus.toFixed(2));
+        // alert(minus);
+      });
+
+      $('#time-01, #time-02').blur(function(){
+
+          var validTime = $(this).val().match(/^(0?[1-9]|1[012])(:[0-5]\d)$/);
+          if (!validTime) {
+              $(this).val('').focus().css('background', '#fdd');
+              toastr.error('Commence/Complete Time must in 12 hour format. Eg : <strong>12:34</strong>')
+          } else {
+              $(this).css('background', 'transparent');
+          }
+      });
 
     });
 </script>

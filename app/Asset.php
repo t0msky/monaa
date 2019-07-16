@@ -60,4 +60,24 @@ class Asset extends Model
   		return $ship;
   	}
 
+    public static function getCardByClientId($id){
+
+      $card= DB::table('ratecards as r')
+               ->join('clients as c','c.client_id','=','r.card_client')
+               ->where('r.card_client', $id)
+               ->where('r.card_status', 'Active')
+  						 ->get();
+
+  		return $card;
+  	}
+
+    public static function getRateCardById($id){
+
+      $card= DB::table('ratecards')
+               ->where('card_id', $id)
+  						 ->first();
+
+  		return $card;
+  	}
+
 }

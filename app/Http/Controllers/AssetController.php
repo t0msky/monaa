@@ -5,6 +5,7 @@ use DB;
 use Carbon\Carbon;
 use App\User;
 use App\Asset;
+use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -20,8 +21,18 @@ class AssetController extends Controller {
 
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
+		//dapatkan client
+		$client = Client::getAllClient();
 
-    return view('rateCard')->with('user',$userInfo);
+		foreach ($client as $c) :
+			$cards = Asset::getCardByClientId($c->client_id);
+			$cardArray[] = $cards;
+
+		endforeach;
+		// echo '<pre>'; print_r($cardArray);die();
+    return view('rateCard')
+				 ->with('cardArray',$cardArray)
+				 ->with('user',$userInfo);
   }
 
 	public function jobItems (request $request) {
@@ -34,38 +45,128 @@ class AssetController extends Controller {
 		}
 
 		//dapatkan job item
-		$jobItems = DB::table('job_items')->orderBy('item_name')->get();
+		// $jobItems = DB::table('job_items')->orderBy('item_name')->get();
 
     return view('jobItems')
-				 ->with('items',$jobItems)
+				 // ->with('items',$jobItems)
 				 ->with('user',$userInfo);
   }
 
-	public function doAddJobItems (request $request) {
+	public function doAddJobItems ($item, $desc) {
 
-		//dapatkan variable daripada middleware
+		$dataJobItem = array(
+											'item_desc' => $desc,
+											'item_name' => $item
+										);
+		//check duplicate
+		$count = DB::table('job_items')->where('item_name',$item)->count();
+
+		if ($count == 0) {
+			$insert = DB::table('job_items')->insert($dataJobItem);
+			return "Success";
+		} else {
+			return "Error";
+		}
+
+	}
+
+	// public function doAddJobItems (request $request) {
+	//
+	// 	//dapatkan variable daripada middleware
+	// 	$userInfo = resolve('userInfo');
+	//
+	// 	if ($userInfo->usr_role != "AD") {
+	// 		return redirect('error');
+	// 	}
+	//
+	// 	$jobItem = $request->jobItem;
+	// 	$jobItemName = $request->jobItemHour;
+	//
+	// 	$size = sizeof($jobItem);
+	//
+	// 	for ($no = 0; $no < $size; $no++ ) {
+	//
+	// 		$dataJobItem = array(
+	// 			'item_desc' => $jobItem[$no],
+	// 			'item_name' => $jobItemName[$no]
+	// 		);
+	//
+	// 		DB::table('job_items')->insert($dataJobItem);
+	// 	}
+	// 	return redirect('jobitems')->with('success',"Successfully added new Job Items.");
+	// 	// echo '<pre>'; print_r($jobItem); print_r($jobItemName); die();
+	// }
+
+	public function getBodyJobItems () {
+
+		//dapatkan job item
+		$jobItems = DB::table('job_items')->orderBy('item_name')->get();
+
+		$arrayStatus = array(
+			"Yes" => '<span class="card bg-success pd-y-5 tx-white tx-center bd-0 tx-14">Active</span>',
+			"No" => '<span class="card bg-warning pd-y-5 tx-white tx-center bd-0 tx-14">Not Active</span>'
+		);
+
+		foreach ($jobItems as $i):
+			echo '<tr>';
+				// echo '<td><input class="form-control tx-uppercase bd-transparent" type="text" value="'.$i->item_name.'"></td>';
+				echo '<td>'.$i->item_name.'</td>';
+				// echo '<td><input class="form-control bd-transparent" type="text" value="'.$i->item_desc.'"></td>';
+				echo '<td>'.$i->item_desc.'</td>';
+				echo '<td>'.$arrayStatus[$i->item_active].'</td>';
+				echo '<td class="tx-center">';
+					echo '<a href="#" class="deleteJobItems tx-teal tx-24 tx-primary  tx-bold" deleteItemId="'.$i->item_id.'"><i class="icon typcn typcn-trash"></i></a>';
+					if ($i->item_active == "Yes") {
+						echo '<a href="#" class="setStatusJobItems tx-teal tx-24 tx-primary  tx-bold" ItemId="'.$i->item_id.'" act="No" style="margin-left:5px"><i class="icon typcn typcn-arrow-down-thick"></i></a>';
+					} else {
+						echo '<a href="#" class="setStatusJobItems tx-teal tx-24 tx-primary  tx-bold" ItemId="'.$i->item_id.'" act="Yes" style="margin-left:5px"><i class="icon typcn typcn-arrow-up-thick"></i></a>';
+					}
+				echo '</td>';
+			echo '</tr>';
+		endforeach;
+	}
+
+	public function doUpdateStatusJobItem ($itemId, $status) {
+
+		$userInfo = resolve('userInfo');
+		if ($userInfo->usr_role != "AD") {
+			return redirect('error');
+		}
+
+		$jobItem = DB::table('job_items')->where('item_id',$itemId)->first();
+
+		DB::table('job_items')->where('item_id', $itemId)->update(array('item_active'=>$status));
+
+			if ($status == "Yes") {
+				return 'Job item ('.$jobItem->item_name.') have been successfully activated';
+			} else {
+				return 'Job item ('.$jobItem->item_name.') have been successfully deactivated';
+			}
+
+	}
+
+	public function doDeleteJobItem($itemId){
+
 		$userInfo = resolve('userInfo');
 
 		if ($userInfo->usr_role != "AD") {
 			return redirect('error');
 		}
 
-		$jobItem = $request->jobItem;
-		$jobItemName = $request->jobItemHour;
+		//Check job item boleh delete ke tak
+		$jobItem = DB::table('job_items')->where('item_id',$itemId)->first();
+		$count1 = DB::table('voucher_job_items')->where('vjob_job_item_name',$jobItem->item_name)->count();
+		$count2= DB::table('voucher_job_items_pilotage')->where('vjob_job_item_name',$jobItem->item_name)->count();
 
-		$size = sizeof($jobItem);
+		if ($count1 == 0 && $count2 == 0) {
 
-		for ($no = 0; $no < $size; $no++ ) {
-
-			$dataJobItem = array(
-				'item_desc' => $jobItem[$no],
-				'item_name' => $jobItemName[$no]
-			);
-
-			DB::table('job_items')->insert($dataJobItem);
+			DB::table('job_items')->where('item_id', $itemId)->delete();
+			return 'Successfully delete job item.';
+		} else {
+			DB::table('job_items')->where('item_id', $itemId)->update(array('item_active'=>'No'));
+			return 'Job item ('.$jobItem->item_name.') have been successfully deactivated';
 		}
-		return redirect('jobitems')->with('success',"Successfully added new Job Items.");
-		// echo '<pre>'; print_r($jobItem); print_r($jobItemName); die();
+
 	}
 
 	public function assets() {

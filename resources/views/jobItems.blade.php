@@ -5,23 +5,22 @@
   <div class="br-pageheader">
     <nav class="breadcrumb pd-0 mg-0 tx-12">
       <a class="breadcrumb-item" href="#">Data Assets</a>
-      <span class="breadcrumb-item active">Job Items Description</span>
+      <span class="breadcrumb-item active">Job Item Description</span>
     </nav>
   </div><!-- br-pageheader -->
-  <div class="br-pagetitle">
+  <div class="br-pagetitle hidden-xs-down">
     <i class="icon typcn typcn-shopping-bag tx-24"></i>
     <div>
-      <h4 class="pd-y-15">Job Items Description</h4>
+      <h4 class="pd-y-15">Job Item Description</h4>
       <!-- <p class="mg-b-0">Overview And Summary Of Current Projects</p> -->
     </div>
   </div><!-- d-flex -->
 
-  <div class="br-pagebody pd-x-20 pd-sm-x-30 pd-b-40">
+  <div class="br-pagebody pd-x-20 pd-sm-x-30 pd-b-25">
     <div class="row row-sm mg-t-20">
-      <div class="col-lg mg-t-20 mg-lg-t-0">
+      <div class="col-lg mg-lg-t-0">
         <div class="card shadow-base bd-0">
-          <form method="post" action="<?php echo env('BASE_URL');?>do-add-job-items" data-parsley-validate>
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
             <!-- <div class="card-header-02 bg-transparent pd-x-25 pd-t-25 pd-b-0 d-flex justify-content-between align-items-center">
               <div class="form-layout-footer mg-l-auto hidden-xs-down">
                 <button type="submit" class="btn btn-info">Save</button>
@@ -34,35 +33,37 @@
                   <div class="card shadow-base bd-0">
                     <div class="bd-0 bd-gray-300 rounded table-responsive">
                       <table class="table mg-b-0">
-                        <thead style='visibility: collapse;'>
+                        <thead>
                           <tr>
-                            <th class="wd-30p">Items</th>
-                            <th>Desc</th>
+                            <th class="wd-30p">Job Item</th>
+                            <th>Description</th>
+                            <th class="wd-15p">Status</th>
                             <th class="wd-5p">Action</th>
                           </tr>
                         </thead>
-                        <tbody>
                           <tr id="addRow">
-                            <td class="bd-t-0-force"><input class="form-control addMain" type="text" placeholder="Insert Item"</td>
-                            <td class="bd-t-0-force"><input class="form-control addPrefer" type="text" placeholder="Insert Description"></td>
-                            <td class="tx-center bd-t-0-force">
-                              <span class="addBtn tx-teal tx-24 tx-primary">
+                            <td class="bd-t-1-force"><input class="form-control" type="text" id="inputItem" placeholder="Insert Item"</td>
+                            <td class="bd-t-1-force"><input class="form-control" type="text" id="inputDesc" placeholder="Insert Description"></td>
+                            <td class="bd-t-1-force"></td>
+                            <td class="tx-center bd-t-1-force">
+                              <a href="#" id="addJobItem" class="tx-teal tx-24 tx-primary">
                                 <i class="icon typcn typcn-plus"></i>
-                              </span>
+                              </a>
                             </td>
                           </tr>
+                        <tbody id="displayContent">
                           <?php
-                          foreach ($items as $i):
+                          #foreach ($items as $i):
                           ?>
-                          <tr>
-                            <td><input class="form-control tx-uppercase bd-transparent" type="text" value="<?php echo $i->item_name;?>"></td>
-                            <td><input class="form-control bd-transparent" type="text" value="<?php echo $i->item_desc;?>"></td>
+                          <!-- <tr>
+                            <td><input class="form-control tx-uppercase bd-transparent" type="text" value="<?php #echo $i->item_name;?>"></td>
+                            <td><input class="form-control bd-transparent" type="text" value="<?php #echo $i->item_desc;?>"></td>
                             <td class="tx-center">
-                              <!-- <a href="#" onClick="deleteRow(this)" class="tx-teal tx-24 tx-primary  tx-bold"><i class="icon typcn typcn-trash"></i></a> -->
+                              <a href="#" onClick="deleteRow(this)" class="tx-teal tx-24 tx-primary  tx-bold"><i class="icon typcn typcn-trash"></i></a>
                             </td>
-                          </tr>
+                          </tr> -->
                           <?php
-                          endforeach;
+                          #endforeach;
                           ?>
                         </tbody>
                       </table>
@@ -71,11 +72,8 @@
                 </div><!-- col-6 -->
               </div><!-- row -->
             </div><!-- card-body -->
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-info">Save</button>
-              <button type="reset" class="btn btn-secondary">Reset</button>
-            </div><!-- form-layout-footer -->
-          </form>
+
+
         </div><!-- card -->
       </div><!-- col-6 -->
     </div><!-- row -->
@@ -94,7 +92,7 @@
           <i class="icon typcn typcn-trash tx-120 tx-success"></i>
         </div>
         <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Are you sure?</div>
-        <p class="mg-b-30 mg-x-20">You will not be able to recover this message!</p>
+        <p class="mg-b-30 mg-x-20">You will not be able to recover this job item!</p>
         <a href="" class="btn btn-info"  data-dismiss="modal" aria-label="Close">Yes, Confirm</a>
       </div><!-- modal-body -->
     </div><!-- modal-content -->
@@ -106,11 +104,88 @@
 
 @section('docready')
 <script type="text/javascript">
-    jQuery(document).ready(function () {
+    $(document).ready(function () {
 
       <?php if(session()->has('success')){?>
         toastr.success('<?php echo session()->get('success'); ?>')
       <?php } ?>
+
+      //Load jobitems
+      $('#displayContent').load('<?php echo env('BASE_URL');?>get-body-job-items');
+
+      $(document).on("click", "#addJobItem", function () {
+
+        var inputItem = $('#inputItem').val();
+        var inputDesc = $('#inputDesc').val();
+
+        if (inputItem == '' && inputDesc == '') {
+          toastr.error('Both Job Item & Description are required')
+        } else {
+
+          $.ajax({
+              type: "GET",
+              url: "<?php #echo env('BASE_URL');?>do-add-job-items/" + inputItem + "/" + inputDesc,
+              beforeSend: function (xhr) {
+                  var token = $('meta[name="csrf_token"]').attr('content');
+                  if (token) {
+                      return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                  }
+              },
+              success: function (msg) {
+                  $('#displayContent').load('<?php echo env('BASE_URL');?>get-body-job-items');
+
+                  if (msg == "Success") {
+                      toastr.success('Successfully added new job item')
+                  } else if (msg == "Error") {
+                      toastr.error(''+ inputItem +' item already existed.')
+                  }
+              }
+          });
+        }
+      });
+
+      $(document).on("click", ".setStatusJobItems", function () {
+        var ItemId = $(this).attr('ItemId');
+        var act = $(this).attr('act');
+
+        $.ajax({
+            type: "GET",
+            url: "<?php echo env('BASE_URL');?>do-update-status-job-item/" + ItemId + "/" + act,
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            success: function (msg) {
+                $('#displayContent').load('<?php echo env('BASE_URL');?>get-body-job-items');
+                toastr.success(msg)
+            }
+        });
+
+      });
+
+      $(document).on("click", ".deleteJobItems", function () {
+
+        var deleteItemId = $(this).attr('deleteItemId');
+
+        $.ajax({
+            type: "GET",
+            url: "<?php echo env('BASE_URL');?>do-delete-job-item/" + deleteItemId,
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            success: function (msg) {
+                $('#displayContent').load('<?php echo env('BASE_URL');?>get-body-job-items');
+                toastr.success(msg)
+            }
+        });
+
+
+      });
 
     });
 </script>

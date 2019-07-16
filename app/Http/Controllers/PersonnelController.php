@@ -22,10 +22,12 @@ class PersonnelController extends Controller {
 		//dapatkan semua poac
 		$poac = User::getAllUserByRole2('CP');
 		$admins = User::getAllUserByRole2('AD');
+		$approvals = User::getAllApprovalUser();
 
     return view('personnelBoard')
 				 ->with('poac',$poac)
 				 ->with('admins',$admins)
+				 ->with('approvals',$approvals)
 				 ->with('user',$userInfo);
   }
 
@@ -75,6 +77,9 @@ class PersonnelController extends Controller {
 				'usr_employment' 		=> $request->usr_employment,
 				'usr_mobile' 				=> $request->usr_mobile,
 				'usr_email' 				=> $request->usr_email,
+				'usr_bank_name' 		=> $request->usr_bank_name,
+				'usr_bank_acc_no' 	=> $request->usr_bank_acc_no,
+				'usr_kwsp_no' 			=> $request->usr_kwsp_no,
 				'usr_updated' 			=> Carbon::now()
 			);
 			// echo '<pre>'; print_r($request->usr_role); die();
@@ -99,8 +104,18 @@ class PersonnelController extends Controller {
 					'usr_pword' => $pass
 				);
 				$updatePassword = DB::table('users')->where('usr_id', $request->usr_id)->update($dataPassword);
-				return redirect('profile')->with('success', "Successfully update new password.");
+				return redirect('profile#t02')->with('success', "Successfully update new password.");
 			}
+		} else if ($request->isMethod('post') && $request->tab == "bank"){
+
+			$dataBank = array (
+				'usr_bank_name' 	=> $request->usr_bank_name,
+				'usr_bank_acc_no' => $request->usr_bank_acc_no,
+				'usr_kwsp_no' 		=> $request->usr_kwsp_no
+			);
+
+			$updateBank = DB::table('users')->where('usr_id', $request->usr_id)->update($dataBank);
+			return redirect('profile#t04')->with('success', "Successfully update Bank & KWSP info.");
 		}
 
     return view('profile')->with('user',$userInfo);
@@ -172,6 +187,11 @@ class PersonnelController extends Controller {
 			'usr_employment' 		=> $request->usr_employment,
 			'usr_mobile' 				=> $request->usr_mobile,
 			'usr_email' 				=> $request->usr_email,
+			'usr_bank_name' 		=> $request->usr_bank_name,
+			'usr_bank_acc_no' 	=> $request->usr_bank_acc_no,
+			'usr_kwsp_no' 			=> $request->usr_kwsp_no,
+			'usr_approval' 			=> 'Yes',
+			'usr_active' 				=> 'Yes',
 			'usr_updated' 			=> Carbon::now()
 		);
 
@@ -198,13 +218,33 @@ class PersonnelController extends Controller {
 							 ->orWhere('job_poac2', $request->user_id)
 							 ->count();
 
+		if ($request->tab != '') {
+			$tab = $request->tab;
+		} else {
+			$tab = '';
+		}
+
 		if ($check == 0) {
 			DB::table('users')->where('usr_id', $request->user_id)->delete();
-			return redirect('personnelboard')->with('success', "Successfully delete user.");
+			return redirect('personnelboard'.$tab)->with('success', "Successfully delete user.");
 		} else {
 			DB::table('users')->where('usr_id', $request->user_id)->update(array('usr_delete'=>'Yes'));
-			return redirect('personnelboard')->with('success', "Successfully delete user.");
+			return redirect('personnelboard'.$tab)->with('success', "Successfully delete user.");
 		}
+
+	}
+
+	public function doApproveUser ($uid) {
+
+		//dapatkan variable daripada middleware
+		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role != "AD") {
+			return redirect('error');
+		}
+
+		DB::table('users')->where('usr_id', $uid)->update(array('usr_approval'=>'Yes'));
+		return redirect('personnelboard')->with('success', "User has been approved");
 
 	}
 }

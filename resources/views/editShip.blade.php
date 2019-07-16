@@ -13,7 +13,7 @@
   <div class="br-pagetitle">
     <i class="icon typcn typcn-briefcase tx-24"></i>
     <div>
-      <h4 class="pd-y-15">Vessel Info</h4>
+      <h4 class="pd-y-15">Vessel Information</h4>
       <!-- <p class="mg-b-0">Register New Job</p> -->
     </div>
   </div><!-- d-flex -->
@@ -22,6 +22,9 @@
     <div class="row row-sm mg-t-20 pd-b-40">
       <div class="col-lg mg-t-20 mg-lg-t-0">
         <div class="card shadow-base bd-0">
+            <div class="card-header bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
+            <div class="card-title mg-b-0">Edit Vessel Information</div>
+          </div><!-- card-header -->
           <div class="card">
             <form method="post" action="<?php echo env('BASE_URL');?>save-ship" data-parsley-validate data-parsley-errors-messages-disabled>
               <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -81,7 +84,6 @@
                 <input type="hidden" name="ship_id" value="<?php echo $ship->ship_id;?>">
                 <button type="submit" class="btn btn-info">Save</button>
                 <a href="<?php echo env('BASE_URL');?>assets" class="btn btn-secondary">Back to Assets</a>
-                <button type="reset" class="btn btn-secondary">Reset</button>
               </div>
             </form>
 

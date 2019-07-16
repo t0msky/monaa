@@ -4,10 +4,10 @@
 <div class="br-subleft">
   <div class="widget-4">
     <div class="avatar-upload">
-      <div class="avatar-edit">
-       <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" onchange="previewFile()"/>
-       <label for="imageUpload"></label>
-      </div>
+      <!--<div class="avatar-edit">-->
+      <!-- <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" onchange="previewFile()"/>-->
+      <!-- <label for="imageUpload"></label>-->
+      <!--</div>-->
       <div class="avatar-preview">
        <img id="imagePreview" src="<?php echo env('BASE_URL');?>img/pic/<?php echo $user->usr_pic;?>">
        <!-- <img id="imagePreview" src="img/default-user-image.png"> -->
@@ -24,7 +24,7 @@
 </div><!-- br-subleft -->
 
 <div class="br-contentpanel">
-  <div class="br-pageheader pd-y-15 pd-md-l-20">
+  <div class="br-pageheader">
     <nav class="breadcrumb pd-0 mg-0 tx-12">
       <span class="breadcrumb-item active">Personnels</span>
       <a class="breadcrumb-item" href="personnel-board.html">Personnel Board</a>
@@ -32,30 +32,15 @@
     </nav>
   </div><!-- br-pageheader -->
 
-  <div class="br-pagetitle pd-t-20">
+  <div class="br-pagetitle hidden-xs-down">
     <i class="icon typcn typcn-user tx-24"></i>
     <div>
       <h4 class="pd-y-15">Personnels</h4>
     </div>
   </div><!-- d-flex -->
 
-  <div class="d-flex align-items-center justify-content-start pd-x-20 pd-sm-x-30 mg-b-20 mg-sm-b-30">
+  <div class="d-flex align-items-center justify-content-start pd-x-20 pd-sm-x-10 mg-b-20 pd-xs-t-10">
     <button id="showSubLeft" class="btn btn-secondary mg-r-10 hidden-lg-up"><i class="fa fa-navicon"></i></button>
-
-    <!-- START: DISPLAYED FOR MOBILE ONLY -->
-    <div class="dropdown hidden-sm-up">
-      <a href="#" class="btn btn-outline-secondary" data-toggle="dropdown"><i class="icon ion-more"></i></a>
-      <div class="dropdown-menu pd-10">
-        <nav class="nav nav-style-1 flex-column">
-          <a href="" class="nav-link">Share</a>
-          <a href="" class="nav-link">Download</a>
-          <div class="dropdown-divider"></div>
-          <a href="" class="nav-link">Edit</a>
-          <a href="" class="nav-link">Delete</a>
-        </nav>
-      </div><!-- dropdown-menu -->
-    </div><!-- dropdown -->
-    <!-- END: DISPLAYED FOR MOBILE ONLY -->
   </div><!-- d-flex -->
 
   <!-- @if (count($errors) > 0)
@@ -83,13 +68,13 @@
             <div class="card-header">
               <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#t01" data-toggle="tab">User Profile</a>
+                  <a class="nav-link active" href="#t01" data-toggle="tab"><i class="fa fa-caret-right tx-success mg-r-10"></i>User Profile</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#t02" data-toggle="tab">Change Password</a>
+                  <a class="nav-link" href="#t02" data-toggle="tab"><i class="fa fa-caret-right tx-success mg-r-10"></i>Change Password</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#t03" data-toggle="tab">Picture</a>
+                  <a class="nav-link" href="#t03" data-toggle="tab"><i class="fa fa-caret-right tx-success mg-r-10"></i>Picture</a>
                 </li>
               </ul>
             </div><!-- card-header -->
@@ -311,20 +296,59 @@
                   </div><!-- form-layout-footer -->
                 </form>
               </div><!-- tab-pane -->
+
+              <div class="tab-pane" id="t04">
+                <form method="post" action="<?php echo env('BASE_URL');?>profile" data-parsley-validate data-parsley-errors-messages-disabled>
+                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                  <div class="form-layout form-layout-1">
+                    <div class="row">
+                      <div class="col-lg-6">
+
+                        <div class="row mg-b-10">
+                          <div class="col-lg-6">
+                            <div class="form-group mg-b-10-force">
+                              <label class="form-control-label">Bank Name : </label>
+                              <input class="form-control" type="text" name="usr_bank_name" value="<?php echo $user->usr_bank_name;?>" placeholder="Enter Bank Name">
+                            </div>
+                          </div><!-- col-6 -->
+                          <div class="col-lg-6">
+                            <div class="form-group mg-b-10-force">
+                              <label class="form-control-label">Bank Account No : </label>
+                              <input class="form-control" type="text" name="usr_bank_acc_no" value="<?php echo $user->usr_bank_acc_no;?>" placeholder="Enter Bank Account No">
+                            </div>
+                          </div><!-- col-6 -->
+                        </div><!-- row -->
+
+                        <div class="row mg-b-10">
+                          <div class="col-lg-6">
+                            <div class="form-group mg-b-10-force">
+                              <label class="form-control-label">KWSP No : </label>
+                              <input class="form-control" type="text" name="usr_kwsp_no" value="<?php echo $user->usr_kwsp_no;?>" placeholder="Enter KWSP No">
+                            </div>
+                          </div><!-- col-6 -->
+                        </div><!-- row -->
+
+                      </div><!-- col-6 -->
+                    </div><!-- row -->
+                  </div><!-- form-layout -->
+
+                  <div class="modal-footer">
+                    <input type="hidden" name="tab" value="bank">
+                    <input type="hidden" name="usr_id" value="<?php echo $user->usr_id;?>">
+                    <button type="submit" class="btn btn-info">Save</button>
+                  </div><!-- form-layout-footer -->
+
+                </form>
+              </div><!-- tab-pane -->
+
               <div class="tab-pane" id="t02">
                 <form method="post" action="<?php echo env('BASE_URL');?>profile" data-parsley-validate data-parsley-errors-messages-disabled>
                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
                   <div class="form-layout form-layout-1">
                     <div class="row">
                       <div class="col-lg-6">
-                        <!-- <div class="row mg-b-10">
-                          <div class="col-lg-6">
-                            <div class="form-group mg-b-10-force">
-                              <label class="form-control-label">Username <span class="tx-danger">*</span></label>
-                              <input class="form-control" type="text" value="" placeholder="" required>
-                            </div>
-                          </div>
-                        </div> -->
+
                         <div class="row mg-b-10">
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
@@ -443,9 +467,25 @@
       }
     });
 
+    $(".custom-file-input").on("change", function() {
+      var fileName = $(this).val().split("\\").pop();
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
   });
 </script>
 <script>
+
+  // Javascript to enable link to tab
+  var url = document.location.toString();
+  if (url.match('#')) {
+    $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+  }
+
+  // Change hash for page-reload
+  $('.nav-tabs a').on('shown.bs.tab', function (e) {
+    window.location.hash = e.target.hash;
+  })
 
   $('.disabled').click(function(e){
     e.preventDefault();
