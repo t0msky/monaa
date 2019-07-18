@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use DB;
 use Session;
+use App\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -69,10 +70,13 @@ class LoginController extends Controller
                   session(['user' => $user->usr_id]);
                   session(['role' => $user->usr_role]);
 
+                  Log::doAddLog ("Logged in", $user->usr_id);
+
                   if ($user->usr_role == "AD") {
                     return Redirect::to('dashboard/');
                   } else {
-                    return Redirect::to('dashboard-poac');
+                    return Redirect::to('comingsoon');
+                    // return Redirect::to('dashboard-poac');
                   }
 
                 } else {
@@ -109,8 +113,11 @@ class LoginController extends Controller
 
     public function doLogout(request $request) {
 
-      $request->session()->flush();
+      if (session('user')) {
+        Log::doAddLog ("Logged out", session('user'));
+      }
 
+      $request->session()->flush();
       return Redirect::to('login');
     }
 }

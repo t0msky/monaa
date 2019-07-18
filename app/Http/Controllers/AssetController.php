@@ -4,6 +4,7 @@
 use DB;
 use Carbon\Carbon;
 use App\User;
+use App\Log;
 use App\Asset;
 use App\Client;
 use Illuminate\Http\Request;
@@ -21,6 +22,9 @@ class AssetController extends Controller {
 
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role != "AD") { return redirect('error'); }
+
 		//dapatkan client
 		$client = Client::getAllClient();
 
@@ -40,9 +44,7 @@ class AssetController extends Controller {
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
 
-		if ($userInfo->usr_role != "AD") {
-			return redirect('error');
-		}
+		if ($userInfo->usr_role != "AD") { return redirect('error'); }
 
 		//dapatkan job item
 		// $jobItems = DB::table('job_items')->orderBy('item_name')->get();
@@ -52,8 +54,14 @@ class AssetController extends Controller {
 				 ->with('user',$userInfo);
   }
 
-	public function doAddJobItems ($item, $desc) {
+	public function doAddJobItems () {
 
+		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role != "AD") { return redirect('error'); }
+
+		$item = $_GET['item'];
+		$desc = $_GET['desc'];
 		$dataJobItem = array(
 											'item_desc' => $desc,
 											'item_name' => $item
@@ -63,6 +71,7 @@ class AssetController extends Controller {
 
 		if ($count == 0) {
 			$insert = DB::table('job_items')->insert($dataJobItem);
+			Log::doAddLog ("Add new job item", $insert, $item);
 			return "Success";
 		} else {
 			return "Error";
@@ -100,7 +109,7 @@ class AssetController extends Controller {
 	public function getBodyJobItems () {
 
 		//dapatkan job item
-		$jobItems = DB::table('job_items')->orderBy('item_name')->get();
+		$jobItems = DB::table('job_items')->orderBy('item_created','desc')->get();
 
 		$arrayStatus = array(
 			"Yes" => '<span class="card bg-success pd-y-5 tx-white tx-center bd-0 tx-14">Active</span>',
@@ -133,10 +142,13 @@ class AssetController extends Controller {
 			return redirect('error');
 		}
 
+		$jobitem = DB::table('job_items')->where('item_id',$itemId)->select('item_name')->first();
+
+		if ($status == 'Yes') { $statusLog = 'Active'; } else { $statusLog = 'Not Active'; }
 		$jobItem = DB::table('job_items')->where('item_id',$itemId)->first();
 
 		DB::table('job_items')->where('item_id', $itemId)->update(array('item_active'=>$status));
-
+		Log::doAddLog ("Update job item status to ".$statusLog."", $itemId, $jobitem->item_name);
 			if ($status == "Yes") {
 				return 'Job item ('.$jobItem->item_name.') have been successfully activated';
 			} else {
@@ -161,9 +173,11 @@ class AssetController extends Controller {
 		if ($count1 == 0 && $count2 == 0) {
 
 			DB::table('job_items')->where('item_id', $itemId)->delete();
+			Log::doAddLog ("Delete job item", 0, $jobItem->item_name);
 			return 'Successfully delete job item.';
 		} else {
 			DB::table('job_items')->where('item_id', $itemId)->update(array('item_active'=>'No'));
+			Log::doAddLog ("Update job item status to Not Active", $itemId, $jobItem->item_name);
 			return 'Job item ('.$jobItem->item_name.') have been successfully deactivated';
 		}
 
@@ -173,6 +187,9 @@ class AssetController extends Controller {
 
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role != "AD") { return redirect('error'); }
+
 		//Client
 		$client = Asset::getAllClient();
 		$provider = Asset::getAllOperator('Service Provider');
@@ -246,6 +263,7 @@ class AssetController extends Controller {
 				'client_phone' 					=> $request->client_phone
 			);
 			DB::table('clients')->where('client_id',$request->client_id)->update($data);
+			Log::doAddLog ("Update client info", $request->client_id, $request->client_name);
 			return redirect('edit-company/client/'.$request->client_id)->with('success',"Company info updated.");
 		}
 		else {
@@ -261,6 +279,7 @@ class AssetController extends Controller {
 				'sts_contact_person'	=> $request->sts_contact_person
 			);
 			DB::table('sts_operator_service')->where('sts_id',$request->sts_id)->update($data);
+			Log::doAddLog ("Update company info", $request->sts_id, $request->sts_name);
 			return redirect('edit-company/operator/'.$request->sts_id)->with('success',"Company info updated.");
 		}
 	}
@@ -287,7 +306,8 @@ class AssetController extends Controller {
 				'client_email' 					=> $request->client_email,
 				'client_phone' 					=> $request->client_phone
 			);
-			DB::table('clients')->insert($data);
+			$clientId = DB::table('clients')->insertGetId($data);
+			Log::doAddLog ("Add new client", $clientId, $request->client_name);
 			return redirect('assets')->with('success',"New Company added.");
 
 		} else {
@@ -305,7 +325,8 @@ class AssetController extends Controller {
 				'sts_type'						=> $request->type,
 			);
 
-			DB::table('sts_operator_service')->insert($data);
+			$companyId = DB::table('sts_operator_service')->insertGetId($data);
+			Log::doAddLog ("Add new company", $companyId, $request->sts_name);
 			return redirect('assets')->with('success',"New Company added.");
 
 		}
@@ -330,7 +351,8 @@ class AssetController extends Controller {
 			'ship_DWT' 			=> $request->ship_DWT
 		);
 
-		DB::table('ships')->insert($data);
+		$shipId = DB::table('ships')->insertGetId($data);
+		Log::doAddLog ("Add new ship. Type : ".$request->ship_category."", $shipId, $request->ship_name);
 		return redirect('assets')->with('success',"New Vessel added.");
 	}
 
@@ -368,6 +390,7 @@ class AssetController extends Controller {
 		);
 
 		DB::table('ships')->where('ship_id', $request->ship_id)->update($data);
+		Log::doAddLog ("Update ship info", $request->ship_id, $request->ship_name);
 		return redirect('edit-ship/'.$request->ship_id)->with('success',"Vessel info updated.");
 	}
 }

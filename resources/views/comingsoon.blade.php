@@ -37,13 +37,14 @@
 
     <div class="ht-100v d-flex align-items-center justify-content-center">
       <div class="wd-lg-70p wd-xl-50p tx-center pd-x-40">
-        <h1 class="tx-100 tx-xs-140 tx-normal tx-inverse tx-roboto mg-b-0">404!</h1>
-        <h5 class="tx-xs-24 tx-normal tx-info mg-b-30 lh-5">This module are currently disabled.</h5>
-        <p class="tx-16 mg-b-30">Further development shall be resume soon in Phase 2. Thank You.</p>
+        <div class="tx-center pd-t-25 pd-b-20 hidden-xs-down"><img class="wd-200" src="img/Undercons.png"></img></div>
+        
+        <div class="tx-xs-24 tx-20 tx-normal tx-success lh-5">This module are currently disabled.</div>
+        <p class="tx-14 mg-b-30">Further development shall be resume soon in Phase 2. Thank You.</p>
 
         <div class="d-flex justify-content-center">
 
-            <a href="<?php echo env('BASE_URL');?>login"  class="btn btn-success">
+            <a href="<?php echo env('BASE_URL');?>login"  class="btn btn-info">
   						Back to Login
   					</a>
 

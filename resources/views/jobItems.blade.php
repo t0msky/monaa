@@ -124,7 +124,7 @@
 
           $.ajax({
               type: "GET",
-              url: "<?php #echo env('BASE_URL');?>do-add-job-items/" + inputItem + "/" + inputDesc,
+              url: "<?php #echo env('BASE_URL');?>do-add-job-items?item=" + inputItem + "&desc=" + inputDesc,
               beforeSend: function (xhr) {
                   var token = $('meta[name="csrf_token"]').attr('content');
                   if (token) {

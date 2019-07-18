@@ -61,7 +61,7 @@
                 <!--</button>-->
                 <div class="d-flex align-items-center justify-content-start pd-y-5">
               <i class="fa fa-exclamation-triangle tx-24 mg-t-5 mg-xs-t-0"></i>
-              <span class="tx-14 pd-l-15">No vouchers submitted</span>
+              <span class="tx-14 pd-l-15">No jobs available</span>
             </div><!-- d-flex -->
               </div>
             </div>
@@ -259,10 +259,17 @@
                           <td>
                             <div id="slWrapper04" class="parsley-select">
                             <select class="form-control select2-show-search" style="width: 100%" data-placeholder="Choose one (with searchbox)" name="vou_master" data-parsley-class-handler="#slWrapper04" data-parsley-errors-container="#slErrorContainer" required>
-                            <option>Choose One</option>
-                            <?php foreach ($users as $u) : ?>
-                              <option value="<?php echo $u->usr_id;?>"><?php echo $u->usr_firstname.' '.$u->usr_lastname;?></option>
-                            <?php endforeach;?>
+                            <?php
+                              if ($user->usr_role == "AD") {
+                                echo '<option>Choose One</option>';
+                                foreach ($users as $u) :
+                                  echo '<option value="'.$u->usr_id.'">'.$u->usr_firstname.' '.$u->usr_lastname.'</option>';
+                                endforeach;
+
+                              } else {
+                                echo '<option value="'.$user->usr_id.'">'.$user->usr_firstname.' '.$user->usr_lastname.'</option>';
+                              }
+                            ?>
                           </select>
                           </div>
                         </td>

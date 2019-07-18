@@ -1426,56 +1426,88 @@ select.form-control:focus::-ms-value {
   background: #aaa;
   z-index:2;
   border-radius: 50%; }
-
+  
   .avatar-upload {
     position: relative;
-    max-width: 125px;
-    margin: 20px auto;
   }
   .avatar-upload .avatar-edit {
     position: absolute;
-    right: 4px;
+    right: 20px;
     z-index: 1;
-    top: 10px;
+    bottom: 10px;
   }
   .avatar-upload .avatar-edit input {
     display: none;
   }
   .avatar-upload .avatar-edit input + label {
     display: inline-block;
-    width: 34px;
-    height: 34px;
-    margin-bottom: 0;
-    border-radius: 100%;
-    background: #4bbec1;
+    background-color: #4bbec1;
     cursor: pointer;
     font-weight: normal;
     transition: all 0.2s ease-in-out;
   }
   .avatar-upload .avatar-edit input + label:after {
-    content: "\e04b";
-    font-family: 'typicons';
-    color: #ffffff;
-    font-size: 22px;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    text-align: center;
     margin: auto;
   }
   .avatar-upload .avatar-edit input + label:hover {
     background: #138496;
   }
+  
+  .avatar-upload-2 {
+    position: relative;
+    max-width: 125px;
+    margin: 20px auto;
+  }
+  .avatar-upload-2 .avatar-edit {
+    position: absolute;
+    right: 30px;
+    z-index: 1;
+    bottom: 10px;
+  }
+  .avatar-upload-2 .avatar-edit input {
+    display: none;
+  }
+  .avatar-upload-2 .avatar-edit input + label {
+    display: inline-block;
+    background-color: #4bbec1;
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+  }
+  .avatar-upload-2 .avatar-edit input + label:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+  .avatar-upload-2 .avatar-edit input + label:hover {
+    background: #138496;
+  }
+  
+  
+  
 
-  .avatar-upload .avatar-preview {
+  .avatar-upload-2 .avatar-preview {
     width: 120px;
     height: 120px;
     position: relative;
     border: 6px solid #40546f;
     border-radius: 100%;
   }
-  .avatar-upload .avatar-preview > img {
+  .avatar-upload-2 .avatar-preview > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+ .avatar-upload-2 .avatar-preview > img {
     width: 100%;
     height: 100%;
     border-radius: 100%;
@@ -4344,9 +4376,9 @@ button.close {
       border-style: solid; }
 
 .bs-tooltip-top, .bs-tooltip-auto[x-placement^="top"] {
-  padding: 0.9rem 0; }
+  padding: 0.6rem 0; }
   .bs-tooltip-top .arrow, .bs-tooltip-auto[x-placement^="top"] .arrow {
-    bottom: 0.65rem; }
+    bottom: 0.3rem; }
     .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
       top: 0;
       border-width: 0.4rem 0.4rem 0;
@@ -4373,9 +4405,9 @@ button.close {
       border-bottom-color: #000; }
 
 .bs-tooltip-left, .bs-tooltip-auto[x-placement^="left"] {
-  padding: 0 0.4rem; }
+  padding: 0 0.85rem; }
   .bs-tooltip-left .arrow, .bs-tooltip-auto[x-placement^="left"] .arrow {
-    right: 0;
+    right: 0.5rem;
     width: 0.4rem;
     height: 0.8rem; }
     .bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
@@ -8016,7 +8048,7 @@ textarea.parsley-error:active {
     cursor: pointer;
     display: inline-block;
     overflow: hidden;
-    padding: 8px 20px;
+    /*padding: 8px 20px;*/
     border-radius: 3px;
     transition: all 0.2s ease-in-out; }
     @media screen and (prefers-reduced-motion: reduce) {
@@ -8121,18 +8153,18 @@ textarea.parsley-error:active {
     text-align: center;
     color: #17A2B8; }
     .inputfile + .if-style-1 .icon-wrapper {
-      width: 100px;
-      height: 100px;
-      background-color: #17A2B8;
+      width: 45px;
+      height: 45px;
+      /*background-color: #17A2B8;*/
       color: #fff;
-      border-radius: 100%;
+      border-radius: 10%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 64px;
-      margin: 0 auto 10px; }
+      font-size: 28px;
+      margin: 0 auto 0px; }
       .inputfile + .if-style-1 .icon-wrapper > i {
-        height: 50px;
+        /*height: 20px;*/
         margin-right: 0;
         line-height: 0; }
     .inputfile + .if-style-1.if-primary {
@@ -8142,7 +8174,7 @@ textarea.parsley-error:active {
     .inputfile + .if-style-1.if-success {
       color: #4bbec1; }
       .inputfile + .if-style-1.if-success .icon-wrapper {
-        background-color: #4bbec1; }
+        /*background-color: #4bbec1;*/ }
     .inputfile + .if-style-1.if-warning {
       color: #F49917; }
       .inputfile + .if-style-1.if-warning .icon-wrapper {
@@ -9821,7 +9853,7 @@ textarea.parsley-error:active {
 /* -------------------------------------------- */
 .tooltip-inner {
   padding: 8px 15px;
-  font-size: 13px;
+  font-size: 14px;
   border-radius: 2px; }
 
 .tooltip-primary .tooltip-inner {

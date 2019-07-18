@@ -12,21 +12,31 @@
       } else if($user->usr_role == "CP") {
 
         if ($voucher->vou_status == "Verified") {
-          echo '<h3 class="tx-success">Verified</h3>';
+          echo '<div class="card-title tx-success mg-b-0"><i class="icon ion-checkmark tx-success tx-24 pd-r-10"></i>Verified</div>';
         } else if ($voucher->vou_status == "Unverified") {
-          echo '<h3 class="tx-danger">Unverified</h3>';
+          echo '<div class="card-title tx-danger mg-b-0"><i class="icon ion-close tx-danger tx-24 pd-r-10"></i>Unverified</div>';
         }
       }
       ?>
 
     </div>
     <div class="btn-group" role="group" aria-label="Basic example">
+      <?php if ($user->usr_role == "AD") { ?>
       <span data-toggle="tooltip" data-placement="top" title="Delete">
         <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $voucher->vou_id;?>">
           <i class="icon typcn typcn-trash tx-24"></i>
         </button>
       </span>
-      <!-- <button type="button" class="btn btn-third"><i class="icon typcn typcn-edit tx-24"></i></button> -->
+      <?php } ?>
+      <?php if ($user->usr_role == "CP" && $voucher->vou_status == "Unverified") { ?>
+        <span data-toggle="tooltip-success" data-placement="top" title="Delete Voucher">
+          <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $voucher->vou_id;?>">
+            <i class="icon typcn typcn-trash tx-24"></i>
+          </button>
+        </span>
+      <?php } ?>
+
+
       <a href="<?php echo env('BASE_URL');?>pdf-voucher-detail/<?php echo $voucher->vou_id;?>"
         class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF"><i class="icon typcn typcn-document-text tx-24"></i></a>
         <a target="_blank" href="<?php echo env('BASE_URL');?>print-voucher-detail/<?php echo $voucher->vou_id;?>"

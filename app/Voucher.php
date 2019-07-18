@@ -75,7 +75,8 @@ class Voucher extends Model
 
       $voucher = DB::table('vouchers as v')
                    ->join('jobs as j','v.vou_job_id','=','j.job_id')
-                   ->where('j.job_owner', $uid)
+                   ->join('users as u','v.vou_master','=','u.usr_id')
+                   ->where('v.vou_master', '=', $uid)
                    ->whereMonth('v.vou_date', '=', $currentMonth)
                    ->whereYear('v.vou_date', '=', $currentYear)
                    ->orderBy('v.vou_date', 'desc')
@@ -88,11 +89,12 @@ class Voucher extends Model
 
       $voucher = DB::table('vouchers as v')
                    ->join('jobs as j','v.vou_job_id','=','j.job_id')
-                   ->where('j.job_owner', $uid)
+                   ->join('ratecards as r','r.card_id','=','j.job_sts')
+                   ->where('v.vou_master', '=', $uid)
                    ->whereMonth('v.vou_date', '=', $currentMonth)
                    ->whereYear('v.vou_date', '=', $currentYear)
                    ->orderBy('v.vou_date', 'desc')
-                   ->get();
+                   ->first();
 
       return $voucher;
     }
@@ -131,5 +133,31 @@ class Voucher extends Model
 
     }
 
+    public static function getAllVoucherPilotageByUserId($uid, $currentMonth, $currentYear) {
+
+      $voucher = DB::table('vouchers_pilotage as v')
+                   ->join('users as u','v.vou_master','=','u.usr_id')
+                   ->where('v.vou_master', '=', $uid)
+                   ->whereMonth('v.vou_date', '=', $currentMonth)
+                   ->whereYear('v.vou_date', '=', $currentYear)
+                   ->orderBy('v.vou_date', 'desc')
+                   ->select('v.*','u.usr_id','u.usr_firstname','u.usr_lastname')
+                   ->get();
+
+      return $voucher;
+    }
+
+    public static function getFirstVoucherPilotageByUserId($uid,$currentMonth, $currentYear) {
+
+      $voucher = DB::table('vouchers_pilotage as v')
+                   ->join('jobs_pilotage as j','v.vou_job_id','=','j.pil_id')
+                   ->where('v.vou_master', '=', $uid)
+                   ->whereMonth('v.vou_date', '=', $currentMonth)
+                   ->whereYear('v.vou_date', '=', $currentYear)
+                   ->orderBy('v.vou_date', 'desc')
+                   ->first();
+
+      return $voucher;
+    }
 
 }

@@ -4,6 +4,7 @@
 use DB;
 use PDF;
 use Carbon\Carbon;
+use App\Log;
 use App\User;
 use App\Client;
 use App\Card;
@@ -23,6 +24,53 @@ class OperationController extends Controller {
 	}
 
   public function jobRecords (request $request) {
+
+		//dapatkan variable daripada middleware
+		$userInfo = resolve('userInfo');
+
+		if ($userInfo->usr_role == "CP") {
+			return redirect('jobrecords-poac');
+		}
+
+		//check date, auto set status to onboard
+		$checking = Self::doCheckAndUpdateJobStatus();
+
+		for ($i = 1; $i <= 12; $i++) {
+    	$months[] = date("M Y", strtotime( date( '01-m-Y' )." -$i months"));
+		}
+
+		$currentMonth = date('M');
+		$currentYear = date('Y');
+
+		if ($request->isMethod('post') ) {
+			$explodeDate = explode (' ', $request->dropdownMonthYear);
+			$selectMonth = $explodeDate[0];
+			$selectYear = $explodeDate[1];
+			$selectMonthInNumber = date('m', strtotime($selectMonth));
+		} else {
+			$selectMonth = $currentMonth;
+			$selectYear = $currentYear;
+			$selectMonthInNumber = date('m', strtotime($selectMonth));
+		}
+		$selectMonthYear = $selectMonth.' '.$selectYear;
+
+		$jobs = Operation::getAllJobByCat('FSU', $selectMonthInNumber, $selectYear);
+		$jobsSpot = Operation::getAllJobByCat('SPOT', $selectMonthInNumber, $selectYear);
+		$jobsPilotage = Operation::getAllPilotageJob($selectMonthInNumber, $selectYear);
+
+    return view('jobRecords')
+					->with('jobs',$jobs)
+					->with('jobsSpot',$jobsSpot)
+					->with('jobsPilotage',$jobsPilotage)
+					->with('currentMonth',$currentMonth)
+					->with('currentYear',$currentYear)
+					->with('selectMonth',$selectMonth)
+					->with('selectYear',$selectYear)
+					->with('selectMonthYear',$selectMonthYear)
+					->with('months',$months)
+					->with('user',$userInfo);
+  }
+	public function jobRecordsPoac (request $request) {
 
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
@@ -49,18 +97,11 @@ class OperationController extends Controller {
 		}
 		$selectMonthYear = $selectMonth.' '.$selectYear;
 
+		$jobs = Operation::getAllJobByCatAndByUser('FSU', $userInfo->usr_id, $selectMonthInNumber, $selectYear);
+		$jobsSpot = Operation::getAllJobByCatAndByUser('SPOT', $userInfo->usr_id, $selectMonthInNumber, $selectYear );
+		$jobsPilotage = Operation::getAllPilotageJobByUserId($userInfo->usr_id, $selectMonthInNumber, $selectYear);
 
-		if ($userInfo->usr_role == "AD") {
-			$jobs = Operation::getAllJobByCat('FSU', $selectMonthInNumber, $selectYear);
-			$jobsSpot = Operation::getAllJobByCat('SPOT', $selectMonthInNumber, $selectYear);
-			$jobsPilotage = Operation::getAllPilotageJob($selectMonthInNumber, $selectYear);
-		} else {
-			$jobs = Operation::getAllJobByCatAndByUser('FSU', $userInfo->usr_id, $selectMonthInNumber, $selectYear);
-			$jobsSpot = Operation::getAllJobByCatAndByUser('SPOT', $userInfo->usr_id, $selectMonthInNumber, $selectYear );
-		}
-		// echo '<pre>'; print_r($jobs); die();
-
-    return view('jobRecords')
+		return view('jobRecordsPoac')
 					->with('jobs',$jobs)
 					->with('jobsSpot',$jobsSpot)
 					->with('jobsPilotage',$jobsPilotage)
@@ -71,7 +112,7 @@ class OperationController extends Controller {
 					->with('selectMonthYear',$selectMonthYear)
 					->with('months',$months)
 					->with('user',$userInfo);
-  }
+	}
 
 	public function doCheckAndUpdateJobStatus() {
 
@@ -172,6 +213,8 @@ class OperationController extends Controller {
 
 		if ($insert) {
 
+			Log::doAddLog ("Add new STS job", $insert, $request->job_code);
+
 			// notification
 			// $foreign_note = $request->job_commence_time.' '.$request->job_commence_time_ampm;
 			// app('App\Http\Controllers\NotificationController')->doInsertNotification($insert, $foreign_note, $request->job_mooring_master, 'newjob');
@@ -228,6 +271,8 @@ class OperationController extends Controller {
 
 		if ($insert) {
 
+			Log::doAddLog ("Add new Pilotage job", $insert, $request->pil_code);
+
 			if ($status == "Completed") {
 				return redirect('jobinfo-pilotage/'.$insert)->with('success', "Successfully added new job. Please complete the form to continue.");
 			} else {
@@ -247,10 +292,10 @@ class OperationController extends Controller {
 
 		$job = Operation::getJobByid($job_id);
 
-		//check priviledge admin dan owner
-		if ($userInfo->usr_role == "CP" && $job->job_owner != $userInfo->usr_id) {
-			return redirect('jobrecords');
+		if ($userInfo->usr_role == "CP") {
+			return redirect('jobinfo-poac/'.$job_id);
 		}
+
 		//dapatkan sts operator dan service provider
 		$stsOperator = DB::table('sts_operator_service')->where('sts_type','Operator')->get();
 		$stsProvider = DB::table('sts_operator_service')->where('sts_type','Service Provider')->get();
@@ -272,8 +317,6 @@ class OperationController extends Controller {
 		$voucher_berthing = Voucher::getVoucherByJobIdAndType($job_id, 'Berthing');
 		$voucher_unberthing = Voucher::getVoucherByJobIdAndType($job_id, 'Unberthing');
 
-		// echo '<pre>'; print_r($voucher_unberthing); die();
-
     return view('jobInfo')
 				 ->with('job',$job)
 				 ->with('stsOperator',$stsOperator)
@@ -288,10 +331,57 @@ class OperationController extends Controller {
 				 ->with('user',$userInfo);
   }
 
+	public function jobInfoPoac ($job_id) {
+
+		#Dapatkan variable daripada middleware
+		$userInfo 					= resolve('userInfo');
+
+		$job 								= Operation::getJobByid($job_id);
+
+		#Dapatkan sts operator dan service provider
+		$stsOperator 				= DB::table('sts_operator_service')->where('sts_type','Operator')->get();
+		$stsProvider 				= DB::table('sts_operator_service')->where('sts_type','Service Provider')->get();
+
+		#Dapatkan rate cards yang active
+		$cards 							= Card::getAllCardsByClient($job->job_client);
+
+		#Dapatkan ships
+		$mothership 				= Ship::getAllShipByCat('Mothership');
+		$moneuvering 				= Ship::getAllShipByCat('Maneuvering');
+
+		#Dapatkan locations
+		$locations 					= DB::table('locations')->get();
+
+		#Dapatkan user cp
+		$users 							= User::getAllUserByRole('CP');
+
+		#Dapatkan vouchers
+		$voucher_berthing 	= Voucher::getVoucherByJobIdAndType($job_id, 'Berthing');
+		$voucher_unberthing = Voucher::getVoucherByJobIdAndType($job_id, 'Unberthing');
+
+		return view('jobInfoPoac')
+				 ->with('job',$job)
+				 ->with('stsOperator',$stsOperator)
+				 ->with('stsProvider',$stsProvider)
+				 ->with('cards',$cards)
+				 ->with('mothership',$mothership)
+				 ->with('moneuvering',$moneuvering)
+				 ->with('locations',$locations)
+				 ->with('users',$users)
+				 ->with('voucher_berthing',$voucher_berthing)
+				 ->with('voucher_unberthing',$voucher_unberthing)
+				 ->with('user',$userInfo);
+	}
+
 	public function jobInfoPilotage ($pil_id) {
 
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
+
+		//check priviledge admin
+		if ($userInfo->usr_role == "CP") {
+			return redirect('jobinfo-pilotage-poac/'.$pil_id);
+		}
 
 		$job = Operation::getPilotageJobByid($pil_id);
 
@@ -301,10 +391,7 @@ class OperationController extends Controller {
 		//dapatkan locations
 		$locations = DB::table('locations')->get();
 
-		//check priviledge admin
-		if ($userInfo->usr_role == "CP") {
-			return redirect('jobrecords');
-		}
+
 
 		$moneuvering = Ship::getAllShipByCat('Maneuvering');
 		//dapatkan poac
@@ -321,10 +408,41 @@ class OperationController extends Controller {
 				 ->with('locations',$locations)
 				 ->with('user',$userInfo);
 
+	}
 
+	public function jobInfoPilotagePoac ($pil_id) {
+
+		//dapatkan variable daripada middleware
+		$userInfo = resolve('userInfo');
+
+		$job = Operation::getPilotageJobByid($pil_id);
+
+		//dapatkan sts operator dan service provider
+		$stsOperator = DB::table('sts_operator_service')->where('sts_type','Operator')->get();
+		$stsProvider = DB::table('sts_operator_service')->where('sts_type','Service Provider')->get();
+		//dapatkan locations
+		$locations = DB::table('locations')->get();
+
+		$moneuvering = Ship::getAllShipByCat('Maneuvering');
+		//dapatkan poac
+		$users = User::getAllUserByRole('CP');
+
+		// echo '<pre>'; print_r($users); die();
+
+		return view('jobInfoPilotagePoac')
+				 ->with('job',$job)
+				 ->with('moneuvering',$moneuvering)
+				 ->with('users',$users)
+				 ->with('stsOperator',$stsOperator)
+				 ->with('stsProvider',$stsProvider)
+				 ->with('locations',$locations)
+				 ->with('user',$userInfo);
 
 	}
+
 	public function doEditJob (request $request) {
+
+		$job = Operation::getJobByid($request->job_id);
 
 		$explode_date1 = explode('/',$request->job_commence_date);
 		$date_commence = $explode_date1[2].'-'.$explode_date1[0].'-'.$explode_date1[1];
@@ -377,11 +495,9 @@ class OperationController extends Controller {
 				'job_overtime_charges'=> $overtimeCharges,
 				'job_updated' 				=> Carbon::now()
 		);
-		// echo '<pre>'; print_r($checkRateCard);
-		// echo '<pre>'; print_r($dataUpdate);
-		// die();
-		$updateJob = DB::table('jobs')->where('job_id', $request->job_id)->update($dataUpdate);
 
+		$updateJob = DB::table('jobs')->where('job_id', $request->job_id)->update($dataUpdate);
+		Log::doAddLog ("Update STS job", $request->job_id, $job->job_code);
 		return redirect('jobinfo/'.$request->job_id)->with('success', "Successfully update this job information.");
 	}
 
@@ -389,6 +505,8 @@ class OperationController extends Controller {
 
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
+
+		$job = Operation::getPilotageJobByid($request->pil_id);
 
 		$explode_date = explode('/',$request->pil_onboard_date);
 		$dateOnboard = $explode_date[2].'-'.$explode_date[0].'-'.$explode_date[1];
@@ -417,6 +535,8 @@ class OperationController extends Controller {
 		);
 
 		$updateJob = DB::table('jobs_pilotage')->where('pil_id', $request->pil_id)->update($data);
+		Log::doAddLog ("Update Pilotage job", $request->pil_id, $job->pil_code);
+
 		return redirect('jobinfo-pilotage/'.$request->pil_id)->with('success', "Successfully update this job information.");
 		// echo '<pre>'; print_r($data); die();
 	}
@@ -464,14 +584,19 @@ class OperationController extends Controller {
 
 		$job_id = $request->job_id;
 
+		$job = Operation::getJobByid($job_id);
+
 		//get voucher detail
 		$voucher = DB::table('vouchers')->where('vou_job_id', $job_id)->get();
 
 		DB::table('jobs')->where('job_id', $job_id)->delete();
 		DB::table('vouchers')->where('vou_job_id', $job_id)->delete();
 
+		Log::doAddLog ("Delete STS job", 0, $job->job_code);
+
 		foreach ($voucher as $v) :
 			DB::table('voucher_job_items')->where('vjob_vou_id', $v->vou_id)->delete();
+			Log::doAddLog ("Delete voucher for job ".$job->job_code."", 0, $v->vou_code);
 		endforeach;
 
 		return redirect('jobrecords')->with('success', "Successfully delete job.");
@@ -481,15 +606,18 @@ class OperationController extends Controller {
 	public function doDeleteJobPilotage(request $request) {
 
 		$pil_id = $request->pil_id;
-
+		$job = Operation::getPilotageJobByid($pil_id);
 		//get voucher detail
 		$voucher = DB::table('vouchers_pilotage')->where('vou_job_id', $pil_id)->get();
 
 		DB::table('jobs_pilotage')->where('pil_id', $pil_id)->delete();
 		DB::table('vouchers_pilotage')->where('vou_job_id', $pil_id)->delete();
 
+		Log::doAddLog ("Delete Pilotage job", 0, $job->pil_code);
+
 		foreach ($voucher as $v) :
 			DB::table('voucher_job_items_pilotage')->where('vjob_vou_id', $v->vou_id)->delete();
+			Log::doAddLog ("Delete voucher for job ".$job->pil_code."", 0, $v->vou_code);
 		endforeach;
 
 		return redirect('jobrecords')->with('success', "Successfully delete Pilotage Job.");

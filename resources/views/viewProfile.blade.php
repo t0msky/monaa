@@ -3,8 +3,8 @@
 @section('content')
 <div class="br-subleft">
   <div class="widget-4">
-      
-    <div class="avatar-upload">
+
+    <div class="avatar-upload-2">
       <div class="avatar-preview">
       <?php if ($profile->usr_pic != '') { ?>
       <img src="<?php echo env('BASE_URL');?>img/pic/<?php echo $profile->usr_pic;?>" >
@@ -13,7 +13,7 @@
       <?php } ?>
        </div><!-- card-profile-img -->
     </div><!-- card-profile-img -->
-    
+
     <div class="tx-center">
       <div class="justify-content-between align-items-center mg-t-20 pd-x-10 bd-b bd-white-1 pd-b-5">
         <div class="tx-capitalize tx-14 mg-b-0 tx-white-7"><?php echo $profile->usr_firstname.' '.$profile->usr_lastname;?></div>
@@ -54,7 +54,7 @@
 
           <div class="card-header bg-transparent pd-x-25 pd-y-25 d-flex justify-content-between align-items-center">
             <div class="card-title tx-capitalize mg-b-0">User Profile</div>
-            
+
           </div><!-- card-header -->
 
           <div class="card">
@@ -69,8 +69,10 @@
 
             <div class="tab-content">
               <div class="tab-pane active" id="t01">
+                <?php if ($user->usr_role == 'AD') { ?>
                 <form method="post" action="<?php echo env('BASE_URL');?>profile" data-parsley-validate data-parsley-errors-messages-disabled>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <?php } ?>
                 <?php
                 if ($user->usr_role == 'AD') {
                   $disabled = "";
@@ -104,7 +106,7 @@
                                     <div class="tx-uppercase tx-gray-500">ON</div>
                                   </div>
                                 </div><!-- input-group-prepend -->
-                                <input id="employid" class="form-control" type="text" name="usr_employment_id" value="<?php echo $profile->usr_employment_id;?>" placeholder="0-0000" required <?php echo $disabled;?>>
+                                <input id="employid" class="form-control" type="text" name="usr_employment_id" value="<?php echo $profile->usr_employment_id;?>" placeholder="00-0000" required <?php echo $disabled;?>>
                               </div><!-- input-group -->
                               </td>
                             </tr>
@@ -179,23 +181,23 @@
                             <tr>
                             <td>State / Region</td>
                             <td>
-                              <select class="form-control bd-transparent select2-show-search" style="width: 100%" value="<?php echo $profile->usr_state;?>">
+                              <select class="form-control bd-transparent select2-show-search" style="width: 100%" name="usr_state" value="<?php echo $profile->usr_state;?>" <?php echo $disabled;?>>
                               <option>Choose State / Region</option>
-                              <option value="Johor">Johor</option>
-                              <option value="Kedah">Kedah</option>
-                              <option value="Kelantan">Kelantan</option>
-                              <option value="Kuala Lumpur">Kuala Lumpur</option>
-                              <option value="Labuan">Labuan</option>
-                              <option value="Malacca">Malacca</option>
-                              <option value="Negeri Sembilan">Negeri Sembilan</option>
-                              <option value="Pahang">Pahang</option>
-                              <option value="Perak">Perak</option>
-                              <option value="Perlis">Perlis</option>
-                              <option value="Penang">Penang</option>
-                              <option value="Sabah">Sabah</option>
-                              <option value="Sarawak">Sarawak</option>
-                              <option value="Selangor">Selangor</option>
-                              <option value="Terengganu">Terengganu</option>
+                              <option value="Johor" <?php if($profile->usr_state == "Johor"){ echo 'selected';} ?>>Johor</option>
+                              <option value="Kedah" <?php if($profile->usr_state == "Kedah"){ echo 'selected';} ?>>Kedah</option>
+                              <option value="Kelantan" <?php if($profile->usr_state == "Kelantan"){ echo 'selected';} ?>>Kelantan</option>
+                              <option value="Kuala Lumpur" <?php if($profile->usr_state == "Kuala Lumpur"){ echo 'selected';} ?>>Kuala Lumpur</option>
+                              <option value="Labuan" <?php if($profile->usr_state == "Labuan"){ echo 'selected';} ?>>Labuan</option>
+                              <option value="Malacca" <?php if($profile->usr_state == "Malacca"){ echo 'selected';} ?>>Malacca</option>
+                              <option value="Negeri Sembilan" <?php if($profile->usr_state == "Negeri Sembilan"){ echo 'selected';} ?>>Negeri Sembilan</option>
+                              <option value="Pahang" <?php if($profile->usr_state == "Pahang"){ echo 'selected';} ?>>Pahang</option>
+                              <option value="Perak" <?php if($profile->usr_state == "Perak"){ echo 'selected';} ?>>Perak</option>
+                              <option value="Perlis" <?php if($profile->usr_state == "Perlis"){ echo 'selected';} ?>>Perlis</option>
+                              <option value="Penang" <?php if($profile->usr_state == "Penang"){ echo 'selected';} ?>>Penang</option>
+                              <option value="Sabah" <?php if($profile->usr_state == "Sabah"){ echo 'selected';} ?>>Sabah</option>
+                              <option value="Sarawak" <?php if($profile->usr_state == "Sarawak"){ echo 'selected';} ?>>Sarawak</option>
+                              <option value="Selangor" <?php if($profile->usr_state == "Selangor"){ echo 'selected';} ?>>Selangor</option>
+                              <option value="Terengganu" <?php if($profile->usr_state == "Terengganu"){ echo 'selected';} ?>>Terengganu</option>
                             </select>
                               <!--<input class="form-control" type="text" name="usr_state" value="<?php echo $profile->usr_state;?>" required <?php echo $disabled;?>>-->
                               </td>
@@ -207,9 +209,9 @@
                               </td>
                             </tr>
                           </tbody>
-                        </table> 
+                        </table>
                       </div><!-- col-6 -->
-                      
+
                       <div class="col-lg-6 mg-t-20 mg-lg-t-0">
                         <table class="table mg-b-0">
                           <thead style='visibility: collapse;'>
@@ -295,11 +297,11 @@
                               <input class="form-control" type="text" name="usr_kwsp_no" value="<?php echo $profile->usr_kwsp_no;?>" placeholder="Insert KWSP No." <?php echo $disabled;?>>
                            </tr>
                           </tbody>
-                        </table> 
+                        </table>
                       </div><!-- col-6 -->
                     </div><!-- row -->
                   </div><!-- card-body -->
-                  
+
                   <div class="modal-footer">
                     <?php if ($role == 'Admin') { ?>
                     <input type="hidden" name="tab" value="profile">
@@ -309,7 +311,9 @@
                     <?php } ?>
 
                   </div><!-- form-layout-footer -->
+                  <?php if ($user->usr_role == 'AD') { ?>
                   </form>
+                  <?php } ?>
               </div><!-- tab-pane -->
 
             </div><!-- tab-content -->
@@ -400,7 +404,7 @@
   });
 
   // Input Masks
-  $('#employid').mask('9-9999');
+  $('#employid').mask('99-9999');
   $('#postal').mask('99999');
   $('#phoneMask').mask('(999) 999-9999');
   $('#nric').mask('999999-99-9999');

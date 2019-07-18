@@ -201,6 +201,7 @@
                           <tr>
                             <td>Mooring Master</td>
                             <td><select class="form-control select2-show-search" name="job_mooring_master" data-placeholder="Choose one (with searchbox)"  <?php echo $disabled_completed;?>>
+                              <option value="">Choose One</option>
                               <?php foreach ($users as $u): ?>
                                 <option value="<?php echo $u->usr_id;?>" <?php if ($u->usr_id == $job->job_mooring_master) { echo ' selected';} ?> ><?php echo $u->usr_firstname.' '.$u->usr_lastname;?></option>
                               <?php endforeach; ?>
@@ -209,6 +210,7 @@
                           <tr>
                             <td>POAC</td>
                             <td><select class="form-control select2-show-search" name="job_poac1" data-placeholder="Choose one (with searchbox)" <?php echo $disabled_completed;?>>
+                              <option value="">Choose One</option>
                               <?php foreach ($users as $u): ?>
                                 <option value="<?php echo $u->usr_id;?>" <?php if ($u->usr_id == $job->job_poac1) { echo ' selected';} ?> ><?php echo $u->usr_firstname.' '.$u->usr_lastname;?></option>
                               <?php endforeach; ?>

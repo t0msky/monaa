@@ -41,7 +41,7 @@
               <th class="wd-30p">Advisor / Pilot / Mooring Master</th>
               <th class="wd-15p hidden-xs-down">Status</th>
               <th class="wd-25p hidden-xs-down">Base Location</th>
-              <th class="wd-20p hidden-xs-down">Job Assigned</th>
+              <th class="wd-15p hidden-xs-down">Job Assigned</th>
               <th class="wd-10p hidden-xs-down">Action</th>
             </tr>
           </thead>
@@ -60,7 +60,7 @@
                   <img src="<?php echo env('BASE_URL');?>img/default.png" class="wd-40 rounded-circle">
                   <?php } ?>
                   <div class="mg-l-15">
-                    <div><?php echo $p['poac_name'];?></div>
+                    <div><a href="<?php echo env('BASE_URL');?>view-profile/<?php echo $p['poac_id'];?>"><?php echo $p['poac_name'];?></a></div>
                   </div>
                 </div>
               </td>

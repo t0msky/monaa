@@ -24,10 +24,27 @@ class Notification{
       // View::share('notification', $checkNoti);
 
       if ($user->usr_role == "AD") {
-        $countVoucherUnverified = DB::table('vouchers')->where('vou_status','Unverified')->count();
-        $countVoucherPilotageUnverified = DB::table('vouchers_pilotage')->where('vou_status','Unverified')->count();
-        $countStsNoVoucher = DB::table('jobs as j')->where('j.job_berthing', '=', NULL)->orWhere('j.job_unberthing', '=', NULL)->count();
-        $countPilotageNoVoucher = DB::table('jobs_pilotage as j')->where('j.pil_voucher_id', '=', NULL)->count();
+        $countVoucherUnverified =         DB::table('vouchers')
+                                          ->where('vou_status','Unverified')
+                                          ->count();
+
+        $countVoucherPilotageUnverified = DB::table('vouchers_pilotage')
+                                          ->where('vou_status','Unverified')
+                                          ->count();
+
+        $countStsNoVoucher =              DB::table('jobs as j')
+                                          ->where('j.job_status', '!=', 'In-coming')
+                                          ->where(function ($query) {
+                                              $query->where('j.job_berthing', '=', NULL)
+                                                    ->orWhere('j.job_unberthing', '=', NULL);
+                                          })
+                                          ->count();
+
+        $countPilotageNoVoucher =         DB::table('jobs_pilotage as j')
+                                          ->where('j.pil_voucher_id', '=', NULL)
+                                          ->where('j.pil_status', '!=', 'In-coming')
+                                          ->count();
+
         // echo $countVoucherUnverified; die();
         View::share('countVoucherUnverified', $countVoucherUnverified);
         View::share('countVoucherPilotageUnverified', $countVoucherPilotageUnverified);

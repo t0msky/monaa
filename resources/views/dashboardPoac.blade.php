@@ -66,7 +66,7 @@
                     ?>
                     <tr>
                       <th scope="row"><?php echo $no;?></th>
-                      <td><?php echo $i->job_code;?></td>
+                      <td><a href="jobinfo-poac/<?php echo $i->job_id;?>"><?php echo $i->job_code;?></a></td>
                       <td><?php echo $i->card_type;?></td>
                       <td><?php echo date('d M Y, H:i A', strtotime($i->job_commence_date.$i->job_commence_time)); ?></td>
                     </tr>
@@ -96,7 +96,7 @@
                     ?>
                     <tr>
                       <th scope="row"><?php echo $no;?></th>
-                      <td><?php echo $i->pil_code;?></td>
+                      <td><a href="jobinfo-pilotage-poac/<?php echo $i->pil_id;?>"><?php echo $i->pil_code;?></a></td>
                       <td><?php echo $i->pil_event;?></td>
                       <td><?php echo date('d M Y, H:i A', strtotime($i->pil_onboard_date.$i->pil_onboard_time)); ?></td>
                     </tr>

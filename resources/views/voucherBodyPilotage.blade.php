@@ -12,20 +12,31 @@
       } else if($user->usr_role == "CP") {
 
         if ($voucher->vou_status == "Verified") {
-          echo '<h3 class="tx-success">Verified</h3>';
+          echo '<div class="card-title tx-success mg-b-0"><i class="icon ion-checkmark tx-success tx-24 pd-r-10"></i>Verified</div>';
         } else if ($voucher->vou_status == "Unverified") {
-          echo '<h3 class="tx-danger">Unverified</h3>';
+          echo '<div class="card-title tx-danger mg-b-0"><i class="icon ion-close tx-danger tx-24 pd-r-10"></i>Unverified</div>';
         }
       }
       ?>
 
     </div>
     <div class="btn-group" role="group" aria-label="Basic example">
-      <span data-toggle="tooltip" data-placement="top" title="Delete">
-        <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $voucher->vou_id;?>">
-          <i class="icon typcn typcn-trash tx-24"></i>
-        </button>
-      </span>
+      <?php if ($user->usr_role == "AD") { ?>
+        <span data-toggle="tooltip" data-placement="top" title="Delete">
+          <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $voucher->vou_id;?>">
+            <i class="icon typcn typcn-trash tx-24"></i>
+          </button>
+        </span>
+      <?php } ?>
+
+      <?php if ($user->usr_role == "CP" && $voucher->vou_status == "Unverified") { ?>
+        <span data-toggle="tooltip" data-placement="top" title="Delete">
+          <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $voucher->vou_id;?>">
+            <i class="icon typcn typcn-trash tx-24"></i>
+          </button>
+        </span>
+      <?php } ?>
+
       <!-- <button type="button" class="btn btn-third"><i class="icon typcn typcn-edit tx-24"></i></button> -->
       <a href="<?php echo env('BASE_URL');?>pdf-voucher-detail/<?php echo $voucher->vou_id;?>"
         class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF"><i class="icon typcn typcn-document-text tx-24"></i></a>
@@ -41,7 +52,7 @@
     <div class="row mg-t-40">
       <div class="col-md-3">
         <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Operator</label>
-        <h6 class="tx-inverse"><?php echo $operator->sts_name;?></h6>
+        <h6 class="tx-uppercase"><?php echo $operator->sts_name;?></h6>
         <p class="lh-7 tx-dark">
           <?php echo $operator->sts_address;?><br>
           <?php echo $operator->sts_address2;?><br>
@@ -50,7 +61,7 @@
       </div><!-- col -->
       <div class="col-md-3">
         <label class="tx-uppercase tx-14 tx-medium mg-b-20">STS Service Provider</label>
-        <h6 class="tx-inverse"><?php echo $provider->sts_name;?></h6>
+        <h6 class="tx-uppercase"><?php echo $provider->sts_name;?></h6>
         <p class="lh-7 tx-dark">
           <?php echo $provider->sts_address;?><br>
           <?php echo $provider->sts_address2;?><br>

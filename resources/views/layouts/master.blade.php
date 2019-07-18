@@ -54,7 +54,7 @@
           <ul class="br-menu-sub">
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>dashboard" class="sub-link <?php if($uri=='dashboard'){echo 'active';}?>">Dashboard Cards</a></li>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>noticeboard" class="sub-link <?php if($uri=='noticeboard'){echo 'active';}?>">Notice Board</a></li>
-            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>activity-log" class="sub-link <?php if($uri=='activity-log'){echo 'active';}?>">Activity Log</a></li>
+            <li class="sub-item"><a href="" class="sub-link" data-toggle="modal" data-target="#comingsoon">Activity Log</a></li>
           </ul>
         </li><!-- br-menu-item -->
         <li class="br-menu-item">
@@ -176,10 +176,95 @@
           <ul class="br-menu-sub">
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>dashboard-poac" class="sub-link <?php if($uri=='dashboard-poac'){echo 'active';}?>">Dashboard Cards</a></li>
             <li class="sub-item"><a href="<?php echo env('BASE_URL');?>noticeboard" class="sub-link <?php if($uri=='noticeboard'){echo 'active';}?>">Notice Board</a></li>
-            <!-- <li class="sub-item"><a href="<?php echo env('BASE_URL');?>activity-log" class="sub-link <?php if($uri=='activity-log'){echo 'active';}?>">Activity Log</a></li> -->
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>activity-log" class="sub-link <?php if($uri=='activity-log'){echo 'active';}?>">Activity Log</a></li>
           </ul>
         </li><!-- br-menu-item -->
 
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='jobrecords-poac' || $uri=='addnewjob' || $uri=='poacstatus' || $uri=='jobinfo-poac' || $uri=='jobinfo-pilotage'){echo 'active';}?>">
+            <i class="tx-icon typcn typcn-briefcase tx-24 pd-r-4"></i>
+            <span class="menu-item-label">Operations</span>
+          </a><!-- br-menu-link -->
+          <ul class="br-menu-sub">
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>jobrecords-poac" class="sub-link <?php if($uri=='jobrecords-poac' || $uri=='jobinfo-poac' || $uri=='jobinfo-pilotage'){echo 'active';}?>">Job Records</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>poacstatus" class="sub-link <?php if($uri=='poacstatus'){echo 'active';}?>">POAC Status</a></li>
+          </ul>
+        </li>
+
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='vouchersrecord' || $uri== "add-voucher" || $uri=='vouchersrecord-pilotage' || $uri=='submit-voucher' || $uri=='submit-voucher-pilotage'){echo 'active';}?>">
+            <i class="tx-icon typcn typcn-document-text tx-24 pd-r-4"></i>
+            <span class="menu-item-label">Vouchers</span>
+          </a><!-- br-menu-link -->
+          <ul class="br-menu-sub">
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>vouchersrecord" class="sub-link <?php if($uri=='vouchersrecord'){echo 'active';}?>">STS Records</a>
+            </li>
+
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>submit-voucher" class="sub-link <?php if($uri=='submit-voucher'  || $uri== "add-voucher"){echo 'active';}?>">STS Submission</a>
+            </li>
+
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>vouchersrecord-pilotage" class="sub-link <?php if($uri=='vouchersrecord-pilotage'){echo 'active';}?>">PLT Records</a>
+            </li>
+
+            <li class="sub-item d-flex justify-content-between align-items-center">
+              <a href="<?php echo env('BASE_URL');?>submit-voucher-pilotage" class="sub-link <?php if($uri=='submit-voucher-pilotage'){echo 'active';}?>">PLT Submission</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link with-sub">
+            <i class="tx-icon typcn typcn-map tx-24 pd-r-5"></i>
+            <span class="menu-item-label">Naveetrac ™</span>
+          </a><!-- br-menu-link -->
+          <ul class="br-menu-sub">
+            <li class="sub-item"><a href="" class="sub-link" data-toggle="modal" data-target="#comingsoon">Coming Soon</a></li>
+          </ul>
+        </li><!-- br-menu-item -->
+
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='personnelboard' || $uri=='adduser' || $uri=='profile' || $uri=='view-profile'){echo 'active';}?>">
+            <i class="tx-icon typcn typcn-user tx-24 pd-l-3 pd-r-2"></i>
+            <span class="menu-item-label">Personnels</span>
+          </a><!-- br-menu-link -->
+          <ul class="br-menu-sub">
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>personnelboard" class="sub-link <?php if($uri=='personnelboard'){echo 'active';}?>">Personnel Board</a></li>
+            <?php if ($user->usr_role == "AD") { ?>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>adduser" class="sub-link <?php if($uri=='adduser'){echo 'active';}?>">Registration</a></li>
+            <?php } ?>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>profile" class="sub-link <?php if($uri=='profile'){echo 'active';}?>">My Profile</a></li>
+          </ul>
+        </li>
+
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link with-sub">
+            <i class="tx-icon typcn typcn-attachment-outline tx-24 pd-r-2"></i>
+            <span class="menu-item-label">Payrolls</span>
+          </a><!-- br-menu-link -->
+          <ul class="br-menu-sub">
+            <li class="sub-item"><a href="" class="sub-link" data-toggle="modal" data-target="#comingsoon">Coming Soon</a></li>
+          </ul>
+        </li><!-- br-menu-item -->
+        <hr>
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link" data-toggle="modal" data-target="#comingsoon">
+            <i class="tx-icon typcn typcn-message tx-24 pd-r-5"></i>
+            <span class="menu-item-label">Mailbox</span>
+          </a><!-- br-menu-link -->
+        </li><!-- br-menu-item -->
+        <li class="br-menu-item">
+          <a href="#" class="br-menu-link with-sub <?php if($uri=='notifications'){echo 'active';}?>">
+            <i class="tx-icon typcn typcn-cog-outline tx-24 pd-r-2"></i>
+            <span class="menu-item-label">Settings</span>
+          </a><!-- br-menu-link -->
+          <ul class="br-menu-sub">
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>notifications" class="sub-link <?php if($uri=='notifications'){echo 'active';}?>">Notifications</a></li>
+            <li class="sub-item"><a href="<?php echo env('BASE_URL');?>#" class="sub-link" data-toggle="modal" data-target="#comingsoon">Billing</a></li>
+          </ul>
+        </li><!-- br-menu-item -->
       <?php } ?>
       </ul><!-- br-sideleft-menu -->
 
@@ -432,8 +517,9 @@
           .responsive.recalc();
         });
       });
-
-
+      $('.nav-tabs li a').click( function(e) {
+        history.pushState( null, null, $(this).attr('href') );
+      });
     </script>
   </body>
   </html>

@@ -86,7 +86,7 @@
     <div class="br-pagetitle">
       <i class="icon typcn typcn-document-text tx-24"></i>
       <div>
-        <h4 class="pd-y-15">Pilotage Voucher Records <span id="DisplayVoucherCode"></span></h4>
+        <h4 class="pd-y-15">Pilotage Voucher Records <span id="DisplayVoucherCode"><?php if ( $firstVouchers ) { echo '('.$firstVouchers->vou_code.')'; }?></span></h4>
         <!-- <p class="mg-b-0">Summary Of Contracted Service Vouchers Record</p> -->
       </div>
     </div><!-- d-flex -->
@@ -110,21 +110,31 @@
             } else if($user->usr_role == "CP") {
 
               if ($firstVouchers->vou_status == "Verified") {
-                echo '<h3 class="tx-success">Verified</h3>';
+                echo '<div class="card-title tx-success mg-b-0"><i class="icon ion-checkmark tx-success tx-24 pd-r-10"></i>Verified</div>';
               } else if ($firstVouchers->vou_status == "Unverified") {
-                echo '<h3 class="tx-danger">Unverified</h3>';
+                echo '<div class="card-title tx-danger mg-b-0"><i class="icon ion-close tx-danger tx-24 pd-r-10"></i>Unverified</div>';
               }
             }
             ?>
 
           </div>
           <div class="btn-group" role="group" aria-label="Basic example">
-            <span data-toggle="tooltip-success" data-placement="top" title="Delete Voucher">
-              <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $firstVouchers->vou_id;?>">
-                <i class="icon typcn typcn-trash tx-24"></i>
-              </button>
-            </span>
-            <!-- <button type="button" class="btn btn-third"><i class="icon typcn typcn-edit tx-24"></i></button> -->
+            <?php if ($user->usr_role == "AD") { ?>
+              <span data-toggle="tooltip-success" data-placement="top" title="Delete Voucher">
+                <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $firstVouchers->vou_id;?>">
+                  <i class="icon typcn typcn-trash tx-24"></i>
+                </button>
+              </span>
+            <?php } ?>
+
+            <?php if ($user->usr_role == "CP" && $firstVouchers->vou_status == "Unverified") { ?>
+              <span data-toggle="tooltip-success" data-placement="top" title="Delete Voucher">
+                <button type="button" class="btn btn-third" data-toggle="modal" data-target="#deletealert" id="deleteVoucherId" vou_id="<?php echo $firstVouchers->vou_id;?>">
+                  <i class="icon typcn typcn-trash tx-24"></i>
+                </button>
+              </span>
+            <?php } ?>
+
             <a href="<?php echo env('BASE_URL');?>pdf-voucher-detail/<?php echo $firstVouchers->vou_id;?>"
               class="btn btn-third" data-toggle="tooltip-success" data-placement="top" title="PDF">
               <i class="icon typcn typcn-document-text tx-24"></i></a>

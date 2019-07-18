@@ -258,9 +258,9 @@
 
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
-                              <label class="form-control-label">Advisor / Pilot / Mooring Master : <span class="tx-success">*</span></label>
+                              <label class="form-control-label">Advisor / Pilot / Mooring Master : </label>
                               <div id="slWrapper06" class="parsley-select">
-                              <select name="job_mooring_master" class="form-control select2-show-search" style="width: 100%" data-parsley-class-handler="#slWrapper06" data-parsley-errors-container="#slErrorContainer" required>
+                              <select name="job_mooring_master" class="form-control select2-show-search" style="width: 100%" data-parsley-class-handler="#slWrapper06" data-parsley-errors-container="#slErrorContainer">
                                 <option value="">Choose One</option>
                                 <?php
                                   foreach($users as $u):
@@ -274,9 +274,9 @@
 
                           <div class="col-lg-6">
                             <div class="form-group mg-b-10-force">
-                              <label class="form-control-label">POAC : <span class="tx-success">*</span></label>
+                              <label class="form-control-label">POAC : </label>
                               <div id="slWrapper10" class="parsley-select">
-                              <select name="job_poac1" class="form-control select2-show-search" style="width: 100%" data-parsley-class-handler="#slWrapper10" data-parsley-errors-container="#slErrorContainer" required>
+                              <select name="job_poac1" class="form-control select2-show-search" style="width: 100%" data-parsley-class-handler="#slWrapper10" data-parsley-errors-container="#slErrorContainer">
                                 <option value="">Choose One</option>
                                 <?php
                                   foreach($users as $u):

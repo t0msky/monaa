@@ -14,9 +14,11 @@
       <h4 class="pd-y-15">Notice Board</h4>
       <!-- <p class="mg-b-0">Announcements And Notice Board</p> -->
     </div>
+    <?php if ($user->usr_role == "AD") { ?>
     <div class="form-layout-footer mg-l-auto hidden-xs-down tx-right">
       <a href="" class="btn btn-info" data-toggle="modal" data-target="#modalCompose"><i class="far fa-edit tx-16 mg-r-15"></i>Compose</a>
-     </div>
+    </div>
+    <?php } ?>
   </div><!-- d-flex -->
 
   <div class="br-pagebody pd-x-20 pd-sm-x-30">
@@ -37,7 +39,9 @@
                       <th class="wd-60p">Subject</th>
                       <th class="wd-20p hidden-xs-down">Sender</th>
                       <th class="wd-10p hidden-xs-down">Date</th>
+                      <?php if ($user->usr_role == "AD") { ?>
                       <th class="wd-5p hidden-xs-down">Actions</th>
+                      <?php } ?>
                     </tr>
                   </thead>
                   <tbody>
@@ -51,7 +55,9 @@
                       <td><a href="#" class="tx-normal notice" data-id="<?php echo $n->notice_id;?>" data-toggle="modal" data-target="#readNotice"><?php echo $n->notice_subject;?></a></td>
                       <td class="hidden-xs-down"><?php echo $n->usr_firstname.' '.$n->usr_lastname;?></td>
                       <td class="hidden-xs-down"><?php echo date('d M Y, H:i A', strtotime($n->notice_created)); ?></td>
+                      <?php if ($user->usr_role == "AD") { ?>
                       <td class="hidden-xs-down tx-center"><a href="" class="tx-teal tx-24 tx-primary deleteNotice" data-id="<?php echo $n->notice_id;?>" data-toggle="modal" data-target="#deletealert"><i class="icon typcn typcn-trash"></i></a></td>
+                      <?php } ?>
                     </tr>
                     <?php
                     $no = $no + 1;
@@ -62,7 +68,7 @@
               </div><!-- table-wrapper -->
 
         </div><!-- card-body -->
-      
+
     </div><!-- card -->
   </div><!-- br-pagebody -->
 </div><!-- br-mainpanel -->

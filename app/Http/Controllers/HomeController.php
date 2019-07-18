@@ -5,6 +5,7 @@ use DB;
 use Mail;
 use PDF;
 use Carbon\Carbon;
+use App\Log;
 use App\User;
 use App\Operation;
 use App\Notice;
@@ -281,12 +282,23 @@ class HomeController extends Controller {
 
 	public function doDeleteNotice(request $request) {
 
+		if (session('role') != "AD") {
+			return redirect('errors.error');
+		}
+
+		$notice = Notice::getNoticeById($request->noticeId);
+
 		DB::table('notice')->where('notice_id', $request->noticeId)->delete();
+		Log::doAddLog ("Delete notice board", 0, $notice->notice_subject);
 		return redirect('noticeboard')->with('success', "Successfully delete notice.");
 
 	}
 
 	public function doAddNotice(request $request) {
+
+		if (session('role') != "AD") {
+			return redirect('errors.error');
+		}
 
 		$dataNotice = array(
 			'notice_subject' 	=> $request->notice_subject,
@@ -296,6 +308,7 @@ class HomeController extends Controller {
 		);
 		// echo '<pre>'; print_r($dataNotice); die();
 		$insert = DB::table('notice')->insertGetId($dataNotice);
+		Log::doAddLog ("Add new notice board", $insert, $request->notice_subject);
 		return redirect('noticeboard')->with('success', "Successfully add new notice.");
 
 	}
@@ -307,54 +320,19 @@ class HomeController extends Controller {
 	}
 
 
-		public function testemel () {
+	public function activityLog () {
 
-			$user = User::getUser(session('user'));
+		$user = User::getUser(session('user'));
 
-			$message = '';
-			$subject = 'Test Registration Verification';
-			$email = "syahrunsulaiman@gmail.com";
-			$name = "Husin Lempoyang";
-
-			$mail = Mail::send('emails.mail', ['name' => $user->usr_firstname, 'userid' => $user->usr_id], function($message) use ($subject, $email, $name) {
-					$message->to($email, $name)
-									->subject($subject);
-			});
-
-			if ($mail) {
-				echo 'sent!';
-			} else {
-				echo 'tak sent!';
-			}
+		if ($user->usr_role == "AD") {
+			$logs = Log::getAllLog();
+		} else if ($user->usr_role == "CP") {
+			$logs = Log::getAllLogByUserId(session('user'));
 		}
 
-		public function activityLog () {
+		return view('activityLog')
+				 ->with('logs',$logs)
+				 ->with('user',$user);
+	}
 
-			$user = User::getUser(session('user'));
-
-			return view('activityLog')->with('user',$user);
-		}
-		// public function downloadPDF(){
-		//
-    //   $user = User::getUser(session('user'));
-		// 	// $user = "Syahrun";
-		// 	// $pdf = PDF::loadView('pdf.test_pdf')->setPaper('a4', 'landscape');
-		//
-    //   $pdf = PDF::loadView('pdfs.pdf', compact('user'))->setPaper('a4', 'landscape');
-    //   // $pdf = PDF::loadView('pdfs.pdf', compact($user));
-    //   return $pdf->download('invoice.pdf');
-		//
-    // }
-		//
-		// public function doRunTerminal () {
-		//
-		// 	$user = User::getUser(session('user'));
-		// 	if ($user->usr_role == "AD") {
-		// 		// shell_exec('php artisan vendor:publish');
-		// 		shell_exec('php artisan config:clear');
-		// 	} else {
-		// 		echo 'Die'; die();
-		// 	}
-		//
-		// }
 }

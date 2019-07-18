@@ -4,6 +4,7 @@
 use DB;
 use Carbon\Carbon;
 use App\User;
+use App\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -57,33 +58,59 @@ class PersonnelController extends Controller {
 				$usr_role = 'CP';
 			}
 
-			$dataProfile = array(
-				'usr_employment_id' => $request->usr_employment_id,
-				'usr_role' 					=> $usr_role,
-				'usr_firstname' 		=> $request->usr_firstname,
-				'usr_lastname' 			=> $request->usr_lastname,
-				'usr_nric' 					=> $request->usr_nric,
-				'usr_dob' 					=> $request->usr_dob,
-				'usr_citizen' 			=> $request->usr_citizen,
-				'usr_add1' 					=> $request->usr_add1,
-				'usr_add2' 					=> $request->usr_add2,
-				'usr_postcode' 			=> $request->usr_postcode,
-				'usr_state' 				=> $request->usr_state,
-				'usr_country' 			=> $request->usr_country,
-				'usr_education' 		=> $request->usr_education,
-				'usr_qualification' => $request->usr_qualification,
-				'usr_jobtitle' 			=> $request->usr_jobtitle,
-				'usr_division' 			=> $request->usr_division,
-				'usr_employment' 		=> $request->usr_employment,
-				'usr_mobile' 				=> $request->usr_mobile,
-				'usr_email' 				=> $request->usr_email,
-				'usr_bank_name' 		=> $request->usr_bank_name,
-				'usr_bank_acc_no' 	=> $request->usr_bank_acc_no,
-				'usr_kwsp_no' 			=> $request->usr_kwsp_no,
-				'usr_updated' 			=> Carbon::now()
-			);
+			if ($userInfo->usr_role == 'AD') {
+				$dataProfile = array(
+					'usr_employment_id' => $request->usr_employment_id,
+					'usr_role' 					=> $usr_role,
+					'usr_firstname' 		=> $request->usr_firstname,
+					'usr_lastname' 			=> $request->usr_lastname,
+					'usr_nric' 					=> $request->usr_nric,
+					'usr_dob' 					=> $request->usr_dob,
+					'usr_citizen' 			=> $request->usr_citizen,
+					'usr_add1' 					=> $request->usr_add1,
+					'usr_add2' 					=> $request->usr_add2,
+					'usr_postcode' 			=> $request->usr_postcode,
+					'usr_state' 				=> $request->usr_state,
+					'usr_country' 			=> $request->usr_country,
+					'usr_education' 		=> $request->usr_education,
+					'usr_qualification' => $request->usr_qualification,
+					'usr_jobtitle' 			=> $request->usr_jobtitle,
+					'usr_division' 			=> $request->usr_division,
+					'usr_employment' 		=> $request->usr_employment,
+					'usr_mobile' 				=> $request->usr_mobile,
+					'usr_email' 				=> $request->usr_email,
+					'usr_bank_name' 		=> $request->usr_bank_name,
+					'usr_bank_acc_no' 	=> $request->usr_bank_acc_no,
+					'usr_kwsp_no' 			=> $request->usr_kwsp_no,
+					'usr_updated' 			=> Carbon::now()
+				);
+			} else {
+				$dataProfile = array(
+					'usr_firstname' 		=> $request->usr_firstname,
+					'usr_lastname' 			=> $request->usr_lastname,
+					'usr_nric' 					=> $request->usr_nric,
+					'usr_dob' 					=> $request->usr_dob,
+					'usr_citizen' 			=> $request->usr_citizen,
+					'usr_add1' 					=> $request->usr_add1,
+					'usr_add2' 					=> $request->usr_add2,
+					'usr_postcode' 			=> $request->usr_postcode,
+					'usr_state' 				=> $request->usr_state,
+					'usr_country' 			=> $request->usr_country,
+					'usr_education' 		=> $request->usr_education,
+					'usr_qualification' => $request->usr_qualification,
+					'usr_jobtitle' 			=> $request->usr_jobtitle,
+					'usr_mobile' 				=> $request->usr_mobile,
+					'usr_email' 				=> $request->usr_email,
+					'usr_bank_name' 		=> $request->usr_bank_name,
+					'usr_bank_acc_no' 	=> $request->usr_bank_acc_no,
+					'usr_kwsp_no' 			=> $request->usr_kwsp_no,
+					'usr_updated' 			=> Carbon::now()
+				);
+			}
 			// echo '<pre>'; print_r($request->usr_role); die();
 			$updateProfile = DB::table('users')->where('usr_id', $request->usr_id)->update($dataProfile);
+
+			Log::doAddLog ("Update profile", $request->usr_id, $request->usr_firstname.' '.$request->usr_lastname);
 
 			if ($userInfo->usr_role == 'AD') {
 				return redirect('view-profile/'.$request->usr_id)->with('success', "Successfully update user profile.");
@@ -104,6 +131,7 @@ class PersonnelController extends Controller {
 					'usr_pword' => $pass
 				);
 				$updatePassword = DB::table('users')->where('usr_id', $request->usr_id)->update($dataPassword);
+				Log::doAddLog ("Update password", $request->usr_id);
 				return redirect('profile#t02')->with('success', "Successfully update new password.");
 			}
 		} else if ($request->isMethod('post') && $request->tab == "bank"){
@@ -126,6 +154,9 @@ class PersonnelController extends Controller {
 		//dapatkan variable daripada middleware
 		$userInfo = resolve('userInfo');
 
+		if ($uid == $userInfo->usr_id) {
+			return redirect('profile');
+		}
 		$profile = User::getUserById($uid);
 
 		return view('viewProfile')
@@ -147,7 +178,7 @@ class PersonnelController extends Controller {
 		request()->image->move(public_path('img/pic'), $imageName);
 
 		$updatePic = DB::table('users')->where('usr_id', $userInfo->usr_id)->update(array('usr_pic' => $imageName));
-
+		Log::doAddLog ("Upload profile avatar", $userInfo->usr_id);
 		return back()
 					->with('success','You have successfully upload image.')
 					->with('image',$imageName);
@@ -196,8 +227,8 @@ class PersonnelController extends Controller {
 		);
 
 		// echo '<pre>'; print_r($dataProfile); die();
-		DB::table('users')->insert($dataProfile);
-
+		$userId = DB::table('users')->insertGetId($dataProfile);
+		Log::doAddLog ("Add new user", $userId, $request->usr_firstname.' '.$request->usr_lastname);
 		return redirect('personnelboard')->with('success', "Successfully added new user.");
 	}
 
@@ -210,6 +241,7 @@ class PersonnelController extends Controller {
 			return redirect('error');
 		}
 
+		$user = User::getUserById($request->user_id);
 		//check user first
 		$check = DB::table('jobs')
 							 ->where('job_owner', $request->user_id)
@@ -226,9 +258,11 @@ class PersonnelController extends Controller {
 
 		if ($check == 0) {
 			DB::table('users')->where('usr_id', $request->user_id)->delete();
+			Log::doAddLog ("Delete user", 0, $user->usr_firstname.' '.$user->usr_lastname);
 			return redirect('personnelboard'.$tab)->with('success', "Successfully delete user.");
 		} else {
 			DB::table('users')->where('usr_id', $request->user_id)->update(array('usr_delete'=>'Yes'));
+			Log::doAddLog ("Delete user", 0, $user->usr_firstname.' '.$user->usr_lastname);
 			return redirect('personnelboard'.$tab)->with('success', "Successfully delete user.");
 		}
 
@@ -243,7 +277,10 @@ class PersonnelController extends Controller {
 			return redirect('error');
 		}
 
+		$user = User::getUserById($uid);
+
 		DB::table('users')->where('usr_id', $uid)->update(array('usr_approval'=>'Yes'));
+		Log::doAddLog ("Approve user", $uid, $user->usr_firstname.' '.$user->usr_lastname);
 		return redirect('personnelboard')->with('success', "User has been approved");
 
 	}

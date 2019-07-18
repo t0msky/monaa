@@ -15,7 +15,7 @@
       <!-- <p class="mg-b-0">Announcements And Notice Board</p> -->
     </div>
     <div class="form-layout-footer mg-l-auto hidden-xs-down tx-right">
-    
+
      </div>
   </div><!-- d-flex -->
 
@@ -34,35 +34,42 @@
                   <thead>
                     <tr>
                       <th class="wd-20p">Date/Time</th>
-                      <th class="wd-10p hidden-xs-down">Duration</th>
-                      <th class="wd-30p hidden-xs-down">Personnels</th>
+                      <th class="wd-15p hidden-xs-down">Duration</th>
+                      <?php if ($user->usr_role == "AD") { ?>
+                      <th class="wd-25p hidden-xs-down">Personnels</th>
+                      <?php } ?>
                       <th class="wd-40p">Activity Detail</th>
                     </tr>
                   </thead>
                   <tbody>
+                    <?php foreach ($logs as $l) : ?>
                     <tr>
-                      <td>01 Jan 2019, 00:00 AM</td>
-                      <td class="hidden-xs-down">1 day ago</td>
-                      <td class="hidden-xs-down">Irwanshah Hanafiah</td>
-                      <td class="valign-middle">Logged in</td>
+                      <td style="font-size:95%"><?php echo date('d M Y H:i:s A', strtotime($l->log_created));?></td>
+                      <td style="font-size:95%" class="hidden-xs-down"><?php echo \Carbon\Carbon::parse($l->log_created)->diffForHumans(); ?></td>
+                      <?php if ($user->usr_role == "AD") { ?>
+                      <td style="font-size:95%" class="hidden-xs-down">
+                        <a href="<?php echo env('BASE_URL');?>view-profile/<?php echo $l->usr_id;?>"><?php echo $l->usr_firstname.' '.$l->usr_lastname;?></a>
+                      </td>
+                      <?php } ?>
+                      <td style="font-size:95%">
+                        <?php
+                          echo $l->log_activity;
+                          if ($l->log_display_name != '') {
+                            echo ' [ <strong>'.$l->log_display_name.'</strong> ]';
+                          }
+                        ?>
+                      </td>
                     </tr>
-                    <tr>
-                      <td>01 Jan 2019, 00:00 AM</td>
-                      <td class="hidden-xs-down">3 hours ago</td>
-                      <td class="hidden-xs-down">Muhamad Farid Muhamad @ Yaccob</td>
-                      <td class="valign-middle">Edit profile</td>
-                    </tr>
-                    <tr>
-                      <td>01 Jan 2019, 00:00 AM</td>
-                      <td class="hidden-xs-down">3 minutes ago</td>
-                      <td class="hidden-xs-down">Mohd Faiq Mohd Pauzi</td>
-                      <td class="valign-middle">Updating job</td>
-                    </tr>
+                    <?php endforeach;?>
                   </tbody>
                 </table>
               </div>
 
         </div><!-- card-body -->
+
+        <div class="modal-footer">
+          {{ $logs->links() }}
+        </div>
       </div><!-- card -->
     </div><!-- card -->
   </div><!-- br-pagebody -->

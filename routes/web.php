@@ -41,18 +41,14 @@ Route::group(['middleware' => 'loggedin', 'middleware' => 'notification'], funct
   Route::get('activity-log', 'HomeController@activityLog');
   Route::get('dashboard-poac', 'HomeController@dashboardPoac');
 
-  #Test
-  Route::get('test', 'HomeController@testemel');
-  Route::get('downloadPDF','HomeController@downloadPDF');
-  Route::get('doRunTerminal','HomeController@doRunTerminal');
-
   #Assets
   Route::get('assets', 'AssetController@assets');
   Route::get('ratecard', 'AssetController@rateCard');
   Route::get('jobitems', 'AssetController@jobItems');
   Route::get('get-body-job-items', 'AssetController@getBodyJobItems');
   Route::get('do-delete-job-item/{id}', 'AssetController@doDeleteJobItem');
-  Route::get('do-add-job-items/{item}/{desc}', 'AssetController@doAddJobItems');
+  // Route::get('do-add-job-items/{item}/{desc}', 'AssetController@doAddJobItems');
+  Route::get('do-add-job-items', 'AssetController@doAddJobItems');
   Route::get('do-update-status-job-item/{item}/{status}', 'AssetController@doUpdateStatusJobItem');
   Route::get('edit-company/{type}/{id}', 'AssetController@editCompany');
   Route::post('do-save-company', 'AssetController@doSaveCompany');
@@ -63,8 +59,10 @@ Route::group(['middleware' => 'loggedin', 'middleware' => 'notification'], funct
 
   #Operations
   Route::any('jobrecords','OperationController@jobRecords');
+  Route::any('jobrecords-poac','OperationController@jobRecordsPoac');
   Route::get('addnewjob','OperationController@addNewJob');
   Route::get('jobinfo/{job_id}','OperationController@jobInfo');
+  Route::get('jobinfo-poac/{job_id}','OperationController@jobInfoPoac');
   Route::get('poacstatus','OperationController@poacStatus');
   Route::post('doAddNewJob','OperationController@doAddNewJob');
   Route::post('doDeleteJob','OperationController@doDeleteJob');
@@ -73,6 +71,7 @@ Route::group(['middleware' => 'loggedin', 'middleware' => 'notification'], funct
   Route::get('do-calculate-hour','OperationController@doCalculateHour');
   Route::post('doAddNewJobPilotage','OperationController@doAddNewJobPilotage');
   Route::get('jobinfo-pilotage/{id}','OperationController@jobInfoPilotage');
+  Route::get('jobinfo-pilotage-poac/{id}','OperationController@jobInfoPilotagePoac');
   Route::post('doEditJobPilotage','OperationController@doEditJobPilotage');
   Route::post('doDeleteJobPilotage','OperationController@doDeleteJobPilotage');
   Route::get('do-check-code/{type}','OperationController@doCheckCode');

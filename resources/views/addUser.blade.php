@@ -53,7 +53,7 @@
                             <div class="tx-uppercase tx-gray-500">ON</div>
                           </div>
                         </div><!-- input-group-prepend -->
-                        <input id="employid" class="form-control" type="text" name="usr_employment_id" placeholder="0-0000" required>
+                        <input id="employid" class="form-control" type="text" name="usr_employment_id" placeholder="00-0000" required>
                       </div><!-- input-group -->
                     </div>
                   </div><!-- col-6 -->
@@ -144,24 +144,24 @@
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
                      <label class="form-control-label">State / Region : </label>
-                      <select class="form-control bd-transparent select2-show-search" name="usr_state" style="width: 100%" data-placeholder="Choose one">
-                              <option>Choose State / Region</option>
-                              <option value="Johor">Johor</option>
-                              <option value="Kedah">Kedah</option>
-                              <option value="Kelantan">Kelantan</option>
-                              <option value="Kuala Lumpur">Kuala Lumpur</option>
-                              <option value="Labuan">Labuan</option>
-                              <option value="Malacca">Malacca</option>
-                              <option value="Negeri Sembilan">Negeri Sembilan</option>
-                              <option value="Pahang">Pahang</option>
-                              <option value="Perak">Perak</option>
-                              <option value="Perlis">Perlis</option>
-                              <option value="Penang">Penang</option>
-                              <option value="Sabah">Sabah</option>
-                              <option value="Sarawak">Sarawak</option>
-                              <option value="Selangor">Selangor</option>
-                              <option value="Terengganu">Terengganu</option>
-                            </select>
+                      <select class="form-control bd-transparent select2" name="usr_state" style="width: 100%" data-placeholder="Choose one">
+                        <option>Choose State / Region</option>
+                        <option value="Johor">Johor</option>
+                        <option value="Kedah">Kedah</option>
+                        <option value="Kelantan">Kelantan</option>
+                        <option value="Kuala Lumpur">Kuala Lumpur</option>
+                        <option value="Labuan">Labuan</option>
+                        <option value="Malacca">Malacca</option>
+                        <option value="Negeri Sembilan">Negeri Sembilan</option>
+                        <option value="Pahang">Pahang</option>
+                        <option value="Perak">Perak</option>
+                        <option value="Perlis">Perlis</option>
+                        <option value="Penang">Penang</option>
+                        <option value="Sabah">Sabah</option>
+                        <option value="Sarawak">Sarawak</option>
+                        <option value="Selangor">Selangor</option>
+                        <option value="Terengganu">Terengganu</option>
+                      </select>
                     </div>
                   </div><!-- col-6 -->
                 </div><!-- row -->
@@ -319,7 +319,7 @@
   });
   // Input Masks
   $('#phoneMask').mask('(999) 999-9999');
-  $('#employid').mask('9-9999');
+  $('#employid').mask('99-9999');
   $('#postal').mask('999999');
   $('#nric').mask('999999-99-9999');
   });

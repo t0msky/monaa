@@ -4,6 +4,7 @@
 use DB;
 use PDF;
 use Carbon\Carbon;
+use App\Log;
 use App\User;
 use App\Operation;
 use App\Ship;
@@ -43,8 +44,8 @@ class VoucherController extends Controller {
 				$firstVouchers = Voucher::getFirstVoucher($selectMonthInNumber, $selectYear);
 
 			} else if ($userInfo->usr_role == "CP") {
-				$vouchers = Voucher::getAllVoucherByUserId($userInfo->usr_id);
-				$firstVouchers = Voucher::getFirstVoucherByUserId($userInfo->usr_id);
+				$vouchers = Voucher::getAllVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
+				$firstVouchers = Voucher::getFirstVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
 			}
 
 		} else {
@@ -72,7 +73,11 @@ class VoucherController extends Controller {
 
 			} else if ($userInfo->usr_role == "CP") {
 				$vouchers = Voucher::getAllVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
-				$firstVouchers = Voucher::getFirstVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
+				if ($vid == '') {
+					$firstVouchers = Voucher::getFirstVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
+				} else {
+					$firstVouchers = $voucherRedirect;
+				}
 			}
 		}
 		$selectMonthYear = $selectMonth.' '.$selectYear;
@@ -171,13 +176,13 @@ class VoucherController extends Controller {
 				// echo '<pre>';  print_r($firstVouchers); die();
 
 			} else if ($userInfo->usr_role == "CP") {
-				// $vouchers = Voucher::getAllVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
-				// $firstVouchers = Voucher::getFirstVoucherByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
+				$vouchers = Voucher::getAllVoucherPilotageByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
+				$firstVouchers = Voucher::getFirstVoucherPilotageByUserId($userInfo->usr_id,$selectMonthInNumber, $selectYear);
 			}
 		}
 		$selectMonthYear = $selectMonth.' '.$selectYear;
-		// echo '<pre>'; print_r($vouchers);print_r($firstVouchers);
-		// die();
+		// echo '<pre>'; print_r($firstVouchers); die();
+
 		//dapatkan operator dan service provider
 		if ( $firstVouchers ) {
 		$operator = DB::table('sts_operator_service')->where('sts_id', $firstVouchers->pil_operator)->first();
@@ -294,7 +299,7 @@ class VoucherController extends Controller {
 				$attrName = "job_unberthing";
 			}
 			DB::table('jobs')->where('job_id',$request->vou_job_id)->update( array($attrName =>$request->vou_code) );
-
+			Log::doAddLog ("Add new STS voucher", $request->vou_job_id, $request->vou_code);
 			return redirect('jobinfo/'.$request->vou_job_id)->with('success', "Successfully added new voucher.");
 			// echo '<pre>'; print_r($size); print_r($jobItem); die();
 
@@ -387,10 +392,9 @@ class VoucherController extends Controller {
 					'vou_status' => 'Verified'
 				);
 				$updateVoucher = DB::table('vouchers')->where('vou_id', $vou_id)->update($voucherData);
-
+				Log::doAddLog ("Verify STS voucher", $vou_id, $voucher->vou_code);
 				return redirect('vouchersrecord/'.$vou_id)->with('success','Voucher '.$voucher->vou_code.' has been verified.');
 			}
-			// echo '<pre>'; print_r($vou_id); die();
 		}
 	}
 
@@ -414,7 +418,7 @@ class VoucherController extends Controller {
 					'vou_status' => 'Verified'
 				);
 				$updateVoucher = DB::table('vouchers_pilotage')->where('vou_id', $vou_id)->update($voucherData);
-				// echo '<pre>'; print_r($voucher); die();
+				Log::doAddLog ("Verify Pilotage voucher", $vou_id, $voucher->vou_code);
 				return redirect('vouchersrecord-pilotage/'.$vou_id)->with('success','Voucher '.$voucher->vou_code.' has been verified.');
 			}
 
@@ -437,8 +441,6 @@ class VoucherController extends Controller {
 			$jobs = Operation::getAllJobNoVoucherByUser($userInfo->usr_id);
 			$firstJobs = Operation::getFirstJobNoVoucherByUser($userInfo->usr_id);
 		}
-
-		// echo '<pre>'; print_r($firstJobs); die();
 
 		//dapatkan job item
 		$jobItems = DB::table('job_items')->where('item_active','Yes')->get();
@@ -467,13 +469,11 @@ class VoucherController extends Controller {
 
 		} else if ($userInfo->usr_role == "CP") {
 
-			// todo
-			// $jobs = Operation::getAllPilotageJobNoVoucherByUser($userInfo->usr_id);
-			// $firstJobs = Operation::getFirstJobNoVoucherByUser($userInfo->usr_id);
+			// todo1
+			$jobs = Operation::getAllPilotageJobNoVoucherByUser($userInfo->usr_id);
+			$firstJobs = Operation::getFirstPilotageJobNoVoucherByUser($userInfo->usr_id);
 		}
-
 		// echo '<pre>'; print_r($firstJobs); die();
-
 		//dapatkan job item
 		$jobItems = DB::table('job_items')->where('item_active','Yes')->get();
 		//dapatkan user cp
@@ -553,6 +553,7 @@ class VoucherController extends Controller {
 
 			//update voucher code dlm table jobs
 			DB::table('jobs_pilotage')->where('pil_id',$request->vou_job_id)->update( array('pil_voucher_id'=>$vou_id, 'pil_voucher_code'=>$request->vou_code,) );
+			Log::doAddLog ("Add new Pilotage voucher", $vou_id, $request->vou_code);
 			return redirect('submit-voucher-pilotage')->with('success', "Successfully added new voucher.");
 
 		} else {
@@ -615,9 +616,8 @@ class VoucherController extends Controller {
 				$attrName = "job_unberthing";
 			}
 			DB::table('jobs')->where('job_id',$request->vou_job_id)->update( array($attrName =>$request->vou_code) );
-
+			Log::doAddLog ("Add new STS voucher", $vou_id, $request->vou_code);
 			return redirect('submit-voucher')->with('success', "Successfully added new voucher.");
-
 
 		} else {
 
@@ -644,7 +644,7 @@ class VoucherController extends Controller {
 
 		//update voucher kat jobs table
 		DB::table('jobs')->where('job_id', $voucher->vou_job_id)->update(array($field => NULL));
-
+		Log::doAddLog ("Delete STS voucher", 0, $voucher->vou_code);
 		return redirect('vouchersrecord')->with('success', "Successfully delete voucher.");
 	}
 
@@ -659,7 +659,7 @@ class VoucherController extends Controller {
 
 		//update voucher kat jobs pilotage table
 		DB::table('jobs_pilotage')->where('pil_id', $voucher->vou_job_id)->update(array('pil_voucher_id' => NULL, 'pil_voucher_code' => NULL));
-
+		Log::doAddLog ("Delete Pilotage voucher", 0, $voucher->vou_code);
 		return redirect('vouchersrecord-pilotage')->with('success', "Successfully delete voucher.");
 	}
 

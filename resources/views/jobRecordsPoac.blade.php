@@ -12,11 +12,8 @@
     <i class="icon typcn typcn-briefcase tx-24"></i>
     <div>
       <h4 class="pd-y-15">Operations</h4>
-      <!-- <p class="mg-b-0">Overview And Summary Of Current Projects</p> -->
     </div>
-    <div class="form-layout-footer mg-l-auto">
-      <a href="<?php echo env('BASE_URL');?>addnewjob" class="btn btn-info"><i class="fas fa-plus tx-16 mg-r-15"></i>Add New Job</a>
-    </div>
+
   </div><!-- d-flex -->
 
   <div class="br-pagebody pd-x-20 pd-sm-x-30">
@@ -70,8 +67,7 @@
                 <div class="btn-group hidden-xs-down" role="group" aria-label="Basic example">
                   <!-- <a href="<?php #echo env('BASE_URL');?>pdf-job-records/FSU/{{$explode[0]}}/{{$explode[1]}}"
                     class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF"><i class="icon typcn typcn-document-text tx-24"></i></a> -->
-                  <a target="_blank" href="<?php echo env('BASE_URL');?>print-job-detail/FSU/{{$explode[0]}}/{{$explode[1]}}"
-                    class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
+                  <a href="#" class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
                 </div>
               </div><!-- card-header -->
               <div class="table-wrapper">
@@ -87,22 +83,15 @@
                       <th class="wd-15p">Mother Ship</th>
                       <th class="wd-15p">Manuevering Ship</th>
                       <th class="wd-10p">Commence Date/Time</th>
-                      <!-- <th class="wd-10p">Commence Time</th> -->
                       <th class="wd-10p">Complete Date/Time</th>
-                      <!-- <th class="wd-10p">Complete Time</th> -->
                       <th class="wd-10p">Exposure Hour</th>
                       <th class="wd-10p">Exceeding Hour > 24</th>
                       <th class="wd-10p">Exceeding Hour > 48</th>
-                      <th class="wd-10p">Normal Rate (SGD)</th>
-                      <th class="wd-10p">Overtime Rate (SGD)</th>
-                      <th class="wd-10p">Total Charge (SGD)</th>
                       <th class="wd-10p">Berthing</th>
                       <th class="wd-10p">Unberthing</th>
                       <th class="wd-15p">Mooring Master</th>
                       <th class="wd-15p">Pilot</th>
-                      <!-- <th class="wd-15p">Pilot 2</th> -->
                       <th class="wd-30p">Remarks</th>
-                      <th class="wd-5p">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -113,7 +102,7 @@
                     <tr>
                       <td></td>
                       <td><?php echo $no;?></td>
-                      <td><a href="jobinfo/<?php echo $j->job_id;?>"><?php echo $j->job_code;?></a></td>
+                      <td><a href="jobinfo-poac/<?php echo $j->job_id;?>"><?php echo $j->job_code;?></a></td>
                       <td><?php echo $j->client_name;?></td>
                       <td>
                         <?php
@@ -165,15 +154,10 @@
                         </div><!-- dropdown-menu -->
                       </td>
                       <td><?php echo date('d M Y, H:i A', strtotime($j->job_commence_date.$j->job_commence_time)); ?></td>
-                      <!-- <td><?php #echo $j->job_commence_time;?></td> -->
                       <td><?php if($j->job_complete_date != '') { echo date('d M Y, H:i A', strtotime($j->job_complete_date.$j->job_complete_time) ); } else { echo '-'; } ?></td>
-                      <!-- <td><?php #echo $j->job_complete_time;?></td> -->
                       <td><?php echo $j->job_hour;?></td>
                       <td><?php echo ($j->job_exceeding24 != 0) ? $j->job_exceeding24 : '-';?></td>
                       <td><?php echo ($j->job_exceeding48 != 0) ? $j->job_exceeding48 : '-';?></td>
-                      <td><?php echo number_format($j->card_rate,2);?></td>
-                      <td>-</td>
-                      <td><?php echo number_format($j->card_rate,2);?></td>
                       <td>
                         <?php
                         if ($j->job_berthing != '') {
@@ -183,7 +167,6 @@
                         } else {
                           echo '-';
                         }
-
                         ?>
                       </td>
                       <td>
@@ -199,20 +182,8 @@
                       </td>
                       <td><?php echo $j->u1_firstname.' '. $j->u1_lastname;?></td>
                       <td><?php echo $j->u2_firstname.' '. $j->u2_lastname;?></td>
-                      <!-- <td><?php #echo $j->u3_firstname.' '. $j->u3_lastname;?></td> -->
                       <td><?php echo $j->job_remark;?></td>
-                      <td class="dropdown hidden-xs-down">
-                        <?php if ($j->job_status != "Completed") { ?>
-                        <a href="#" data-toggle="dropdown" class="tx-gray-500 hover-info"><i class="icon ion-more tx-22"></i></a>
-                        <div class="dropdown-menu dropdown-menu-left pd-10">
-                          <nav class="nav nav-style-2 flex-column">
-                            <!-- <a href="" class="nav-link">Submit Voucher</a> -->
-                            <a href="jobinfo/<?php echo $j->job_id;?>" class="nav-link">Edit</a>
-                            <a class="deleteJobSts nav-link"  data-id="<?php echo $j->job_id;?>"  data-toggle="modal" data-target="#deletealert">Delete</a>
-                          </nav>
-                        </div>
-                        <?php } ?>
-                      </td>
+
                     </tr>
                     <?php
                     $no = $no+1;
@@ -250,8 +221,7 @@
                 <div class="btn-group hidden-xs-down" role="group" aria-label="Basic example">
                   <!-- <a href="<?php #echo env('BASE_URL');?>pdf-job-records/SPOT/{{$explode[0]}}/{{$explode[1]}}"
                     class="btn btn-third" data-toggle="tooltip" data-placement="top" title="PDF"><i class="icon typcn typcn-document-text tx-24"></i></a> -->
-                  <a target="_blank" href="<?php echo env('BASE_URL');?>print-job-detail/SPOT/{{$explode[0]}}/{{$explode[1]}}"
-                    class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
+                  <a href="#" class="btn btn-third" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon typcn typcn-printer tx-24"></i></a>
                 </div>
               </div><!-- card-header -->
               <div class="table-wrapper">
@@ -267,22 +237,15 @@
                       <th class="wd-15p">Mother Ship</th>
                       <th class="wd-15p">Manuevering Ship</th>
                       <th class="wd-10p">Commence Date/Time</th>
-                      <!-- <th class="wd-10p">Commence Time</th> -->
                       <th class="wd-10p">Complete Date/Time</th>
-                      <!-- <th class="wd-10p">Complete Time</th> -->
                       <th class="wd-10p">Exposure Hour</th>
                       <th class="wd-10p">Exceeding Hour > 24</th>
                       <th class="wd-10p">Exceeding Hour > 48</th>
-                      <th class="wd-10p">Normal Rate (SGD)</th>
-                      <th class="wd-10p">Overtime Rate (SGD)</th>
-                      <th class="wd-10p">Total Charge (SGD)</th>
                       <th class="wd-10p">Berthing</th>
                       <th class="wd-10p">Unberthing</th>
                       <th class="wd-15p">Mooring Master</th>
                       <th class="wd-15p">Pilot</th>
-                      <!-- <th class="wd-15p">Pilot 2</th> -->
                       <th class="wd-30p">Remarks</th>
-                      <th class="wd-5p">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -345,15 +308,10 @@
                         </div><!-- dropdown-menu -->
                       </td>
                       <td><?php echo date('d M Y, H:i A', strtotime($j->job_commence_date.$j->job_commence_time)); ?></td>
-                      <!-- <td><?php #echo $j->job_commence_time;?></td> -->
                       <td><?php if($j->job_complete_date != '') { echo date('d M Y, H:i A', strtotime($j->job_complete_date.$j->job_complete_time)); } else { echo '-'; } ?></td>
-                      <!-- <td><?php #echo $j->job_complete_time;?></td> -->
                       <td><?php echo $j->job_hour;?></td>
                       <td><?php echo ($j->job_exceeding24 != 0) ? $j->job_exceeding24 : '-';?></td>
                       <td><?php echo ($j->job_exceeding48 != 0) ? $j->job_exceeding48 : '-';?></td>
-                      <td><?php echo number_format($j->card_rate,2);?></td>
-                      <td><?php echo number_format($j->job_overtime_charges,2);?></td>
-                      <td><?php echo number_format($j->card_rate + $j->job_overtime_charges,2);?></td>
                       <td>
                         <?php
                         if ($j->job_berthing != '') {
@@ -381,18 +339,6 @@
                       <td><?php echo $j->u2_firstname.' '. $j->u2_lastname;?></td>
                       <!-- <td><?php #echo $j->u3_firstname.' '. $j->u3_lastname;?></td> -->
                       <td><?php echo $j->job_remark;?></td>
-                      <td class="dropdown hidden-xs-down">
-                        <?php if ($j->job_status != "Completed") { ?>
-                        <a href="#" data-toggle="dropdown" class="tx-gray-500 hover-info"><i class="icon ion-more tx-22"></i></a>
-                        <div class="dropdown-menu dropdown-menu-left pd-10">
-                          <nav class="nav nav-style-2 flex-column">
-                            <!-- <a href="" class="nav-link">Submit Voucher</a> -->
-                            <a href="jobinfo/<?php echo $j->job_id;?>" class="nav-link">Edit</a>
-                            <a class="deleteJobSts nav-link"  data-id="<?php echo $j->job_id;?>"  data-toggle="modal" data-target="#deletealert">Delete</a>
-                          </nav>
-                        </div>
-                        <?php } ?>
-                      </td>
                     </tr>
                     <?php
                     $no = $no+1;
@@ -455,11 +401,9 @@
                 <th class="wd-10p">On-board Date/Time</th>
                 <th class="wd-10p">Complete Date/Time</th>
                 <th class="wd-20p">Job Event</th>
-                <th class="wd-10p">Total Charge (SGD)</th>
                 <th class="wd-10p">Voucher No.</th>
                 <th class="wd-15p">Pilot Assigned</th>
                 <th class="wd-30p">Remarks</th>
-                <th class="wd-5p">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -470,7 +414,7 @@
               <tr>
                 <td></td>
                 <td><?php echo $no;?></td>
-                <td><a href="jobinfo-pilotage/<?php echo $p->pil_id;?>"><?php echo $p->pil_code;?></a></td>
+                <td><a href="jobinfo-pilotage-poac/<?php echo $p->pil_id;?>"><?php echo $p->pil_code;?></a></td>
                 <td>
                   <?php
                     if ($p->pil_status == "In-coming") {
@@ -504,7 +448,6 @@
                 <td><?php echo date('d M Y, H:i A', strtotime($p->pil_onboard_date.$p->pil_onboard_time)); ?></td>
                 <td><?php if($p->pil_complete_date != '') { echo date('d M Y, H:i A', strtotime($p->pil_complete_date.$p->pil_complete_time)); } else { echo '-'; } ?></td>
                 <td><?php echo $p->pil_event;?></td>
-                <td><?php echo number_format($p->pil_rate,2);?></td>
                 <td>
                   <?php
 
@@ -520,15 +463,6 @@
                 </td>
                 <td><a href="<?php echo env('BASE_URL');?>view-profile/<?php echo $p->usr_id;?>"><?php echo $p->usr_firstname.' '. $p->usr_lastname;?></a></td>
                 <td><?php echo $p->pil_remark;?></td>
-                <td class="dropdown hidden-xs-down">
-                  <a href="#" data-toggle="dropdown" class="tx-gray-500 hover-info"><i class="icon ion-more tx-22"></i></a>
-                  <div class="dropdown-menu dropdown-menu-left pd-10">
-                    <nav class="nav nav-style-2 flex-column">
-                      <a href="jobinfo-pilotage/<?php echo $p->pil_id;?>" class="nav-link">Edit</a>
-                      <a href="" class="deleteJobPilotage nav-link" data-id="<?php echo $p->pil_id;?>" data-toggle="modal" data-target="#deletealert2">Delete</a>
-                    </nav>
-                  </div>
-                </td>
               </tr>
               <?php
               $no = $no + 1;
@@ -541,53 +475,6 @@
     </div><!-- card -->
   </div><!-- br-pagebody -->
 </div><!-- br-mainpanel -->
-
-<!-- MODAL ALERT MESSAGE -->
-<div id="deletealert" class="modal fade">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content tx-size-sm">
-      <div class="modal-body tx-center pd-y-20 pd-x-20">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div class="tx-center pd-l-20">
-          <i class="icon typcn typcn-trash tx-120 tx-success"></i>
-        </div>
-        <form method="post" action="<?php echo env('BASE_URL');?>doDeleteJob" data-parsley-validate data-parsley-errors-messages-disabled id="selectForm-sts">
-          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <input type="hidden" name="job_id" id="job_id" value="">
-          <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Are you sure?</div>
-          <p class="mg-b-30 mg-x-20">You will not be able to recover this data!</p>
-          <button type="submit" class="btn btn-info" >Yes, Confirm</button>
-          <!-- <a href="" class="btn btn-info"  data-dismiss="modal" aria-label="Close">Yes, Confirm</a> -->
-        </form>
-      </div><!-- modal-body -->
-    </div><!-- modal-content -->
-  </div><!-- modal-dialog -->
-</div><!-- modal -->
-
-<div id="deletealert2" class="modal fade">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content tx-size-sm">
-      <div class="modal-body tx-center pd-y-20 pd-x-20">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div class="tx-center pd-l-20">
-          <i class="icon typcn typcn-trash tx-120 tx-success"></i>
-        </div>
-        <form method="post" action="<?php echo env('BASE_URL');?>doDeleteJobPilotage" data-parsley-validate data-parsley-errors-messages-disabled id="selectForm-sts">
-          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <input type="hidden" name="pil_id" id="pil_id" value="">
-          <div class="tx-success tx-uppercase tx-spacing-1 tx-medium tx-18">Are you sure?</div>
-          <p class="mg-b-30 mg-x-20">You will not be able to recover this data!</p>
-          <button type="submit" class="btn btn-info" >Yes, Confirm</button>
-          <!-- <a href="" class="btn btn-info"  data-dismiss="modal" aria-label="Close">Yes, Confirm</a> -->
-        </form>
-      </div><!-- modal-body -->
-    </div><!-- modal-content -->
-  </div><!-- modal-dialog -->
-</div><!-- modal -->
 
 @stop
 
@@ -603,22 +490,6 @@
     <?php if(session()->has('error')){?>
       toastr.error('<?php echo session()->get('error'); ?>')
     <?php } ?>
-
-    $(document).on("click", ".deleteJobSts", function () {
-         var job_id = $(this).data('id');
-         $("#deletealert #job_id").val( job_id );
-         // As pointed out in comments,
-         // it is unnecessary to have to manually call the modal.
-         // $('#addBookDialog').modal('show');
-    });
-
-    $(document).on("click", ".deleteJobPilotage", function () {
-         var pil_id = $(this).data('id');
-         $("#deletealert2 #pil_id").val( pil_id );
-         // As pointed out in comments,
-         // it is unnecessary to have to manually call the modal.
-         // $('#addBookDialog').modal('show');
-    });
 
     $(document).ready(function(){
         $(".responsiveSelect2").select2();

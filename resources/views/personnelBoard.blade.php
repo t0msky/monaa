@@ -26,7 +26,7 @@
     </div>
     <?php if ($user->usr_role == "AD") { ?>
     <div class="form-layout-footer mg-r-auto hidden-xs-down">
-      <a href="" class="btn btn-light" data-toggle="modal" data-target="#user-approv">User Approval<span class="badge badge-success mg-l-10" data-toggle="tooltip-success" data-placement="top" title="{{$countStsNoVoucher}}  STS Job Voucher">{{$countStsNoVoucher}}</span></a>
+      <a href="" class="btn btn-light" data-toggle="modal" data-target="#user-approv">User Approval<span class="badge badge-success mg-l-10" data-toggle="tooltip-success" data-placement="top" title="<?php echo sizeof($approvals);?> user approval"><?php echo sizeof($approvals);?></span></a>
     </div>
     <div class="form-layout-footer mg-l-auto hidden-xs-down">
       <a href="<?php echo env('BASE_URL');?>adduser" class="btn btn-info"><i class="fas fa-plus tx-14 tx-white mg-r-10"></i>New Registration</a>
@@ -90,7 +90,7 @@
                       <img src="<?php echo env('BASE_URL');?>img/default.png" class="wd-40 rounded-circle">
                       <?php } ?>
                         <span class="square-10 bg-success"></span>
-                      </div>  
+                      </div>
                       <div class="mg-l-15">
                         <div><a href="<?php echo env('BASE_URL');?>view-profile/<?php echo $p->usr_id;?>" class="nav-link"><?php echo $p->usr_firstname.' '.$p->usr_lastname;?></a></div>
                       </div>
@@ -128,7 +128,7 @@
               </tbody>
             </table>
           </div><!-- tab-pane -->
-          
+
           <div class="tab-pane" id="t02">
             <table class="table mg-b-0 table-contact">
               <thead>
@@ -159,18 +159,18 @@
                   </td>
                   <td>
                     <div class="d-flex align-items-center">
-                      <div class="nav-link-2 nav-link-profile-2">  
+                      <div class="nav-link-2 nav-link-profile-2">
                       <?php if ($a->usr_pic != '') { ?>
                       <img src="<?php echo env('BASE_URL');?>img/pic/<?php echo $a->usr_pic;?>" class="wd-40 rounded-circle">
                       <?php } else { ?>
                       <img src="<?php echo env('BASE_URL');?>img/default.png" class="wd-40 rounded-circle">
                       <?php } ?>
                       <span class="square-10 bg-success"></span>
-                      </div> 
+                      </div>
                       <div class="mg-l-15">
                         <div><?php echo $a->usr_firstname.' '.$a->usr_lastname;?></div>
                       </div>
-                     
+
                     </div>
                   </td>
                   <td>
@@ -229,7 +229,7 @@
                   <th class="wd-30p">Personnel Name</th>
                   <th class="wd-20p">Email</th>
                   <th class="wd-15p">Date/Time</th>
-                  <th class="wd-20p">Assign To</th>
+                  <!-- <th class="wd-20p">Assign To</th> -->
                   <th class="wd-5p hidden-xs-down">Action</th>
                 </tr>
               </thead>
@@ -252,13 +252,13 @@
                     ?>
                 </td>
                   <td><?php echo date('d M Y, H:i A', strtotime($a->usr_created));?></td>
-                  <td>
-                      <select class="form-control select2" name="usr_role" style="width: 100%" data-placeholder="Choose one" required>
-                        <option>Choose Roles</option>
+                  <!-- <td>
+                      <select class="form-control" name="usr_role" style="width: 100%" data-placeholder="Choose one" required>
+
                         <option value="CP">POAC</option>
                         <option value="AD">Administration</option>
                       </select>
-                  </td>
+                  </td> -->
                   <td class="dropdown hidden-xs-down tx-center">
                     <a href="#" data-toggle="dropdown" class="pd-y-3 tx-gray-500 hover-info tx-18"><i class="icon ion-more"></i></a>
                     <div class="dropdown-menu dropdown-menu-right pd-10">
@@ -274,9 +274,9 @@
                 endforeach;
                 ?>
               </tbody>
-            </table>    
-     
-            
+            </table>
+
+
           </div><!-- modal-body -->
         </div>
       </div><!-- modal-dialog -->
