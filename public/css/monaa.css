@@ -34524,6 +34524,9 @@ a.hover-white-8:hover, a.hover-white-8:focus {
 .tx-uppercase {
   text-transform: uppercase; }
 
+.tx-caps {
+  text-transform: capitalize; }
+
 .tx-lowercase {
   text-transform: lowercase; }
 

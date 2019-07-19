@@ -52,7 +52,7 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td>Voucher Code : <span class="tx-danger">*</span></td>
+                              <td>Voucher Code : <span class="tx-success">*</span></td>
                               <td><input class="form-control" type="number" name="vou_code" id="vou_code" value="" style="width: 100%" placeholder="Insert Voucher Code" required></td>
                             </tr>
                             <tr>
@@ -62,14 +62,14 @@
                                 <input class="form-control bd-transparent" type="text" value="<?php echo $job->job_code;?>" disabled></td>
                             </tr>
                             <tr>
-                              <td>Issued Date : <span class="tx-danger">*</span></td>
+                              <td>Issued Date : <span class="tx-success">*</span></td>
                               <td><div class="input-group">
                                 <div class="input-group-prepend">
                                   <div class="input-group-text">
                                     <i class="icon ion-calendar tx-16 lh-0 op-6"></i>
                                   </div>
                                 </div>
-                                <input id="date-01" type="text" name="vou_date" class="form-control" placeholder="00/00/000" value="" required>
+                                <input id="date-01" type="text" name="vou_date" class="form-control" placeholder="MM/DD/YY" value="" required>
                               </div></td>
                             </tr>
                             <tr>
@@ -129,7 +129,7 @@
                             <td>
                               <div id="slWrapper03" class="parsley-select">
                                 <select class="form-control select2-show-search addPrefer"  style="width: 100%" placeholder="Choose one" value="" data-parsley-class-handler="#slWrapper03" data-parsley-errors-container="#slErrorContainer" required>
-                                  <option label="Choose one" value=""></option>
+                                  <option>Choose One</option>
                                   <?php foreach ($jobItems as $j) : ?>
                                     <option value="<?php echo $j->item_name;?>"><?php echo $j->item_name;?></option>
                                   <?php endforeach;?>
@@ -143,11 +143,11 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Advisor / Pilot / Mooring Master : <span class="tx-danger">*</span></td>
+                            <td>Advisor / Pilot / Mooring Master : <span class="tx-success">*</span></td>
                             <td>
                               <div id="slWrapper04" class="parsley-select">
                               <select class="form-control select2-show-search" data-placeholder="Choose one (with searchbox)" name="vou_master" data-parsley-class-handler="#slWrapper04" data-parsley-errors-container="#slErrorContainer" required>
-                              <option label="Choose one" value=""></option>
+                              <option>Choose One</option>
                               <?php foreach ($users as $u) : ?>
                                 <option value="<?php echo $u->usr_id;?>"><?php echo $u->usr_firstname.' '.$u->usr_lastname;?></option>
                               <?php endforeach;?>
@@ -156,7 +156,7 @@
                           </td>
                           </tr>
                           <tr>
-                            <td>Vessel's Master Agent : <span class="tx-danger">*</span></td>
+                            <td>Vessel's Master Agent : <span class="tx-success">*</span></td>
                             <td>
                               <div id="slWrapper05" class="parsley-select">
                                 <input class="form-control" type="text" name="vou_agent" id="vou_agent" value="" style="width: 100%" placeholder="Insert Vessel's Master Agent" required>
@@ -166,7 +166,7 @@
                           </tr>
                           <tr>
                             <td>Remarks</td>
-                            <td><textarea rows="1" class="form-control" placeholder="Note" name="vou_remark" value=""></textarea></td>
+                            <td><textarea rows="3" class="form-control" placeholder="Note" name="vou_remark" value=""></textarea></td>
                           </tr>
                         </tbody>
                       </table>

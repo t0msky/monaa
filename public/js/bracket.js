@@ -1,30 +1,5 @@
-/*!
- * Bracket Plus v1.1.0 (https://themetrace.com/bracketplus)
- * Copyright 2017-2018 ThemePixels
- * Licensed under ThemeForest License
- */
 
  'use strict';
-
- $(window).on('load', function () {
-   $("#preloader").fadeOut(1050);
- });
-
- function animate(duration) {
-   let position = -100;
-   let line = document.getElementById('line');
-
-   setInterval(() => {
-     position++;
-
-     if (position > 100) {
-       position = -100;
-     }
-     line.style.left = position + '%';
-   }, duration);
- }
- animate(10);
-
 
  $(document).ready(function(){
 
@@ -123,6 +98,27 @@
     $('body').addClass('show-left');
     return false;
   });
+    
+   // This will hide sidebar when it's clicked outside of it
+  $(document).on('click touchstart', function(e){
+    e.stopPropagation();
+
+    // closing left sidebar
+    if($('body').hasClass('show-left')) {
+      var targ = $(e.target).closest('.br-sideleft').length;
+      if(!targ) {
+        $('body').removeClass('show-left');
+      }
+    }
+
+    // closing right sidebar
+    if($('body').hasClass('show-right')) {
+      var targ = $(e.target).closest('.br-sideright').length;
+      if(!targ) {
+        $('body').removeClass('show-right');
+      }
+    }
+  });
 
   // jquery ui datepicker
   $('.datepicker').datepicker();
@@ -202,3 +198,26 @@ function addRow() {
 $('.addBtn').click(function()  {
   addRow();
 });
+
+
+function readURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function(e) {
+                  $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                  $('#imagePreview').hide();
+                  $('#imagePreview').fadeIn(650);
+              }
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+    $(document).ready(function(){
+      $("#imageUpload").change(function() {
+          readURL(this);
+          $('#imgConfirm').show();
+      });
+      $('#imgConfirm').click(function(){
+        $('#frmimgupld')[0].submit();
+      });
+      });
+

@@ -53,7 +53,7 @@
                             <div class="tx-uppercase tx-gray-500">ON</div>
                           </div>
                         </div><!-- input-group-prepend -->
-                        <input id="employid" class="form-control" type="text" name="usr_employment_id" placeholder="00-0000" required>
+                        <input class="form-control tx-caps" type="text" name="usr_employment_id" placeholder="00-0000" required>
                       </div><!-- input-group -->
                     </div>
                   </div><!-- col-6 -->
@@ -72,7 +72,7 @@
                   <div class="col-lg-6">
                     <div class="form-group mg-b-10-force">
                       <label class="form-control-label">Firstname : <span class="tx-success">*</span></label>
-                      <input class="form-control" type="text" name="usr_firstname" placeholder="Insert Firstname" required>
+                      <input id="field_ucfirst" class="form-control" type="text" name="usr_firstname" placeholder="Insert Firstname" required>
                     </div>
                   </div><!-- col-6 -->
                   <div class="col-lg-6">
@@ -323,6 +323,7 @@
   $('#postal').mask('999999');
   $('#nric').mask('999999-99-9999');
   });
+
   $(document).ready(function () {
       	 $('.main-password').find('.input-password').each(function(index, input) {
       		 var $input = $(input);

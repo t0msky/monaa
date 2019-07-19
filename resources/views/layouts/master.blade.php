@@ -95,7 +95,7 @@
             <li class="sub-item d-flex justify-content-between align-items-center">
               <a href="<?php echo env('BASE_URL');?>submit-voucher" class="sub-link <?php if($uri=='submit-voucher'  || $uri== "add-voucher"){echo 'active';}?>">STS Submission</a>
                 <?php if ($countStsNoVoucher > 0) { ?>
-                <span class="badge badge-success" data-toggle="tooltip-success" data-placement="right" title="{{$countStsNoVoucher}} STS Job Voucher">{{$countStsNoVoucher}}</span>
+                <span class="badge badge-success" data-toggle="tooltip-success" data-placement="right" title="{{$countStsNoVoucher}} STS Job Recorded">{{$countStsNoVoucher}}</span>
                 <?php } ?>
             </li>
 
@@ -109,7 +109,7 @@
             <li class="sub-item d-flex justify-content-between align-items-center">
               <a href="<?php echo env('BASE_URL');?>submit-voucher-pilotage" class="sub-link <?php if($uri=='submit-voucher-pilotage'){echo 'active';}?>">PLT Submission</a>
                 <?php if ($countPilotageNoVoucher > 0) { ?>
-                <span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="{{$countPilotageNoVoucher}} PLT Job Voucher">{{$countPilotageNoVoucher}}</span>
+                <span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="{{$countPilotageNoVoucher}} PLT Job Recorded">{{$countPilotageNoVoucher}}</span>
                 <?php } ?>
             </li>
           </ul>
